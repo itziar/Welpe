@@ -1,0 +1,45 @@
+{% load i18n staticfiles adept_tags %}
+
+{% if has_site_permission %}
+<link rel="stylesheet" href="{% static "mezzanine/css/editable.css" %}">
+{{ richtext_media|safe }}
+<script>
+{% url "fb_browse" as fb_browse_url %}
+{% url "static_proxy" as static_proxy_url %}
+{% get_current_language as LANGUAGE_CODE %}
+window.__filebrowser_url = '{{ fb_browse_url }}';
+window.__toolbar_html = '{{ toolbar|escapejs }}';
+window.__static_proxy = '{{ static_proxy_url }}';
+window.__language_code = '{{ LANGUAGE_CODE }}';
+</script>
+<script src="{% static "mezzanine/js/jquery.tools.toolbox.expose.js" %}"></script>
+<script src="{% static "mezzanine/js/jquery.tools.overlay.js" %}"></script>
+<script src="{% static "mezzanine/js/jquery.form.js" %}"></script>
+<script src="{% static "mezzanine/js/jquery.ba-resize.js" %}"></script>
+<script src="{% static "mezzanine/js/editable.js" %}"></script>
+<script>
+$(document).ready(function($) {
+    $('.theme-help').tooltip();
+    $('#theme-help-toggle').click(function(){
+        $('.theme-help').tooltip('toggle');
+    });
+});
+</script>
+{% else %}
+    {% if request.user|can_view_help %}
+    <link rel="stylesheet" href="{% static "mezzanine/css/editable.css" %}">
+    <form id="editable-toolbar" method="POST" action="{% url "admin:logout" %}?{{ REDIRECT_FIELD_NAME }}={{ request.path }}" style="display:block;">
+        <a id="theme-help-toggle" style="display:inline;">{% trans "Theme help" %}</a>
+    </form>
+    <span style="position: fixed;" class="editable-link theme-help" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="Only visible/functional if logged in as an admin or DEBUG is True"></span>
+
+    <script>
+    $(document).ready(function($) {
+        $('.theme-help').tooltip();
+        $('#theme-help-toggle').click(function(){
+            $('.theme-help').tooltip('toggle');
+        });
+    });
+    </script>
+    {% endif %}
+{% endif %}

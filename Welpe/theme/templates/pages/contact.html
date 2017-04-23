@@ -1,0 +1,24 @@
+{% extends "pages/form.html" %}
+
+{% load mezzanine_tags adept_tags %}
+
+{% block before_main %}
+
+{% if siteconf.contact_iframe %}
+
+{% if siteconf.contact_iframe_layout == "PAGE" %}
+            {% editable siteconf.contact_iframe siteconf.contact_iframe_layout %}
+            <section id="google-map" class="section google-map-2">
+                {% if request.user|can_view_help %}<div class="text-center"><span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="Go to Content -> Site Configuration in the admin to set the map iframe and width."></span></div>{% endif %}
+                <div class="container">
+                    {{ siteconf.contact_iframe|safe }}
+                </div>
+            </section>{% endeditable %}
+{% else %}
+            <section id="google-map" class="section google-map">
+                {% if request.user|can_view_help %}<div class="text-center"><span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="Go to Content -> Site Configuration in the admin to set the map iframe and width."></span></div>{% endif %}
+                {{ siteconf.contact_iframe|safe }}
+            </section>
+{% endif %}
+{% endif %}
+{% endblock %}

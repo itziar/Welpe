@@ -1,0 +1,29 @@
+{% load mezzanine_tags i18n %}
+<div class="resumen">
+	{% if modelo.summary %}
+		<div class="summary">
+			{% editable modelo.summary %}{{ modelo.summary | richtext_filters|safe }}{% endeditable %}
+		</div>
+	{% endif %}
+    {% if modelo.description %}
+		<div class="summary">
+			{% editable modelo.description %}{{ modelo.description | richtext_filters|safe }}{% endeditable %}
+		</div>
+	{% endif %}
+    {% if modelo.descripcion %}
+		<div class="summary">
+			{% editable modelo.descripcion %}{{ modelo.descripcion | richtext_filters|safe }}{% endeditable %}
+		</div>
+	{% endif %}
+	{% if modelo.author or modelo.showDate %}
+		<div class="firma">
+			{% if modelo.author%}
+				<span class="autor">Author: {{modelo.author}}</span>
+			{% endif %}
+			{% if modelo.showDate %}
+				<span class="actualizado">Updated at: {{modelo.publish_date}}</span>
+			 {% endif %}
+		</div>
+	{% endif %}
+</div>
+<div class="clear"></div>

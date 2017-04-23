@@ -1,0 +1,19 @@
+{% load i18n pages_tags %}
+
+{% spaceless %}
+{% if page_branch_in_menu %}
+
+{% for page in page_branch %}
+
+    {% if page.in_menu %}
+        {% if  not request.user.is_authenticated and not page.login_required or request.user.is_authenticated and page.login_required %}
+            <li><a href="{{ page.get_content_model.get_absolute_url }}">{{ page.title }}</a></li>
+        {% endif %}
+    {% endif %}
+
+    {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
+
+{% endfor %}
+
+{% endif %}
+{% endspaceless %}

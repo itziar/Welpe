@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load actividadTags %}
+
+{% block extra_css %}
+
+     <style>
+        .btn {
+            font-family: 'Montserrat', sans-serif !important;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 10px !important;
+            padding: 8px 10px;
+        }
+        .color_white{
+            color: white !important;
+        }
+
+    </style>
+    <link href="{% static 'css/actividades.css' %}" rel="stylesheet" >
+{% endblock extra_css%}
+{% block meta_title %}{% trans "Actividad" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+	<li class="active">{% trans "Home" %}</li>
+{% endblock %}
+{% block button_add %}
+    {% if request.user.is_authenticated %}
+    {% has_permissions_actividad actividad request.user as permissions %}
+    {% if permissions %}
+        <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+           data-target="#miniactividad_">{% trans "Añadir MiniActividad" %}</a>
+        {% include "includes/add_miniactividad.html" %}
+    {% endif %}
+    {% endif %}
+{% endblock %}
+{% block main %}
+    <div class="[ text-center ]">
+        <div class="[ row ]">
+            <div role="tabpanel">
+                <div class="[ col-xs-4 col-sm-12 ]">
+                    <!-- Nav tabs -->
+                    <ul class="[ nav nav-justified ]" id="nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a id="tp3"
+                               title="Description" href="#actDescription" aria-controls="actDescription" role="tab" data-toggle="tab" >
+                                <img class="img-circle" src="{% static 'img/info.png' %}" />
+                                <p>Event Info</p>
+                            </a>
+                        </li>
+                        {% if actividad.incluir_miniactividades %}
+                            <li role="presentation" class="">
+                                <a title="MiniActividad" href="#miniactividad" aria-controls="MiniActividad" role="tab" data-toggle="tab">
+                                    <img class="img-circle" src="{% static 'img/miniactividades.png' %}" />
+                                    <p>MiniActividades</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if actividad.permitir_inscriptions %}
+                        <li role="presentation" class="">
+                            <a title="Registration" href="#actRegistration" aria-controls="actRegistration" role="tab" data-toggle="tab">
+                                <img class="img-circle" src="{% static 'img/registration.png' %}" />
+                                <p>Registration</p>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li role="presentation" class="">
+                            <a title="comments" href="#actComment" aria-controls="commebts" role="tab" data-toggle="tab">
+                                <img class="img-circle" src="{% static 'img/comments.png' %}" />
+                                <p>Comentarios</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- Tab panes -->
+                    <div class="tab-content" id="tabs-collapse">
+                        <div role="tabpanel" class="tab-pane fade in active" id="actDescription">
+                            <div class="tab-inner">
+                               {% include "includes/desc_actividad.html" %}
+                                <hr>
+
+                            </div>
+                        </div>
+                        {% if actividad.incluir_miniactividades %}
+                            <div role="tabpanel" class="tab-pane fade" id="miniactividad">
+                                <div class="tab-inner">
+                                    {% include "includes/miniactividades.html" %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if actividad.permitir_inscriptions %}
+                        <div role="tabpanel" class="tab-pane fade" id="actRegistration">
+                            <div class="tab-inner">
+                                {% include "includes/registro_participantes.html" %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div role="tabpanel" class="tab-pane fade" id="actComment">
+                            <div class="tab-inner">
+                                {% include "includes/comentarios_actividades.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+
+<script>
+    var montharray=new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+
+    function countdown(element, yr, m, d){
+        theyear=yr;
+        themonth=m;
+        theday=d
+        thisElement= element
+
+        var today=new Date()
+        var todayy=today.getYear()
+        if (todayy < 1000)
+            todayy+=1900
+        var todaym=today.getMonth()
+        var todayd=today.getDate()
+        var todayh=today.getHours()
+        var todaymin=today.getMinutes()
+        var todaysec=today.getSeconds()
+        var todaystring=montharray[todaym]+" "+todayd+", "+todayy+" "+todayh+":"+todaymin+":"+todaysec
+
+        futurestring=montharray[m-1]+" "+d+", "+yr
+        dd=Date.parse(futurestring)-Date.parse(todaystring)
+        dday=Math.floor(dd/(60*60*1000*24)*1)
+        dhour=Math.floor((dd%(60*60*1000*24))/(60*60*1000)*1)
+        dmin=Math.floor(((dd%(60*60*1000*24))%(60*60*1000))/(60*1000)*1)
+        dsec=Math.floor((((dd%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1)
+        if(dday==0&&dhour==0&&dmin==0&&dsec==1){
+            thisElement.innerHTML= current
+            return
+        }
+        else
+            thisElement.innerHTML = dday+ " days<br/>"+dhour+" hours<br/>"+dmin+" minutes<br/>"+dsec+" sec"
+    }
+
+</script>
+
+<script type="text/javascript">
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var x = $(e.target).text();
+        if (x="Registration")
+            if (typeof $('#registeredTable') != "undefined")
+
+                var table_reg;
+                var table_waiting;
+
+                if ( $.fn.dataTable.isDataTable( '#registeredTable' ) ) {
+                    table_reg = $('#registeredTable').DataTable()
+                } else {
+                    table_reg = $('#registeredTable').DataTable( {
+                        "columnDefs": [
+                            {
+                                "targets": [ 1 ],
+                                "visible": false,
+                                "searchable": true,
+                            },
+                            {
+                                "targets": [ 3 ],
+                                "visible": false,
+                                "searchable": true,
+                            },
+                            {
+                                "targets": [ 4 ],
+                                "visible": false,
+                                "searchable": false
+                            },
+
+
+                        ]
+                    });
+                }
+            if (typeof $('#waitingTable') != "undefined")
+                if ( $.fn.dataTable.isDataTable( '#waitingTable' ) ) {
+                    table_waiting = $('#waitingTable').DataTable();
+                }
+                else {
+                    table_waiting = $('#waitingTable').DataTable( {
+                        "columnDefs": [
+                            {
+                                "targets": [ 1 ],
+                                "visible": false,
+                                "searchable": true,
+                            },
+                            {
+                                "targets": [ 3 ],
+                                "visible": false,
+                                "searchable": true,
+                            },
+                            {
+                                "targets": [ 4 ],
+                                "visible": false,
+                                "searchable": false
+                            },
+                        ]
+                    });
+                }
+            $('a.toggle-reg-vis').on( 'click', function (e) {
+                    e.preventDefault();
+
+                    // Get the column API object
+                    var column = table_reg.column( $(this).attr('data-column') );
+
+                    // Toggle the visibility
+                    column.visible( ! column.visible() );
+                } );
+
+            $('a.toggle-waiting-vis').on( 'click', function (e) {
+                    e.preventDefault();
+
+                    // Get the column API object
+                    var column = table_waiting.column( $(this).attr('data-column') );
+
+                    // Toggle the visibility
+                    column.visible( ! column.visible() );
+                } );
+
+    } );
+</script>
+<script src="{% static 'js/actividades.js' %}"></script>
+
+{% endblock %}
+
+
+{%block activividad %}
+    {% if page.actividad.start_date > today %}
+        setInterval("countdown(document.getElementById('actividad'),{{actividad.start_date.year}},{{actividad.start_date.month}},{{actividad.start_date.day}})",1000)
+
+    {% endif %}
+{% endblock %}
+{%block registro %}
+    {% if page.actividad.fecha_inscripcion_inicio > today %}
+        setInterval("countdown(document.getElementById('registro'),{{actividad.fecha_inscripcion_inicio.year}},{{actividad.fecha_inscripcion_inicio.month}},{{actividad.fecha_inscripcion_inicio.day}})",1000)
+    {% endif %}
+{% endblock %}
+

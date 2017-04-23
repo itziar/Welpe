@@ -1,0 +1,65 @@
+{% load mezzanine_tags i18n %}
+{% load  subscriptor %}
+{% is_subscripted request.user.id page.id as subscripted %}
+
+{% return_exclusions as pages_to_ignore%}
+<div id="caja_subscript" class="caja_subscript">
+    {%  if request.user.is_authenticated %}
+        {% if page.is_primary and page.title not in pages_to_ignore and page.slug != "/" %}
+            {%  if  subscripted %}
+
+                <div id="registeded-div-ajax" onclick="unsubscribe_ajax({{ page.id }}, $('#checkbox-unsubscribe'))">
+                    <div class="onoffswitch">
+                        <input type="checkbox" id="checkbox-unsubscribe" checked  class="onoffswitch-checkbox" >
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+
+                <!--<p> Manage your subscriptions <a href="/subscript/manage">here</a></p>-->
+                </div>
+
+                <div id="not-registered" style="display: none; " >
+                    <input name="page_id" value="{{ page.id }}" type="hidden">
+                    <div class="onoffswitch"  onclick="subscribe_ajax({{ page.id }}, $('#checkbox-subscribe'))">
+                        <input type="checkbox" id="checkbox-subscribe" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+
+            {% else %}
+                <div id="registeded-div-ajax" style="display: none; ">
+                    <div class="onoffswitch" onclick="unsubscribe_ajax({{ page.id }}, $('#checkbox-unsubscribe'))">
+                            <input type="checkbox" id="checkbox-unsubscribe" checked  class="onoffswitch-checkbox" >
+                            <label class="onoffswitch-label" for="myonoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+
+                        </div>
+                    <!--<p> Manage your subscriptions <a href="/subscript/manage">here</a></p>-->
+                </div>
+
+                <div id="not-registered" >
+                <input name="page_id" value="{{ page.id }}" type="hidden">
+                    <div class="onoffswitch" onclick="subscribe_ajax({{ page.id }}, $('#checkbox-subscribe'))" >
+                        <input type="checkbox" id="checkbox-subscribe" class="onoffswitch-checkbox">
+                            <label class="onoffswitch-label" for="myonoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+
+                </div>
+
+                <div id="error-box-subscribe" style="display: none">
+                    <p> We are sorry! There was a problem subscribing you to {{ page.title }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    {%  endif %}
+</div>

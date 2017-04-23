@@ -1,0 +1,69 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags staticfiles adept_tags %}
+
+{% block extra_js %}
+<script src="{% static "assets/isotope-site/jquery.isotope.min.js" %}"></script>
+<script>
+$(document).ready(function() {
+    // Isotope Portfolio
+    var $container = $('#isotope-portfolio-container');
+    var $filter = $('.portfolio-filter');
+    $(window).load(function () {
+        // Initialize Isotope
+        $container.isotope({
+            itemSelector: '.portfolio-item-wrapper',
+            layoutMode: 'masonry'
+        });
+        $('.portfolio-filter a').click(function () {
+            var selector = $(this).attr('data-filter');
+            $container.isotope({ filter: selector });
+            return false;
+        });
+        $filter.find('a').click(function () {
+            var selector = $(this).attr('data-filter');
+            $filter.find('a').parent().removeClass('active');
+            $(this).parent().addClass('active');
+        });
+    });
+    $(window).smartresize(function () {
+        $container.isotope('reLayout');
+    });
+});
+</script>
+{% endblock %}
+
+{% block main_section_class %}colored-wrapper gallery{% endblock %}
+
+{% block main_sidebar_wrapper %}
+
+{% editable page.gallery.content %}
+{{ page.gallery.content|richtext_filters|safe }}
+{% endeditable %}
+
+
+<div class="row">
+    <div id="isotope-portfolio-container">
+        {% with page.gallery.images.all as images %}
+        {% for image in images %}
+        <div class="col-xs-12 col-sm-6 col-md-3 portfolio-item-wrapper{% for category in item.categories.all %} {{ category.slug }}{% endfor %}">
+            <div class="portfolio-item">
+
+                <div class="portfolio-thumb">
+                    <img src="{{ MEDIA_URL }}{% thumbnail image.file 450 300 %}" class="img-responsive" alt="{{ image.description }}">
+                    <div class="image-overlay"></div>
+                    <a href="{{ MEDIA_URL }}{% thumbnail image.file 900 0 %}" rel="prettyPhoto[pp_gal]"  class="portfolio-zoom"><i class="fa fa-eye"></i></a>
+                </div>
+
+                <div class="portfolio-content">
+                    <h5>{{ image.description }}</h5>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endwith %}
+    </div>
+</div>
+
+{% endblock %}

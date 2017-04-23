@@ -1,0 +1,86 @@
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load profileTags %}
+
+<div class="container">
+    <div class="col-sm-12">
+        <div class="col-sm-3 margin-well">
+            <div class="img-thumbnail img-center img-rounded profile_image portfolio-item">
+                <div class="portfolio-thumb">
+                    {% if profile.photo %}
+                        <div class="image-overlay"></div>
+                        <img id="myImg" src="{{ MEDIA_URL }}{{ profile.photo }}" alt="" width="100">
+                        <a href="{{ MEDIA_URL }}{{ profile.photo }}" rel="prettyPhoto[pp_gal]"
+                           class="portfolio-zoom"><i class="fa fa-eye"></i></a>
+                    {% else %}
+                        <div class="image-overlay"></div>
+                        <img id="myImg" src="{% static 'img/profile.png' %}" alt="" width="100">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7 well margin-well">
+            <div>
+                <div class="pull-left">
+                    {% if grupo.name == "profesores" %}
+                        <i class="glyphicon glyphicon-blackboard"></i>
+                    {% elif grupo.name == "alumnos" %}
+                        <i class="glyphicon glyphicon-education"></i>
+                    {% elif user.is_staff or user.is_superuser %}
+                        <i class="glyphicon glyphicon-wrench"></i>
+                    {% endif %}
+                </div>
+                {% if request.user.is_authenticated %}
+                    {% if request.user != user %}
+                        <div class="pull-right">
+                            <a class="btn-success btn btn-sm pull-center color_white" href="#" data-toggle="modal"
+                                       data-target="#send_{{ user_pedido }}">{% trans "Enviar" %}</a>
+                                    {% include "includes/form_send.html" %}
+                        </div>
+                    {% endif %}
+                        {% has_permissions_profile user request.user as perm_edit %}
+                        {% if perm_edit %}
+                                <div class="pull-right">
+                                    <a class="btn-success btn btn-sm pull-right color_white" href="#" data-toggle="modal"
+                                       data-target="#profile_{{ user_pedido }}">{% trans "Editar" %}</a>
+                                    {% include "includes/form_profile.html" %}
+                                </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <br>
+            <div>
+                <p><i class="glyphicon glyphicon-user"></i>
+                    {% if profile %}{{ profile.usuario.username }}-{{ profile.usuario.first_name }}
+                        {{ profile.usuario.last_name }}{% else %}{{ user.first_name }} {{ user.last_name }}{% endif %}
+                </p>
+                {% if profile.birth_date %}<i class="glyphicon glyphicon-calendar"></i> {{ profile.birth_date }}
+                    <br>{% endif %}
+                {% if user == request.user %}
+                    <i class="glyphicon glyphicon-envelope"></i> {% if profile %}{{ profile.usuario.email }}{% else %}{{ user.email }}{% endif %}
+                {% endif %}
+                {% if profile %}
+                    {% if profile.show_email and user != request.user %}
+                        <i class="glyphicon glyphicon-envelope"></i>
+                        {% if profile %}{{ profile.usuario.email }}{% else %}{{ user.email }}{% endif %}
+                    {% endif %}
+                {% endif %}
+                <br>
+                {% if profile.location %}<i class="glyphicon glyphicon-globe"></i> {{ profile.location }}<br>{% endif %}
+                {% if profile.bio %}<p>About me: <br>{{ profile.desc }}</p>{% endif %}
+                {% if profile.pagina_web %} <i class="fa fa-external-link" aria-hidden="true"></i> {% endif %}
+                {% if profile.telefono %}<i class="glyphicon glyphicon-earphone"></i> {{ profile.telefono }}{% endif %}
+                {% if grupo.name == "alumnos" %}
+                    {% if profile.grado %}Titulación/Grado: {{ profile.grado }}{% endif %}
+                    <br>
+                    {% if profile.curso %}Curso: {{ profile.curso }}{% endif %}
+                {% elif grupo.name == "profesores" %}
+                    {% if profile.puesto %}Puesto: {{ profile.puesto }}{% endif %}
+                    {% if profile.formacion %}Formación: {{ profile.formacion }}{% endif %}
+                    {% if profile.departamento %}Departamento: {{ profile.departamento }}{% endif %}
+                    {% if profile.investigacion %}Investigación: {{ profile.investigacion }}{% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

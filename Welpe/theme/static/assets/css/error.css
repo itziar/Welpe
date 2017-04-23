@@ -1,0 +1,149 @@
+.center{
+    padding: 20px;
+    max-width: 1000px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/***************/
+/*** box Six ***/
+/***************/
+.navbar-brand span{
+    color: #3498db;
+}
+
+.box6 p{
+	margin: 30px;
+	color: #aaa;
+	outline: none;
+}
+
+.box6{
+	margin: auto;
+    max-width: 1000px;
+    width: 90%;
+	min-height: 150px;
+	padding: 0px 20px 20px 20px;
+	position: relative;
+	background: -webkit-gradient(linear, 0% 20%, 0% 92%, from(#fff), to(#f3f3f3), color-stop(.1,#fff));
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	-webkit-border-top-left-radius: 60px 5px;
+	-webkit-border-top-right-radius: 60px 5px;
+	-webkit-border-bottom-right-radius: 60px 60px ;
+	-webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.3) ;
+	
+}
+
+.box6:before{
+	content:'';	
+	width: 25px;
+	height: 20px;
+	position: absolute;
+	bottom:0;
+	right:0;
+	-webkit-border-bottom-right-radius: 30px;
+	-webkit-box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.3);
+	-webkit-transform:
+	rotate(-20deg)
+	skew(-40deg,-3deg)
+	translate(-13px,-13px);
+}
+
+.box6:after{
+	content: '';
+	z-index: -10;
+	width: 100px;
+	height: 100px;
+	position:absolute;
+	bottom:0;
+	right:0;
+	background: rgba(0, 0, 0, 0.2);
+	display: inline-block;
+	-webkit-box-shadow: 20px 20px 8px rgba(0, 0, 0, 0.2);
+	-webkit-transform: rotate(0deg)
+						translate(-45px,-20px)
+					   	skew(20deg);
+}
+.box6_corner_lf{
+	width: 100px;
+	height: 100px;
+	top:0; left:0;
+	position:absolute;
+	z-index:-6;
+	display: inline-block;
+	-webkit-box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.2);
+	-webkit-transform: rotate(2deg)
+						translate(20px,25px)
+					   	skew(20deg);
+}
+
+.box6_corner_rt{
+	content: '';
+	width: 50px;
+	height: 50px;
+	top:0; right:0;
+	position:absolute;
+	display: inline-block;
+	z-index:-6;
+	-webkit-box-shadow: 10px -10px 8px rgba(0, 0, 0, 0.2);
+	-webkit-transform: rotate(2deg)
+						translate(-14px,20px)
+					   	skew(-20deg);
+}
+
+.box6 h1{
+    text-align: center;
+    font-size: 17em;
+}
+
+.box6 h2{
+    text-align: center;
+    font-size: 5em;
+}
+@media screen and (max-width: 991px) {
+    .box6 h1{
+        font-size: 13em;
+    }
+    .box6 h2{
+        font-size: 4em;
+    }
+}
+
+@media screen and (max-width: 655px) {
+    .box6 h1{
+        font-size: 9em;
+    }
+    .box6 h2{
+        font-size: 3em;
+    }
+    .box6{
+        margin:10px;
+    }
+}
+
+@media screen and (max-width: 465px) {
+    .box6 h11{
+        font-size: 6em;
+    }
+    .box6 h2{
+        font-size: 2em;
+    }
+    .box6{
+        margin:10px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .box6 h1{
+        font-size: 3em;
+    }
+    .box6 h2{
+        font-size: 1em;
+    }
+    .box6{
+        margin:10px;
+    }
+}

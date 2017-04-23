@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% load mezzanine_tags static adept_tags i18n %}
+
+{% block extra_js %}
+{% endblock %}
+
+
+{% block all_content %}
+    {% if homepage.slides.all %}
+        <article>
+            {% for slide in homepage.slides.all %}
+                {% if slide.background or slide.subheading %}
+                    <style>
+                        #sec_{{ slide.id }} {
+                            background: {% if slide.background %}
+                                url('{{ MEDIA_URL }}{{ slide.background }}') top center no-repeat {% endif %} {{ slide.subheading }};
+                            background-size: cover;
+                        {% if forloop.counter != 1 %}
+                            background-position: top center;
+                            background-attachment: fixed;
+                        {% endif %}
+                            -webkit-background-size: cover;
+                            -moz-background-size: cover;
+                            -o-background-size: cover;
+                            {% if slide.background %}min-height: 500px;{% else %} min-height: 360px;{% endif %}
+                        }
+                    </style>
+                {% endif %}
+                <section class="container-fluid modulo" id="sec_{{ slide.id }}">
+                    <div class="container">
+                        {% if slide.heading %}
+                            <h2 class="titulo">{{ slide.heading|safe }}</h2>
+                        {% endif %}
+                        <div id="">
+                            {{ slide.content | safe }}
+                            {% if slide.button_text %}
+                                <br clear="all"/>
+                                <br/>
+                                <div class="over">
+                                    <a href="{{ slide.button_link }}" class="btn btn-default btn-md">
+                                        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"
+                                              size="3em"></span>
+                                        <br/>
+                                        {{ slide.button_text }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if slide.image %}
+                            <div class="cajatransparente block">
+                                <img src="{{ MEDIA_URL }}{{ slide.image }}" alt="Slide Image">
+                                {{ slide.custom | safe }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+            {% endfor %}
+        </article>
+    {% endif %}
+
+    {% if homepage.boxes.all %}
+        <section id="our-services" class="section">
+            <div class="container">
+                {% editable homepage.icon_box_layout %}
+                    {% if request.user|can_view_help %}
+                        <span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual"
+                              title="Edit the layout of these boxes in the admin, or using front end edit tags"></span>
+                    {% endif %}
+                    <div class="row">
+                        {% for box in homepage.boxes.all %}
+                            <div class="col-xs-12{% if homepage.icon_box_layout != 'TW' %} col-sm-4{% else %} col-sm-6{% endif %} wrapper-1">
+                                <div class="service{% if homepage.icon_box_layout == 'TH' %} service-3{% elif homepage.icon_box_layout == 'TW' %} service-4{% endif %}">
+                                    {% editable box.icon box.title box.content box.link %}
+                                        {% if box.link %}<a class="inherit-color" href="{{ box.link }}">{% endif %}
+                                    <span class="service-icon">
+                                <i class="fa {{ box.icon }}"></i>
+                            </span>
+                                    <h4>{{ box.title }}</h4>
+                                    {{ box.content|richtext_filters|safe }}
+                                    {% if box.link %}</a>{% endif %}
+                                    {% endeditable %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- /.row -->
+                {% endeditable %}
+
+            </div>
+            <!-- /.container -->
+        </section>
+        <!-- /#our-services -->
+    {% endif %}
+    {% if homepage.featured_portfolio_heading and items %}
+        <section id="recent-works" class="section colored-wrapper">
+            <div class="container wrapper-2">
+                {% editable homepage.featured_portfolio_heading %}
+                    {% if request.user|can_view_help %}
+                        <span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual"
+                              title="Click the edit tag or open the home page in the admin to select which portfolio to show here"></span>
+                    {% endif %}
+
+                    <h5 class="subpage-title">
+                        <span>{{ homepage.featured_portfolio_heading }}</span>
+                        <!-- Controls -->
+                        <span id="portfolio-next" class="next black"><i class="fa fa-angle-right"></i></span>
+                        <span id="portfolio-prev" class="prev black"><i class="fa fa-angle-left"></i></span>
+                    </h5>
+                {% endeditable %}
+                <div class="row">
+                    <div id="caroufredsel-portfolio-container">
+                        {% for item in items %}
+                            <div class="col-xs-12 col-sm-6 col-md-4 portfolio-item-wrapper">
+                                <div class="portfolio-item">
+                                    {% if item.featured_video %}
+                                        <div class="responsive-video-wrapper">
+                                            {{ item.featured_video|safe }}
+                                        </div>
+                                    {% elif item.featured_image %}
+                                        <div class="portfolio-thumb">
+                                            <img src="{{ MEDIA_URL }}{% thumbnail item.featured_image 290 163 %}"
+                                                 class="img-responsive" alt="{{ item.title }}">
+                                            <div class="image-overlay"></div>
+                                            <a href="{{ MEDIA_URL }}{% thumbnail item.featured_image 900 0 %}"
+                                               rel="prettyPhoto[pp_gal]" class="portfolio-zoom"><i
+                                                    class="fa fa-eye"></i></a>
+                                            <a href="{{ item.get_absolute_url }}" class="portfolio-link"><i
+                                                    class="fa fa-link"></i></a>
+                                        </div>
+                                    {% endif %}
+                                    <div class="portfolio-content">
+                                        <h5><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h5>
+                                        <p>{{ item.description_from_content|truncatewords_html:5|safe }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.portfolio-item-wrapper -->
+                        {% endfor %}
+                    </div>
+                    <!-- /.caroufredsel-portfolio-container -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </section>
+        <!-- /#recent-works -->
+    {% endif %}
+
+    {% if homepage.breakout_heading or homepage.breakout_content %}
+        <section id="awesome-callout" class="section colored-wrapper">
+            <div class="container">
+                {% editable homepage.breakout_heading homepage.breakout_content homepage.breakout_button_text homepage.breaktou_button_link %}
+                    <div class="awesome-callout">
+                        <h2>{{ homepage.breakout_heading }}</h2>
+                        {{ homepage.breakout_content|richtext_filters|safe }}
+                        <a href="{{ homepage.breakout_button_link }}"
+                           class="btn btn-flat flat-color btn-lg">{{ homepage.breakout_button_text }}</a>
+                    </div>
+                {% endeditable %}
+                <!-- /.awesome-callout -->
+            </div>
+            <!-- /.container -->
+        </section>
+        <!-- /#awesome-callout -->
+    {% endif %}
+
+
+{% endblock %}

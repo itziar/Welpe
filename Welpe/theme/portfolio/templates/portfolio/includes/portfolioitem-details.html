@@ -1,0 +1,39 @@
+{% load mezzanine_tags %}
+
+        {% if portfolioitem.website or portfolioitem.details.all or portfolioitem.categories.all %}
+        {% editable portfolioitem.details_heading %}
+        <h5 class="subpage-title">{{ portfolioitem.details_heading }}</h5>
+        {% endeditable %}
+        
+        <ul class="project-details-list">
+            {% for detail in portfolioitem.details.all %}
+            <li>{% editable detail.title detail.content %}
+                <h6>{{ detail.title }}:</h6>
+                <div class="project-terms">
+                    {{ detail.content|safe }}
+                </div>
+                {% endeditable %}
+            </li>
+            {% endfor %}
+            {% if portfolioitem.categories.all %}
+            <li>{% editable portfolioitem.categories %}
+                <h6>Categorized:</h6>
+                <div class="project-terms">
+                    {% for category in portfolioitem.categories.all %}
+                    {{ category }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                {% endeditable %}
+            </li>
+            {% endif %}
+            {% if portfolioitem.website %}
+            <li>{% editable portfolioitem.website %}
+                <h6>Website:</h6>
+                <div class="project-terms">
+                    <a href="{{ portfolioitem.website }}">{{ portfolioitem.website }}</a>
+                </div>
+                {% endeditable %}
+            </li>
+            {% endif %}
+        </ul>
+        {% endif %}

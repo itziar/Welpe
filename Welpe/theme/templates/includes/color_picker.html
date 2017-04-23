@@ -1,0 +1,81 @@
+{% load mezzanine_tags %}
+    <div id="skin-chooser-container" class="skin-chooser-container">
+        <a data-toggle="modal" href="#myModal" class="skin-chooser hidden-xs">
+            <i class="fa fa-cogs"></i>
+            <span class="theme-help" data-toggle="tooltip" data-placement="right" data-trigger="manual" title="View and set available color schemes"></span>
+        </a>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">CHOOSE COLOR SKIN, CURRENTLY: {{ siteconf.color_scheme }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="skins-wrapper">
+                            {% editable siteconf.color_scheme %}
+                            <ul class="list-inline">
+                                <li>
+                                    <div id="color-skin-1" class="color-skin"></div> 1
+                                </li>
+                                <li>
+                                    <div id="color-skin-2" class="color-skin"></div> 2
+                                </li>
+                                <li>
+                                    <div id="color-skin-3" class="color-skin active"></div> 3
+                                </li>
+                                <li>
+                                    <div id="color-skin-4" class="color-skin"></div> 4
+                                </li>
+                                <li>
+                                    <div id="color-skin-5" class="color-skin"></div> 5
+                                </li>
+                                <li>
+                                    <div id="color-skin-6" class="color-skin"></div> 6
+                                </li>
+                                <li>
+                                    <div id="color-skin-7" class="color-skin"></div> 7
+                                </li>
+                                <li>
+                                    <div id="color-skin-8" class="color-skin"></div> 8
+                                </li>
+                                <li>
+                                    <div id="color-skin-9" class="color-skin"></div> 9
+                                </li>
+                                <li>
+                                    <div id="color-skin-10" class="color-skin"></div> 10
+                                </li>
+                                <li>
+                                    <div id="color-skin-11" class="color-skin"></div> 11
+                                </li>
+                                <li>
+                                    <div id="color-skin-12" class="color-skin"></div> 12
+                                </li>
+                                <li>
+                                    <div id="color-skin-13" class="color-skin"></div> 13
+                                </li>
+                                <li>
+                                    <div id="color-skin-14" class="color-skin"></div> 14
+                                </li>
+                                <li>
+                                    <div id="color-skin-15" class="color-skin"></div> 15
+                                </li>
+                                <li>
+                                    <div id="color-skin-16" class="color-skin"></div> 16
+                                </li>
+                            </ul>
+                            {% endeditable %}
+                            <p>Use this widget to try out the available color schemes.
+                               To permanently set one take note of it's number, click edit above and fill it in or go to the <a href="/admin/theme/siteconfiguration/">admin</a> and edit the color scheme setting.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>

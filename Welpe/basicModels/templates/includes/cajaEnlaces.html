@@ -1,0 +1,32 @@
+{% load mezzanine_tags i18n %}
+
+    <div class="row">
+        {% if modelo.ext_links.all %}
+                    <div class="cajaEnlaces col-sm-6">
+                        <h4>Links:</h4>
+                        <ul>
+                        {% for link in modelo.ext_links.all %}
+                            <li class="list-unstyled">
+                                <i class="glyphicon glyphicon-link"> </i>
+                                <a class="relatedLink" href="{{link.url}}">{{link.nameToShow}}</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+
+        {% endif %}
+        {% if modelo.att_files.all %}
+                    <div id="cajaFicheros" class="cajaFicheros col-sm-6">
+                        <h4>Attached files:</h4>
+                        <ul>
+                        {% for file in modelo.att_files.all %}
+                            <li class="list-unstyled">
+                                <i class="glyphicon glyphicon-file"> </i>
+                                <a href="/static/media/{{file.fileName}}">{{ file.fileSummary }}  </a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+        {% endif %}  
+    </div>
+    <div class="clear"></div>

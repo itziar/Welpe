@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load ofertasTags %}
+{% load profileTags %}
+
+
+{% block extra_css %}
+    <link href="{% static 'css/ofertas.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "assets/bootstrap/css/bootstrap-datepicker.min.css" %}">
+{% endblock extra_css %}
+
+{% block meta_title %}{% trans "Ofertas de trabajo y prácticas en empresas" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+    <li class="active">{% trans "Home" %}</li>
+{% endblock %}
+
+{% block button_add %}
+    {% if request.user.is_authenticated %}
+        <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+           data-target="#oferta_">{% trans "Nueva Oferta" %}</a>
+        {% include "includes/form_oferta.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div class="fluid-container">
+        <div class="row">
+            <div class="col-md-12 middle blockmain">
+                <div class="caja_filtro">{% include "includes/filtro.html" %}</div>
+                {% if lista %}
+                    {% for elemento in lista %}
+                        <div class="caja_oferta">
+                        {% if request.user.is_authenticated %}
+                            {% has_permissions request.user as perm_ofertas %}
+                            {% if perm_ofertas %}
+                                <div class="geekly_buttons">
+                                    <a class="btn-primary btn btn-sm pull-right" href="#" data-toggle="modal"
+                                       data-target="#oferta_{{ elemento.oferta.id }}">{% trans "Edit" %}</a>
+                                    {% include "includes/form_oferta.html" %}
+                                    <button class="btn btn-sm btn-danger pull-right" onclick="swal({
+                                            title: 'Estás seguro',
+                                            text: 'La oferta {{ elemento.oferta.title }} será eliminado!',
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonClass: 'btn-danger',
+                                            confirmButtonText: 'Sí, borrar la oferta!',
+                                            cancelButtonText: 'No, no la borres aún!',
+                                            closeOnConfirm: false,
+                                            closeOnCancel: false
+                                            },
+                                            function(isConfirm){
+                                            if (isConfirm) {
+                                            $('.confirm-oferta-{{ elemento.oferta.pk }}').click();
+                                            swal('Borrado!', 'La oferta {{ elemento.oferta.title }} se ha borrado.', 'con éxito');
+                                            } else {
+                                            swal('Espera...', 'No podemos borrar la oferta {{ elemento.oferta.title }} :)', 'error');
+                                            }
+                                            });">
+                                        {% trans 'Delete' %}
+                                    </button>
+                                    <form action="delete_oferta" method="post" name="delete">
+                                        {% csrf_token %}
+                                        <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                               value="{{ elemento.oferta.pk }}">
+                                        <input type="submit" class="confirm-oferta-{{ elemento.oferta.pk }}"
+                                               style="display:none;">
+                                    </form>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                            <div class="oferta_title col-sm-6">
+                                <span class="tipo_contrato btn-info"> {% if elemento.oferta.tipo_contrato == 0 %}
+                                    Prácticas{% elif elemento.oferta.tipo_contrato == 1 %}
+                                    Indefinido{% elif elemento.oferta.tipo_contrato == 2 %}Otros {% endif %}</span>
+                                <a href="{{ elemento.oferta.get_absolute_url }}">{{ elemento.oferta.title }}</a>
+                            </div>
+                            <div class="actions">
+                                {% if request.user.is_authenticated %}
+                                    <form action="{{ elemento.oferta.url }}/like" method="post"
+                                          id="likeOferta_form_{{ elemento.oferta.id }}">
+                                        {% csrf_token %}
+                                        <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                               value="{{ elemento.oferta.pk }}">
+                                        <span>
+                                            <img class="pointer {% if elemento.likeOferta %}corazon{% else %}corazon_gray{% endif %}"
+                                                 id="submit_likeOferta_{{ elemento.oferta.id }}"
+                                                 src="/static/images/corazon.png"
+                                                 onclick="manage_likeOferta('{{ elemento.oferta.id }}', '{{ elemento.oferta.slug }}');"/>
+                                            <span
+                                                    id="oferta_like_{{ elemento.oferta.id }}">{{ elemento.like }}</span>
+                                            <span><img src="/static/images/comments.png"
+                                                       style="width: 4%"/>{{ elemento.comment }}</span>
+                                        </span>
+                                    </form>
+                                {% else %}
+                                    <span>
+                                        <img class="{% if elemento.likeOferta %}corazon{% else %}corazon_gray{% endif %}"
+                                             id="submit_likeOferta_{{ elemento.oferta.id }}"
+                                             src="/static/images/corazon.png"/> <span
+                                            id="oferta_like_{{ elemento.oferta.id }}">{{ elemento.like }}</span>
+                                        <span><img src="/static/images/comments.png"
+                                                   style="width: 4%"/>{{ elemento.comment }}</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            {% if elemento.oferta.descripcion %}
+                                <div class="description">
+                                    {{ elemento.oferta.descripcion | safe| truncatewords_html:140 }}
+                                </div>
+                            {% endif %}
+                            <p>
+                                <a href="{{ elemento.oferta.get_absolute_url }}">{% trans "Continuar leyendo ..." %}</a>
+                            </p>
+
+                        </div>
+                        <hr>
+                    {% endfor %}
+                    {% pagination_for lista %}
+                {% else %}
+                    <h1> Ahora mismo, no hay ninguna oferta disponible. </h1>
+                    {% if permissions %} Click en el botón añadir una orfeta para ser el primero.{% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/oferta.js' %}"></script>
+    <script type="text/javascript" src="/static/filebrowser/js/AddFileBrowser.js"></script>
+    <script src="{% static "assets/bootstrap/js/bootstrap-datepicker.min.js" %}"></script>
+{% endblock %}

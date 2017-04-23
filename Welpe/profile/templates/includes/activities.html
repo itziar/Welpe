@@ -1,0 +1,85 @@
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load infoTags %}
+{% load profileTags %}
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#accordion_actividades" ).accordion();
+  } );
+  </script>
+
+<div id="accordion_actividades">
+    <h3>Actividades en Registro</h3>
+    <div>
+        {% if actividades.Registro %}
+            {% for elemento in  actividades.Registro %}
+               <div class="caja_actividad">
+                     <div class="actividad_title col-sm-6">
+                        <a href="{{ elemento.get_absolute_url }}">{{ elemento.title }}</a>
+                    </div>
+                    <div class="dates">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        <span><strong>Desde: </strong> {{ elemento.start_date |date:"d/M/Y"|lower }}
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            <strong>Hasta: </strong> {{ elemento.finish_date |date:"d/M/Y"|lower }}
+                        </span>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Actividades que mostrar</h5>
+        {% endif %}
+    </div>
+    <h3>Actividades en Lista de Espera</h3>
+    <div>
+        {% if actividades.Espera %}
+            {% for elemento in  actividades.Espera %}
+               <div class="caja_actividad">
+                     <div class="actividad_title col-sm-6">
+                        <a href="{{ elemento.get_absolute_url }}">{{ elemento.title }}</a>
+                    </div>
+                    <div class="dates">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        <span><strong>from: </strong> {{ elemento.start_date |date:"d/M/Y"|lower }} <br>
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            <strong>to: </strong> {{ elemento.finish_date |date:"d/M/Y"|lower }}
+                        </span>
+                    </div>
+                    {% if elemento.actividad.lugar %}
+                        <div class="localizacion">
+                            <i class="glyphicon glyphicon-map-marker"></i><strong>Lugar:</strong>
+                            <span>
+                                {% if elemento.actividad.lugar %}
+                                    La actividad se realizará en: {{ elemento.lugar }}
+                                {% else %}
+                                    Todavía no se ha especificado el lugar donde se realizará la actividad
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% endif %}
+                    {% if elemento.actividad.url %}
+                        <div class="url">
+                            <i class="glyphicon glyphicon-link"></i><strong>Link: </strong><span>{{ elemento.actividad.url }}</span>
+                        </div>
+                    {% endif %}
+                    {% if elemento.actividad.descripcion %}
+                        <div class="talk_description">
+                            {{ elemento.descripcion | safe | truncatewords_html:50 }}
+                        </div>
+                    {% endif %}
+                    <p>
+                        <a href="{{ elemento.get_absolute_url }}">{% trans "read more" %}</a>
+                    </p>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Actividades que mostrar</h5>
+        {% endif %}
+    </div>
+</div>

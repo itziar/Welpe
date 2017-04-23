@@ -1,0 +1,166 @@
+{% load mezzanine_tags i18n %}
+{% load profileTags %}
+<form action="#" method="post" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+    <div id="profile_{{ user_pedido }}" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Perfil de Usuario</h4>
+                </div>
+                <div class="modal-body">
+                    <fieldset>{% csrf_token %}
+                        <legend>Por favor, complete el formulario</legend>
+                        <span class="form-requirements">Si hay algún error en los campos desabilitados ponte en contacto con el administrador</span>
+                        <div class="form-group">
+                            <label for="nombre_{{profile.id}}" class="control-label">Nombre:*</label>
+                            <div class="col-lg-12">
+                                <input id="nombre_{{profile.id}}" class="form-control" disabled="" placeholder="{% trans 'nombre y apellidos' %}"
+                                   type="text" name="nombre" value="{{ user.first_name }} {{ user.last_name }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email_{{profile.id}}" class="control-label">Email:*</label>
+                            <div class="col-lg-12">
+                                <input id="email_{{profile.id}}" class="form-control" disabled="" placeholder="{% trans 'email' %}" type="email"
+                                   name="email" value="{{ user.email }}">
+                            </div>
+                        </div>
+                    <div class="form-group">
+                            <label for="email_{{profile.id}}" class="control-label">Username:*</label>
+                            <div class="col-lg-12">
+                                <input id="email_{{profile.id}}" class="form-control" disabled="" placeholder="{% trans 'username' %}" type="text"
+                                   name="username" value="{{ user.username }}">
+                            </div>
+                        </div>
+
+                        <div class="checkbox" style="display:block;">
+                            <label>
+                                <input type="checkbox"
+                                       {% if profile.show_email %}checked="checked"{% endif %}
+                                       name="show_email">Mostrar correo
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="dni_{{profile.id}}" class="control-label">DNI/NIE:*</label>
+                            <div class="col-lg-12">
+                                <input id="dni_{{profile.id}}" class="form-control" placeholder="{% trans 'DNI/NIE' %}" type="text" name="dni"
+                                   value="{{ profile.dni }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="descripcion" for="descripcion_{{ profile.id }}"
+                                   class="control-label">Descripción/Bio:</label>
+                            <div class="col-lg-12">
+                                    <textarea name="descripcion"
+                                              class="form-control" rows="3"
+                                              id="desc_{{ profile.id }}" value="{{profile.descripcion }}">{{ profile.descripcion }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="url_{{ profile.id }}" class="control-label">Página Web:</label>
+                        <div class="col-lg-12">
+                            <input id="url_{{ profile.id }}" class="form-control"
+                                   placeholder="{% trans 'página web' %}"
+                                   type="url"
+                                   name="url" value="{{ profile.pagina_web }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tel_{{profile.id}}" class="control-label">Teléfono:</label>
+                        <div class="col-lg-12">
+                            <input id="tel_{{profile.id}}" class="form-control"
+                                   placeholder="{% trans 'teléfono' %}" type="text" name="telefono"
+                               value="{{ profile.tel }}" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                            <label for="location_{{profile.id}}" class="control-label">Localización:*</label>
+                            <div class="col-lg-12">
+                                <input id="location_{{profile.id}}" class="form-control"
+                                       placeholder="{% trans 'location' %}" type="text" name="location"
+                                   value="{{ profile.location }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="id_image_{{ profile.id }}">Image:</label>
+                            <div class="col-lg-12">
+                                <input id="id_image_{{ profile.id }}"
+                                       {% if profile.photo %}placeholder="profile.photo|getnames"
+                                       {% elif  profile.photo %}placeholder="profile.photo|getnames"
+                                       {% else %}placeholder="foto"{% endif %} disabled="disabled"/>
+                                <div class="fileUpload btn-xs btn btn-primary">
+                                    <span>Subir Foto</span>
+                                    <input type="file" class="upload" id="id_image_{{ profile.id }}"
+                                           name="image"
+                                           onchange="selectFile('id_image_{{ profile.id }}','uploadProfileFile_{{ profile.id }}')">
+                                </div>
+                                {% if profile.photo %}
+                                    <p><strong>*NOTA:</strong> Si seleccionas un nueva foto, ¡será reemplazado si ya
+                                        había alguna!</p>
+                                    <span class="control-label">
+                                            <input type="checkbox" name="delete_file"> Borrar <a
+                                            href="{{ profile.photo.url }}" target="_blank">profile.photo|getnames</a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% if grupo.name == "alumnos" %}
+                        <div class="form-group">
+                            <label for="titulacion_{{profile.id}}" class="control-label">Grado/Titulación:*</label>
+                            <div class="col-lg-12">
+                                <input id="titulacion_{{profile.id}}" class="form-control" placeholder="{% trans 'grado o titulación' %}" type="text" name="titulacion"
+                                   value="{{ profile.grado }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="curso_{{profile.id}}" class="control-label">Curso:</label>
+                            <div class="col-lg-12">
+                                <input id="curso_{{profile.id}}" class="form-control" placeholder="{% trans 'curso' %}" type="number" name="curso"
+                                   value="{{ profile.curso }}" required>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if grupo.name == "profesores" %}
+                        <div class="form-group">
+                            <label for="formacion_{{profile.id}}" class="control-label">Formación: </label>
+                            <div class="col-lg-12">
+                                <input id="formacion_{{profile.id}}" class="form-control" placeholder="{% trans 'formación' %}" type="text" name="formacion"
+                                   value="{{ profile.formacion }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="puesto_{{profile.id}}" class="control-label">Puesto: </label>
+                            <div class="col-lg-12">
+                                <input id="puesto_{{profile.id}}" class="form-control" placeholder="{% trans 'puesto' %}" type="text" name="puesto"
+                                   value="{{ profile.puesto }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="departamento_{{profile.id}}" class="control-label">Departamento:*</label>
+                            <div class="col-lg-12">
+                                <input id="departamento_{{profile.id}}" class="form-control" placeholder="{% trans 'departamento' %}" type="text" name="departamento"
+                                   value="{{ profile.departamento }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="investigacion_{{profile.id}}" class="control-label">Investigación:</label>
+                            <div class="col-lg-12">
+                                <input id="departamento_{{profile.id}}" class="form-control" placeholder="{% trans 'investigación' %}" type="text" name="investigacion"
+                                   value="{{ profile.investigacion }}">
+                            </div>
+                        </div>
+                    {% endif %}
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <input readonly="readonly" type="hidden" name="id_usuario" value="{{user.id}}">
+                    <input type="submit" class="btn btn-success pull-right" value="{% trans 'Save' %}">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,331 @@
+@media (min-width: 1600px){
+    .container {
+        max-width: 1600px;
+    }
+}
+
+.boton_accounts {
+	display: table;
+	margin: 0 auto;
+}
+
+
+.nav-footer {
+    display: table;
+    margin: 0 auto;
+}
+
+.nav-footer > ul {
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: top;
+}
+
+.tc-list ul.nav ul, .tc-list ul.nav {
+    list-style: none;
+    display: block;
+    position: relative;
+    visibility: visible;
+}
+.tree.tc-list > ul {
+    padding-left: 0px;
+}
+.tree.tc-list ul {
+    padding-left: 15px;
+}
+ul.nav {
+    text-align: left;
+    list-style: none;
+}
+
+
+.devblog img {
+    width:50px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/*subscriptions css! Did with https://proto.io/freebies/onoff/ */
+.onoffswitch {
+    position: relative; width: 97px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 22px; padding: 0; line-height: 22px;
+    font-size: 0.7em; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "Unsub!";
+    padding-left: 10px;
+    background-color: #2C3E50; color: #999999;
+}
+.onoffswitch-inner:after {
+    content: "Subscript";
+    padding-right: 10px;
+    background-color: #2C3E50; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 10px; margin: 6px;
+    background: #2C3E50;
+    position: absolute; top: 0; bottom: 0;
+    right: 72px;
+    border: 2px solid #999999; border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+
+.caja_subscript {
+    float:left;
+    margin-top:3px;
+    margin-right: 5px;
+}
+
+#yj-share-button {
+    margin-bottom: 20px;
+}
+
+
+.msg-cookie {
+  display: none;
+  background-color: #e4e4e4;
+  width: 62%;
+  position: fixed;
+  bottom: 0;
+  left: 19%;
+  padding: 10px;
+  z-index: 100; }
+
+.msg-cookie .wrap {
+    margin: 0 auto;
+    position: relative;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 1px solid #A4A4A4; 
+}
+
+.msg-cookie .wrap p {
+  font: normal 12px Arial,Helvetica,sans-serif;
+  color: #575757; 
+  width: 70%;
+  float: left;
+}
+
+.msg-cookie .wrap a.accept-button {
+  background-color: #003245;
+  box-sizing: border-box;
+  color: white; 
+  cursor: pointer;
+  float: right;
+  font: normal 12px Arial,Helvetica,sans-serif;
+  text-align: center;
+  padding: 5px 10px;
+  width: 25%;
+}
+
+.msg-cookie .wrap .clear {
+  clear: both;
+}
+
+
+.multimedia {
+    float: right;
+}
+/*video*/
+.video{
+    width: 100%;
+    margin: 0 auto;
+}
+.multimediaVideo{
+    min-height: 40vh;
+    text-align: center;
+    display: flex;
+}
+
+.multimediaVideo .video iframe{
+    height:40vh;
+    width: 100%;
+}
+/*imagen*/
+.multimediaImagen{
+    float: right;
+    position:relative;
+    top:0;
+    margin: 20px 0px;
+    clear: right;
+    padding-left: 20px
+}
+
+.imagen img{
+    width: 100% !important;
+    height: auto !important;
+    z-index: 14;
+    right: 0px;
+}
+
+.imagen a{
+    margin:0px;
+}
+
+/*********************************/
+/*resumen*/
+.resumen{
+    padding: 20px;
+}
+/********************************/
+.cajaEnlaces {
+    border-width: 3px 0px 0px 0px;
+    border-style: solid;
+    border-radius: 2px 2px 0px 0px;
+    margin: 0px 0px 20px;
+    padding: 0px 10px 10px;
+
+}
+
+.cajaFicheros {
+    border-width: 3px 0px 0px 0px;
+    border-style: solid;
+    border-radius: 2px 2px 0px 0px;
+    margin: 0px 0px 20px;
+    padding: 0px 10px 10px;
+}
+
+.portfolio-item {
+    width: 100px;
+}
+
+/**********************************/
+/* search-form */
+
+input.form-control{
+  border: 1px solid #3498db;
+}
+
+
+input.form-control:focus{
+  border: 2px solid #3498db;
+}
+/**********************************/
+
+/* summary */
+.summary {
+    color: #008597;
+    font-weight: bold;
+}
+
+
+
+
+.modulo { padding: 10px 0; color: #003245;}
+.modulo p {
+	/*color: #a5a5a0; */
+	margin: 0 0 10px;
+	padding: 0 0 10px;
+	font-size: 1em;
+	line-height: 1.1em;
+}
+.modulo h2 {
+	padding: 00px 0;
+	font-family: "TelefonicaHeadlineLightRegular";
+	font-size: 4.7em;
+	margin: 0;
+	line-height: 1em;
+	color: #333333;
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+.modulo h3 {
+    font-family: "TelefonicaHeadlineLightRegular", Arial, Helvetica, sans-serif;
+    line-height: 1em;
+    font-size: 3em;
+    padding-bottom: 15px;
+}
+
+.modulo .titulo {
+	text-align: left;
+	display: block;
+    width: 40%;
+}
+
+.modulo .block img { width: 100%; padding-bottom: 10px;}
+
+.modulo .block {
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+    background: rgba(240, 240, 240, 0.6);
+}
+
+.modulo .block img.flag { width: auto; position: absolute; right: 9%; top: 9%;}
+
+.cajablanca {
+    background: #ffffff;
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.cajatransparente {
+    max-width: 360px;
+    background: rgba(240, 240, 240, 0.6);
+    float: left;
+    display: inline;
+    padding-left: 10px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+ul.plus, ul.flecha {
+    padding-left:20px;
+    list-style:none;
+}
+
+ul.plus li, ul.flecha li { margin-bottom:10px; }
+
+ul.plus li:before {
+    font-family: 'FontAwesome';
+    content: '\f067';
+    margin: 0 5px 0 -15px;
+    color: #2c3e50;
+}
+ul.flecha li:before {
+    font-family: 'FontAwesome';
+    content: '\f0a9';
+    margin: 0 5px 0 -15px;
+    color: #2c3e50;
+}
+
+.over {
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    height: 80px;
+}
+
+.clear {
+    float: clear;
+}
+
+
+.color_login{
+    color: white;
+}

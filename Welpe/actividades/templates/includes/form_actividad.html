@@ -1,0 +1,229 @@
+{% load mezzanine_tags i18n %}
+
+<form action="add_actividad/" method="post" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+    <div id="actividad_{{ elemento.actividad.id }}" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    {% if elemento.actividad %}
+                        <h4 class="modal-title" style="color:black">Editar la actividad</h4>
+                    {% else %}
+                        <h4 class="modal-title" style="color:black">Añadir una actividad</h4>
+                    {% endif %}
+                </div>
+                <div class="modal-body" style="margin-right:15px;">
+                    <fieldset>
+                        <legend>Por favor, rellene el formulario</legend>
+                        <span class="form-requirements">Los campos con asterisco son obligatorios</span>
+                        <div class="form-group">
+                            <label for="title_{{ elemento.actividad.id }}" class="control-label">Nombre de
+                                la actividad: *</label>
+                            <div class="col-lg-12">
+                                <input id="title_{{ element.actividad.id }}" class="required-element form-control"
+                                       placeholder="{% trans 'Nombre de la actividad' %}"
+                                       type="text" name="title" value="{{ elemento.actividad.title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="url_{{ elemento.actividad.id }}" class="control-label">URL:</label>
+                            <div class="col-lg-12">
+                                <input id="url_{{ elemento.actividad.id }}" class="form-control"
+                                       placeholder="{% trans 'url' %}"
+                                       type="url"
+                                       name="url" value="{{ elemento.actividad.url }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="adminlist_{{ elemento.actividad.id }}" class="control-label">Lista
+                                de administradores:</label>
+                            <div class="col-lg-12">
+                                <input id="adminlist_{{ elemento.actividad.id }}" class="form-control"
+                                       placeholder="{% trans 'adminList' %}" type="text"
+                                       name="adminlist" value="{{ elemento.actividad.adminlist }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email_organizador_{{ elemento.actividad.id }}"
+                                   class="control-label">Email del organizador:</label>
+                            <div class="col-lg-12">
+                                <input id="email_organizador_{{ elemento.actividad.id }}" class="form-control"
+                                       placeholder="{% trans 'email del organizador' %}" type="email"
+                                       name="email_organizador" value="{{ elemento.actividad.email_organizador }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="descripcion" for="descripcion_{{ elemento.actividad.id }}"
+                                   class="control-label">Descripción de la actividad</label>
+                            <div class="col-lg-12">
+                                    <textarea name="descripcion"
+                                              class="form-control mce_descripcion_{{ elemento.actividad.id }}" rows="3"
+                                              id="summary_{{ elemento.actividad.id }}"
+                                              value="{{ elemento.actividad.descripcion }}">{{ elemento.actividad.descripcion }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Fechas: *</label>
+                            <div class="col-lg-12">
+                                <div id="sandbox-container">
+                                    <div class="input-daterange datepicker-flex"
+                                         id="datepicker_start_{{ elemento.actividad.id }}">
+                                        <input id="start_date_{{ elemento.actividad.id }}"
+                                               class="required-element form-control"
+                                               placeholder="{% trans 'Start date' %}" type="date"
+                                               name="start_date"
+                                               value="{{ elemento.actividad.start_date | date:'Y-m-d' }}"
+                                               required>
+                                        <input id="finish_date_{{ elemento.actividad.id }}"
+                                               class="required-element form-control"
+                                               placeholder="{% trans 'Finish date' %}" type="date"
+                                               name="finish_date"
+                                               value="{{ elemento.actividad.finish_date  | date:'Y-m-d' }}"
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Accept registration</label>
+                            <div class="col-lg-12">
+                                <div class="checkbox" style="display:block;">
+                                    <label>
+                                        <input onchange="change_display('{{ elemento.actividad.id }}', 'inscripcion')"
+                                               id="checkbox_allow_assist_{{ elemento.actividad.id }}" type="checkbox"
+                                               {% if elemento.actividad.permitir_inscriptions %}checked="checked"{% endif %}
+                                               name="permitir_inscriptions">Se acepta registro.
+                                    </label>
+                                    <div id="sandbox-container">
+                                    <span id="allow_assist_datepickers_{{ elemento.actividad.id }}"
+                                          {% if not elemento.actividad.permitir_inscriptions %}style="display:none;"{% endif %}>
+                                        Los registros se aceptarán entre las siguientes fechas: *
+                                            <div class="input-daterange datepicker-flex"
+                                                 id="datepicker_reg_start_{{ elemento.actividad.id }}">
+                                                <input id="fecha_inscripcion_inicio_{{ elemento.actividad.id }}"
+                                                       class="required-element form-control"
+                                                       placeholder="{% trans 'Fecha de inicio' %}" type="date"
+                                                       name="fecha_inscripcion_inicio"
+                                                       value="{{ elemento.actividad.fecha_inscripcion_inicio | date:'Y-m-d' }}">
+                                                <input id="fecha_inscripcion_final_{{ elemento.actividad.id }}"
+                                                       class="required-element form-control"
+                                                       placeholder="{% trans 'Fecha fin' %}" type="date"
+                                                       name="fecha_inscripcion_final"
+                                                       value="{{ elemento.actividad.fecha_inscripcion_final | date:'Y-m-d' }}">
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Existe límite de participantes</label>
+                            <div class="col-lg-12">
+                                <div class="checkbox" style="display:block;">
+                                    <label>
+                                        <input onchange="change_display('{{ elemento.actividad.id }}', 'limit')"
+                                               id="checkbox_limit_{{ elemento.actividad.id }}" type="checkbox"
+                                               {% if elemento.actividad.limite_participantes %}checked="checked"{% endif %}
+                                               name="limite_participantes">Número máximo de registros.
+                                    </label>
+                                    <br>
+                                    <span id="limit_span_{{ elemento.actividad.id }}"
+                                          {% if not elemento.actividad.limite_participantes %}style="display:none;"{% endif %}>
+                                    <input id="limit_{{ elemento.actividad.id }}" class="required-element  form-control"
+                                           placeholder="{% trans 'límite de registro de personas' %}" type="number"
+                                           name="limit" value="{{ elemento.actividad.limit }}">
+                                 </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">¿Actividad con RAC?</label>
+                            <div class="col-lg-12">
+                                <div class="checkbox" style="display:block;">
+                                    <label>
+                                        <input onchange="change_display('{{ elemento.actividad.id }}', 'rac')"
+                                               id="checkbox_rac_{{ elemento.actividad.id }}" type="checkbox"
+                                               {% if elemento.actividad.creditos %}checked="checked"{% endif %}
+                                               name="rac">Actividad con RAC (Reconocimiento Académico de Créditos)
+                                    </label>
+                                    <br>
+                                    <span id="creditos_span_{{ elemento.actividad.id }}"
+                                          {% if not elemento.actividad.creditos %}style="display:none;"{% endif %}>
+                                    <input id="rac_{{ elemento.actividad.id }}" class="required-element  form-control"
+                                           placeholder="{% trans 'Nº de RAC' %}" type="number"
+                                           name="n_rac" value="{{ elemento.actividad.creditos_etsi }}">
+                                 </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lugar_{{ elemento.actividad.id }}"
+                                   class="control-label">Lugar:</label>
+                            <div class="col-lg-12">
+                                <input id="lugar_{{ elemento.actividad.id }}" class="form-control"
+                                       placeholder="" type="text" name="lugar"
+                                       value="{{ elemento.actividad.lugar }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Options</label>
+                            <div class="col-lg-12">
+                                <div class="checkbox" style="display:block;">
+                                    <label>
+                                        <input type="checkbox"
+                                               {% if elemento.actividad.lista_espera %}checked="checked"{% endif %}
+                                               name="lista_espera">Permitir lista de espera
+                                    </label>
+                                </div>
+                                <div class="checkbox" style="display:block;">
+                                    <label>
+                                        <input type="checkbox"
+                                               {% if elemento.actividad.incluir_miniactividades or not actividad %}checked="checked"{% endif %}
+                                               name="incluir_miniactividades">Incluir MiniActividades
+                                    </label>
+                                </div>
+                                <div class="checkbox" style="display:block;">
+                                    <label>
+                                        <input type="checkbox"
+                                               {% if elemento.actividad.destacado %}checked="checked"{% endif %}
+                                               name="destacado">Actividad destacada
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label name="archivo" for="id_fichero_event{{ elemento.actividad.id }}"
+                                   class="control-label">Attached
+                                file:</label>
+                            <div class="col-lg-12">
+                                <input id="uploadEventFile_{{ elemento.actividad.id }}"
+                                       {% if elemento.actividad.attached_file %}placeholder=" elemento.actividad.attached_file"
+                                       {% else %}placeholder="Chosen File"{% endif %} disabled="disabled"/>
+                                <div class="fileUpload btn-xs btn btn-primary">
+                                    <span>Upload File</span>
+                                    <input type="file" class="upload" id="id_fichero_event{{ elemento.actividad.id }}"
+                                           name="archivo"
+                                           onchange="selectFile('id_fichero_event{{ elemento.actividad.id }}','uploadEventFile_{{ elemento.actividad.id }}')">
+                                </div>
+                                {% if elemento.actividad.attached_file %}
+                                    <p>Si seleccionas un nuevo fichero, será reemplazado si ya existía uno!</p>
+                                    <span class="control-label">
+                                        <input type="checkbox" name="delete_file"> Delete <a
+                                            href="{{ elemento.actividad.archivo.url }}"
+                                            target="_blank">elemento.actividad.attached_file|getnames </a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="pk" value="{{ elemento.actividad.pk }}">
+                    <input type="submit" class="btn btn-success pull-right" value="{% trans 'Save' %}">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

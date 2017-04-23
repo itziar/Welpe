@@ -1,0 +1,21 @@
+{% load mezzanine_tags i18n %}
+            {%if modelo.image%}
+                <div class="multimediaImagen">
+                    <div class="imagen">
+                        <div class="portfolio-item">
+                            <div class="portfolio-thumb">
+                                <img src="{{ MEDIA_URL }}{% thumbnail modelo.image 200 0 %}" class="img-responsive" alt="{{ modelo.image.description }}">
+                                <div class="image-overlay"></div>
+                                <a href="{{ MEDIA_URL }}{{ modelo.image }}" rel="prettyPhoto[pp_gal]" class="portfolio-zoom"><i class="fa fa-eye"></i></a>
+                            </div>
+                        </div>
+                        {%if modelo.image_footer%}
+                            <span class="mediaFooter">
+                                {{modelo.image_footer| richtext_filters|safe}}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}            
+  
+                <div class="clear"></div>

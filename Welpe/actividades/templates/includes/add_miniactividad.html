@@ -1,0 +1,125 @@
+{% load mezzanine_tags i18n  %}
+{% load actividadTags %}
+
+<form action="add_miniactividad/" method="post" class="form-horizontal" enctype="multipart/form-data"
+        onsubmit="if( $('#title_{{speech.ponencia.id}}').val() ){
+                    applyCleaner(['summary_{{ speech.ponencia.id }}', 'description_{{ speech.ponencia.id }}']);
+                    swal({
+                        title: 'Saved correctly',
+                        text: 'Speech saved successfully',
+                        type: 'success',
+                        confirmButtonClass: 'btn-success',
+                        confirmButtonText: 'Success!'
+                        });
+                        return true;
+                    }else{
+                        return false;
+                    }">
+        <div id="miniactividad_{{speech.ponencia.id}}" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title">Añadir o editar miniactividad</h4>
+                    </div>
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>Please, complete the form</legend>
+                            <span class="form-requirements">Los campos con asterisco son obligatorios</span>
+                            <div class="form-group">
+                                {% csrf_token %}
+                                <label for="title_{{speech.ponencia.id}}" class="control-label">Nombre de la miniactividad: *</label>
+                                <div class="col-lg-12">
+                                    <input id="title_{{speech.ponencia.id}}" class="required-element form-control input-lg" placeholder="{% trans 'nombre' %}" type="text" name="titulo"
+                                    value="{{speech.ponencia.titulo}}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="description_{{ speech.ponencia.id }}" class="control-label">Descripción:</label>
+                                <div class="col-lg-12">
+                                    <textarea name="description" class="form-control mce_sp_des_{{ speech.ponencia.id }}" rows="3" id="description_{{ speech.ponencia.id }}" value="{{ speech.ponencia.description }}">{{ speech.ponencia.description }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="place_{{ speech.ponencia.id }}" class="control-label">Lugar:</label>
+                                <div class="col-lg-12">
+                                    <input id="place_{{ speech.ponencia.id }}" class="form-control input-lg" placeholder="{% trans 'Lugar' %}" type="text"
+                                           name="place" value="{{speech.ponencia.place}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="fecha_{{ speech.ponencia.id }}" class="control-label datepicker-flex">Fecha:</label>
+                                <div class="col-lg-12">
+                                    <input id="fecha_{{ speech.ponencia.id }}" class="form-control input-sm" placeholder="{% trans 'Fecha' %}" type="date"
+                                           name="fecha" value="{{ speech.ponencia.fecha }}" >
+                                </div>
+                                <label for="hora_{{ speech.ponencia.id }}" class="control-label">Hora:</label>
+                                <div class="col-lg-12">
+                                    <input id="hora_{{ speech.ponencia.id }}" class="form-control input-sm" placeholder="{% trans 'Hora' %}" type="text"
+                                           name="hora" value="{{speech.ponencia.hora}}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <input id="uploadEventFile_{{ elemento.actividad.id }}"
+                                       {% if elemento.actividad.attached_file %}placeholder=" elemento.actividad.attached_file"
+                                       {% else %}placeholder="Subir Archivo"{% endif %} disabled="disabled"/>
+                                <div class="fileUpload btn-xs btn btn-primary">
+                                    <span>Upload File</span>
+                                    <input type="file" class="upload" id="id_fichero_event{{ elemento.actividad.id }}"
+                                           name="archivo"
+                                           onchange="selectFile('id_fichero_event{{ elemento.actividad.id }}','uploadEventFile_{{ elemento.actividad.id }}')">
+                                </div>
+                                {% if elemento.actividad.attached_file %}
+                                    <p>Si se selecciona un nuevo fichero, se reemplazará el existente!</p>
+                                    <span class="control-label">
+                                        <input type="checkbox" name="delete_file"> Delete <a
+                                            href="{{ elemento.actividad.archivo.url }}"
+                                            target="_blank">elemento.actividad.attached_file|getnames </a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="pk" value="{{ speech.ponencia.pk }}">
+                        <input type="submit" class="btn btn-success btn-lg pull-right" value="{% trans 'Save' %}">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+   <script type="text/javascript">
+        jQuery(function($) {
+            if (typeof tinyMCE != 'undefined') {
+                var sp_sum_{{ponencia.id}} = tinymce.init({
+                    mode : "textareas",
+                    editor_selector : "mce_sp_sum_{{speech.ponencia.id}}",
+                    menubar: false,
+                    plugins: [
+                                'advlist autolink lists link image charmap print preview anchor',
+                                'searchreplace visualblocks code fullscreen',
+                                'insertdatetime media table contextmenu paste code'
+                            ],
+                    statusbar: false,
+                    toolbar: ("undo redo | styleselect | bold italic | " +
+                    "alignleft aligncenter alignright alignjustify | " +
+                    "bullist numlist outdent indent | link image table | link image | " )
+                });
+                var sp_des_{{ponencia.id}} = tinymce.init({
+                    mode : "textareas",
+                    editor_selector : "mce_sp_des_{{speech.ponencia.id}}",
+                    menubar: false,
+                    plugins: [
+                                'advlist autolink lists link image charmap print preview anchor',
+                                'searchreplace visualblocks code fullscreen',
+                                'insertdatetime media table contextmenu paste code'
+                            ],
+                    statusbar: false,
+                    toolbar: ("undo redo | styleselect | bold italic | " +
+                    "alignleft aligncenter alignright alignjustify | " +
+                    "bullist numlist outdent indent | link image table | link image |" )
+                });
+            }
+        });
+   </script>

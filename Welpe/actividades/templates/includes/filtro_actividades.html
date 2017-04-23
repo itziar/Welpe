@@ -1,0 +1,26 @@
+{% load mezzanine_tags i18n %}
+
+<div class="container">
+    <form action="/ofertas/" method="post" class="navbar-form navbar-center" role="search">{% csrf_token %}
+        <div class="filter-form">
+            <div class="input-group form-group">
+                <input class="input-sm form-control" placeholder="{% trans "Titulo o contenido" %}" type="text"
+                       name="content" value="{{ request.POST.content }}">
+            </div>
+            {% if request.user.is_authenticated %}
+                <div class="input-group form-group">
+                    <input type="checkbox" name="like" value="like"  {% if request.POST.like %} checked{% endif %}>Guardado<br>
+                </div>
+            {% endif %}
+            <div class="input-group form-group">
+                <input type="submit" class="btn-primary significant" value="{% trans "Buscar" %}">
+            </div>
+        </div>
+    </form>
+
+    <form action="/ofertas/clear" method="post" class="navbar-form navbar-center" role="search">{% csrf_token %}
+        <div class="input-group form-group">
+            <input type="submit" class="btn-primary significant" value="{% trans "Eliminar filtros" %}">
+        </div>
+    </form>
+</div>

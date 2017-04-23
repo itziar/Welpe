@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+{% block title %}{% trans "Home" %}{% endblock %}
+{% block extra_css %}
+    <link href="{% static 'css/tefcon-agenda.css' %}" rel="stylesheet">
+{% endblock %}
+{% block main %}
+	<div class="fluid-container col-format">
+
+		<!-- Incluimos la imagen de la pagina -->
+		{% include "includes/cajaImagen.html" with modelo=page.basiccontent %}
+
+
+		 <!-- Incluimos el Summary -->
+		{% include "includes/cajaResumen.html" with modelo=page.basiccontent %}
+
+		 <!-- Incluimos el video relacionado -->
+		{% include "includes/cajaVideo.html" with modelo=page.basiccontent %}
+
+		<div class="bloqueContenido">
+			{% editable page.basiccontent.content %}{{ page.basiccontent.content | richtext_filters|safe}}{% endeditable %}
+		</div>
+
+		<!-- Incluimos los enlaces relacionados -->
+		{% include "includes/cajaEnlaces.html" with modelo=page.basiccontent %}
+
+		{% load blog_tags keyword_tags i18n %}
+		{% keywords_for page as keywords %}
+		{% if keywords %}
+			<div class="centerPersonalized">
+				<h4>{% trans "Keywords" %}</h4>
+					<ul class="tags">
+						{% for keyword in keywords %}
+							<li>
+								<a href="/search/?q={{ keyword.title }}">{{ keyword }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

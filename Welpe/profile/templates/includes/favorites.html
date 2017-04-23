@@ -1,0 +1,150 @@
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load infoTags %}
+{% load profileTags %}
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#accordion" ).accordion();
+  } );
+  </script>
+
+<div id="accordion">
+    <h3>Informacion de Interés</h3>
+    <div>
+        {% if likes.favs_info %}
+            {% for elemento in likes.favs_info %}
+                <div class="caja_info">
+                    <div class="info_title col-sm-6">
+                        <span class="tipo_info btn-info"> {% if elemento.info.tipo_informacion == 0 %}
+                            Beca{% elif elemento.info.tipo_informacion == 1 %}
+                            Programa{% elif elemento.info.tipo_informacion == 2 %}
+                            Curso{% elif elemento.info.tipo_informacion == 3 %}
+                            Concurso{% elif elemento.info.tipo_informacion == 4 %}Otros {% endif %}</span>
+                        <a href="{{ elemento.info.get_absolute_url }}">{{ elemento.info.title }}</a>
+                    </div>
+                    <div>
+                        {% if elemento.info.descripcion %}
+                            <div class="description">
+                                {{ elemento.info.descripcion | safe| truncatewords_html:10 }}
+                            </div>
+                        {% endif %}
+                        <p>
+                            <a href="{{ elemento.info.get_absolute_url }}">{% trans "read more" %}</a>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Infomación de Interés que mostrar</h5>
+        {% endif %}
+    </div>
+    <h3>Propuestas</h3>
+    <div>
+        {% if likes.favs_propuesta %}
+            {% for elemento in likes.favs_propuesta %}
+                <div class="caja_propuesta">
+                    <div class="propuesta_title col-sm-6">
+                        <span class="estado_propuesta btn-info"> {% if elemento.propuesta.estado_propuesta == 0 %}
+                            Enviado{% elif elemento.propuesta.estado_propuesta == 1 %}
+                            Aceptado{% elif elemento.propuesta.estado_propuesta == 2 %}
+                            Rechazado{% endif %}</span>
+                        <a href="{{ elemento.propuesta.get_absolute_url }}">{{ elemento.propuesta.title }}</a>
+                    </div>
+                    <div>
+                        {% if elemento.propuesta.descripcion %}
+                            <div class="description">
+                                {{ elemento.propuesta.descripcion | safe| truncatewords_html:10 }}
+                            </div>
+                        {% endif %}
+                        <p>
+                            <a href="{{ elemento.propuesta.get_absolute_url }}">{% trans "read more" %}</a>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Propuestas que mostrar</h5>
+        {% endif %}
+    </div>
+    <h3>Ofertas</h3>
+    <div>
+        {% if likes.favs_oferta %}
+            {% for elemento in likes.favs_oferta %}
+                <div class="caja_oferta">
+                    <div class="oferta_title col-sm-6">
+                        <span class="tipo_contrato btn-info"> {% if elemento.oferta.tipo_contrato == 0 %}
+                            Prácticas{% elif elemento.oferta.tipo_contrato == 1 %}
+                            Indefinido{% elif elemento.oferta.tipo_contrato == 2 %}Otros {% endif %}</span>
+                        <a href="{{ elemento.oferta.get_absolute_url }}">{{ elemento.oferta.title }}</a>
+                    </div>
+                    <div>
+                        {% if elemento.oferta.descripcion %}
+                            <div class="description">
+                                {{ elemento.oferta.descripcion | safe| truncatewords_html:10 }}
+                            </div>
+                        {% endif %}
+                        <p>
+                            <a href="{{ elemento.oferta.get_absolute_url }}">{% trans "Continuar leyendo ..." %}</a>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Ofertas que mostrar</h5>
+        {% endif %}
+    </div>
+    <h3>Actividades</h3>
+    <div>
+        {% if likes.favs_actividad %}
+            {% for elemento in likes.favs_actividad %}
+                <div class="caja_actividad">
+                     <div class="actividad_title col-sm-6">
+                            <a href="{{ elemento.actividad.get_absolute_url }}">{{ elemento.actividad.title }}</a>
+                    </div>
+                    <div class="dates">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        <span><strong>from: </strong> {{ elemento.actividad.start_date |date:"d/M/Y"|lower }} <br>
+                    	    <i class="glyphicon glyphicon-calendar"></i>
+                    	    <strong>to: </strong> {{ elemento.actividad.finish_date |date:"d/M/Y"|lower }}
+                        </span>
+                    </div>
+                    {% if elemento.actividad.lugar %}
+                        <div class="localizacion">
+                            <i class="glyphicon glyphicon-map-marker"></i><strong>Lugar:</strong>
+                            <span>
+                            {% if elemento.actividad.lugar %}
+                                La actividad se realizará en: {{ elemento.actividad.lugar }}
+                            {% else %}
+                                Todavía no se ha especificado el lugar donde se realizará la actividad
+                            {% endif %}
+                        </span>
+                        </div>
+                    {% endif %}
+                    {% if elemento.actividad.url %}
+                        <div class="url">
+                            <i class="glyphicon glyphicon-link"></i><strong>Link: </strong><span>{{ elemento.actividad.url }}</span>
+                        </div>
+                    {% endif %}
+                    {% if elemento.actividad.descripcion %}
+                        <div class="talk_description">
+                            {{ elemento.actividad.descripcion | safe | truncatewords_html:10 }}
+                        </div>
+                    {% endif %}
+                    <p>
+                        <a href="{{ elemento.actividad.get_absolute_url }}">{% trans "read more" %}</a>
+                    </p>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Actividades que mostrar</h5>
+        {% endif %}
+    </div>
+</div>

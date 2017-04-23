@@ -1,0 +1,718 @@
+/* Definimos el body*/
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+body{
+    padding: 0;
+    margin: 2px;
+    width: 99%;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    padding: 4px 4px;
+    margin-bottom: 4px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+/* Tag cloud */
+.tags {
+    padding: 0px 0px;
+    margin: 0px;
+    list-style: none;
+}
+
+.tags>li {
+    display: inline-block;
+}
+
+.tags>li+li:before {
+    color: #ccc;
+    content: ",\00a0";
+}
+
+/* Definimos los menus */
+
+.tc-header { 
+    background-size: 100% 100%;
+}  
+
+@media screen and (max-width: 865px){ 
+    .tc-header ul.nav {
+        left:0px;
+        display: block;
+        background: url(../images/bg.jpg) left;
+        background-size: 100% 100%;
+        padding: 0px 4px 0px 0px;
+    }
+    .tc-header li{
+        text-align: left;
+    }
+    .navbar-default .navbar-toggle{
+      position: absolute;
+          top: 45px;
+    right: 120px;
+    }
+    .searcher{
+        display:none;
+    }
+    .dropdown-searcher{
+        position: relative;
+        display: block;
+    }
+    .navbar-default .navbar-form{
+      display: inline-flex;
+    }
+    .navbar-form{
+      padding: 0px;
+      margin: 0px;
+    }
+    /* Sub menu */
+    #cssmenu ul ul {
+        display: none;
+    }
+    .disabled{
+        pointer-events: auto;
+    }
+    .tc-header ul{
+        display:block;
+    }
+    .tc-header > nav > ul{
+        display:none;
+    }
+    ul.nav li ul {
+      top:0px;
+      width: 100%;
+      position: relative;
+      visibility: visible;
+    }
+    .dropdown-submenu > .dropdown-menu{
+      left: 0;
+      border: none;
+      margin: 0;
+      background: #0D4C5E;
+    }
+    ul.nav li > ul {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+    #cssmenu > ul > li > ul, 
+    #cssmenu > ul > li > ul li a{
+        background: #0D4C5E;
+        color:white;
+    }
+    #cssmenu > ul > li ul{
+        padding-left: 20px;
+    }
+    #cssmenu ul.nav li:hover a:hover{
+    color: #00c6da;
+    }
+    #cssmenu ul.nav li:hover{
+        background: transparent;
+    }
+    .navbar-default .navbar-nav>.active>a,
+    .navbar-default .navbar-nav>.open>a,
+    .navbar-default .navbar-nav>li.active,
+    .navbar-default .navbar-nav>li.open{
+      background: transparent; 
+      border-radius: 20px;
+    }
+    .navbar-default .navbar-nav>.active>a, 
+    .navbar-default .navbar-nav>.active>a:focus, 
+    .navbar-default .navbar-nav>.active>a:hover{
+      color:white;
+      background: transparent; 
+    }
+    .navbar-default .navbar-nav>.open>a, 
+    .navbar-default .navbar-nav>.active>a{
+      background-image: none;
+    }
+    .dropdown-submenu > a:after{
+        display: none;
+    }
+    .container-fluid>.navbar-collapse, 
+    .container-fluid>.navbar-header, 
+    .container>.navbar-collapse,
+    .container>.navbar-header{
+      margin-top: 52px;
+    }
+    .tc-header ul{
+      position: relative;
+    }
+    .navbar-collapse {
+      padding-right: 0px; 
+      padding-left: 0px; 
+    }
+    .navbar-default .navbar-collapse{
+      border:none;
+    }
+    .navbar-collapse.in {
+      overflow-y: visible;
+    }
+    div.in ul.nav{
+      position: initial;
+    }
+    .tc-header ul{
+      top:0px;
+    }
+    .tc-header nav{
+      padding: 0px;
+    }
+    .dropdown-searcher-top{
+      display:none;
+    }
+    .tc-header h2{
+      margin-top: 0px;
+      top: 50px;
+    }
+}
+@media screen and (min-width: 865px){
+    .tc-header ul.nav {
+        left:160px;
+        margin-top: 58px;
+        padding: 15px 4px 17px 0px;
+        background: none;
+    }
+    .searcher{
+        position:absolute;
+        right: 0px;
+        top: 90px;
+    }
+    .dropdown-searcher{
+        display: none;
+    }        
+    ul.nav li ul li { 
+      background: rgb(0, 50, 69); 
+    }
+    ul.nav li ul {
+      top:29px;
+      position: absolute;
+      visibility: hidden;
+    }
+    ul.nav li:hover > ul {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      width: 200px;
+    }
+    .navbar-default .navbar-nav>.active>a,
+    .navbar-default .navbar-nav>.open>a,
+    .navbar-default .navbar-nav>li.active,
+    .navbar-default .navbar-nav>li.open{
+      background: rgb(0, 50, 69); 
+      border-radius: 20px;
+    }
+    .navbar-default .navbar-nav>.active>a, 
+    .navbar-default .navbar-nav>.active>a:focus, 
+    .navbar-default .navbar-nav>.active>a:hover{
+      color:white;
+      background: rgb(0, 50, 69); 
+    }
+    li.dropdown-submenu .caret{
+        display: none;
+    }
+    .navbar-nav > li.dropdown:hover > ul.dropdown-menu{
+      width: 240px;
+    }
+    .tc-header nav{
+      z-index: auto;
+    }
+    .tc-header nav:first-child{
+      z-index: 99;
+    }
+    .container-fluid>.navbar-collapse, 
+    .container-fluid>.navbar-header, 
+    .container>.navbar-collapse,
+    .container>.navbar-header{
+      margin-top: 90px;
+    }
+    .tc-header ul{
+      position: absolute;
+    }
+    #cssmenu>ul.nav>li:last-child:hover,
+    #cssmenu>ul.nav>li:last-child{
+      background: none; 
+      cursor:auto;
+      display: none;
+    }
+    .dropdown-searcher-top{
+      display:initial;
+    }
+    .dropdown-searcher-top input.tc-button.significant,
+    .dropdown-searcher-top .form-group > input[type="text"],
+    .dropdown-searcher-top .form-control{
+      height: 25px;
+    }
+    .dropdown-searcher-top .navbar-form{
+      margin: 0px;
+    }
+    .dropdown-searcher-top .tc-button{
+      line-height: 0px;
+    }
+    .searcher{
+        display:none;
+    }
+    .tc-header h2{
+      margin-top: 10px;
+      top: 57px;
+    }
+}
+@media (max-width: 864px){
+  .navbar-form .form-group {
+      margin-bottom: 0px;
+  }
+}
+@media only screen and (min-width:768px){
+    .tc-header ul.nav li{
+      display:block;
+      color:#fff;
+      border:none;
+      line-height:32px;
+      padding:5px 10px;
+      top:0px;
+    }
+    .tc-header ul{
+      display:block;
+      background:0 0;
+      top:0;
+      right:22px;
+      box-shadow:none;
+    }
+    .tc-header > ul:first-child{
+      z-index: 100;
+    }
+    .tc-header > ul:first-child li{
+      z-index: 101;
+    }
+    .tc-header > ul:first-child li a{
+      z-index: 102;
+    }
+    .tc-dialog.comments{
+      width: 80%;
+    }
+    .tc-header nav{
+      padding: 0px;
+    }
+    .col-md-9 .tc-row.filter-form{
+      text-align: center;
+    }
+}
+@media only screen and (max-width:768px){
+    .tc-header ul.nav{
+      margin-top: 0px;
+    }
+    .dropdown-searcher, form.navbar-form{
+      margin-left: 0px;
+    }
+    .tc-header li{
+      padding: 5px 10px;
+      border: none;
+      display:block;
+    }
+    .dropdown-menu>li>a{
+      padding: 0px;
+    }
+    ul.nav li ul {
+      top:0px;
+      width: 100%;
+      position: relative;
+    }
+    ul.nav li > ul {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+    .tc-dialog.comments{
+      width: 90%;
+    }
+    .col-md-9 .tc-row.filter-form{
+      text-align: left;
+    }
+
+}
+.tc-header h1{
+  top:40px;
+}
+
+.tc-header .navbar-default .navbar-nav>.open>a, 
+.tc-header .navbar-default .navbar-nav>.active>a{
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.tc-header h1 p{
+  position: absolute;
+  right: 0px;
+  top: 29px;
+}
+
+form.navbar-right{
+  right:20px;
+}
+
+.navbar-form.navbar-right{
+  margin-right: 20px;
+}
+
+/*tc-list*/
+.tc-list ul {
+  margin: 0;
+  padding: 0;
+}
+
+.tc-list ul li {
+  position: relative;
+  padding: 0;
+}
+
+.tc-list ul li a {
+  display: block;
+  padding: 12px 15px;
+  width:100%;
+  height: 100%;
+}
+
+/* HEADER*/
+nav.login span{
+  top: 5px;
+  right: 30px;
+  position: absolute;
+}
+.tc-header nav.login{
+  z-index: 200;
+}
+
+ul.nav li {
+  position: relative;
+}
+
+ul.nav li ul {
+  padding: 0;
+  left: 0;
+  display: none;
+}
+
+.navbar-default .navbar-nav>li:hover ul.dropdown-menu{
+  margin-top: 0px;
+}
+
+.dropdown-searcher input.btn{
+    margin-top: -3px;
+}
+
+div.in ul.nav{
+  width:100%;
+  margin-left: 0px;
+}
+.tc-header nav {
+  position: absolute;
+}
+
+.tc-list ul.nav li:hover > ul{
+  width: auto;
+}
+
+.tc-list a {
+    margin: auto;
+}
+.tc-list ul.nav li ul {
+    top: 0px;
+}
+/*Tags and rightPersonalized*/
+.rightPersonalized, .centerPersonalized{
+    z-index: 30;
+    position: relative;
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+}
+
+.rightPersonalized {
+    padding: 20px;
+    width: 100%;
+}
+
+.centerPersonalized {
+    padding: 5px;
+    width: 50%;
+    margin:auto;
+}
+
+/*menu-left*/
+div.panel{
+    bottom: 0px;
+}
+.panel ul{
+    padding: 0;
+}
+
+.blockmain{
+    padding:10px;
+    bottom:0;
+}
+
+.tree.tc-list ul{
+  padding-left: 10px;
+}
+.tree.tc-list > ul{
+  padding-left: 0px;
+}
+
+/*footer*/
+#footer{
+    position: absolute;
+    width: 99%;
+    z-index: 1;    
+    margin-top: 0px;
+    padding: 20px 0 5px;
+}
+
+.nav-footer > ul {
+    display: inline-block;
+    width: 120px;
+    margin-left: 50px;
+    vertical-align: top;
+}
+
+.nav-footer > ul > li {
+    padding: 0px 0px;
+}
+
+/*intro*/
+.intro .vid{
+    padding-right: 50px;
+    height: 40vh;
+}
+.intro{
+    padding: 60px;
+}
+.mediaSize{
+    min-height: 100%;
+    width: 100%;
+}
+
+img.mediaSize{
+    max-height: 100%;
+    width: auto;
+}
+
+/*editable*/
+.editable-form{
+    bottom:20px;
+}
+
+.editable-link{
+    left:0px !important;
+}
+
+.col-md-2 {
+    padding-right: 0px;
+}
+
+/* Definicion de los estilos para las paginas de contenido*/
+
+.leftMenu {
+  border-right: 4px solid #046f84;
+}
+
+.tree {
+    min-height: 300px;
+    margin: 0;
+    padding: 0;
+}
+
+.firma {
+    float: left;
+    margin: 15px;
+    margin-bottom: 15px;
+    padding: 4px 0px 3px 5px;
+    border-top: 1px solid #EBEBEB;
+    border-bottom: 1px solid #EBEBEB;   
+}
+
+.firma .autor {
+    margin: 0px 6px 0px 0px;
+    padding: 0px 5px 0px 0px;
+}
+
+.firma .actualizado {
+
+    margin: 0px;
+    padding: 0px;
+}
+
+
+
+
+
+
+.col-format{
+    margin-top: 20px; 
+    margin-bottom: 10px; 
+}
+
+.col-format img{
+    max-width: 100%;
+    height: auto;
+}
+
+.summaryIndex{
+    padding-top: 20px;
+}
+
+.mediaFooter{
+    text-align: center;
+}
+
+
+
+/*CAROUSEL*/
+
+/********************************/
+/*       Fade Bs-carousel       */
+/********************************/
+
+.fade-carousel {
+    position: relative;
+    height: 85vh;
+}
+
+.fade-carousel .carousel-inner .item {
+    height: 85vh;
+}
+
+.fade-carousel .carousel-indicators > li {
+    margin: 0 2px;
+}
+
+.fade-carousel .carousel-indicators > li.active {
+  width: 10px;
+  height: 10px;
+}
+
+/********************************/
+/*          Hero Headers        */
+/********************************/
+
+.hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.hero h1 {
+    margin: 0;
+    padding: 0;
+}
+
+/********************************/
+/*            Overlay           */
+/********************************/
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+/********************************/
+/*          Custom Buttons      */
+/********************************/
+
+.btn.btn-lg {
+    padding: 10px 40px;
+}
+
+.btn.btn-hero,
+.btn.btn-hero:hover,
+.btn.btn-hero:focus {
+    margin: 20px auto;
+}
+
+/********************************/
+/*       Slides backgrounds     */
+/********************************/
+
+.fade-carousel .slides .slide-1, 
+.fade-carousel .slides .slide-2,
+.fade-carousel .slides .slide-3 {
+  height: 85vh;
+  background-position: center center;
+}
+
+/********************************/
+/*          Media Queries       */
+/********************************/
+
+@media screen and (min-width: 980px){
+    .hero { 
+        width: 980px;
+    }    
+}
+
+/*homepage*/
+#pinBoot {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.white-panel {
+  padding: 20px;
+  margin: 0 auto; 
+  margin-top: 20px;
+  margin-bottom: 20px; 
+}
+
+.caja1, .caja2, .caja3{
+  width: 80%;
+}
+
+.caja4, .caja5{
+  width: 60%;
+}
+
+/*parallax*/
+
+.ha-bg-parallax {
+    margin: 0;
+    min-height: 100vh;
+    width: 100%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    bottom:0;
+    display: table;
+}
+
+/*back to top button*/
+#go-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    z-index: 9999;    
+}
+
+/* subcription box*/
+.caja_subscript{
+    float:right;
+}
+label.tc-switch.right {
+  right: 0px;
+}
+
+label.tc-switch {
+  position: absolute;
+  z-index: 90;
+}
+
+.login-div{
+    margin-top:20px;
+    background-color: #F8F8F8;
+}

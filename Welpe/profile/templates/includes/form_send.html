@@ -1,0 +1,29 @@
+{% load mezzanine_tags i18n %}
+{% load profileTags %}
+<form action="send" method="post" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+    <div id="send_{{ user_pedido }}" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Enviar Mensaje</h4>
+                </div>
+                <div class="modal-body">
+                    <fieldset>{% csrf_token %}
+                    <legend>Por favor, complete el formulario</legend>
+                        <input style="width: 100%;" placeholder="Asunto" type="text" name="subject" value="" required>
+                        <div>
+                            <textarea class="mce_body" name="body" style="margin-top: 1%; width: 100%;" rows="3"></textarea>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <input readonly="readonly" type="hidden" name="id_usuario" value="{{user.id}}">
+                    <input type="submit" class="btn btn-success pull-right" value="{% trans 'Enviar' %}">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

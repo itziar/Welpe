@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load infoTags %}
+{% load profileTags %}
+
+{% block extra_css %}
+    <link href="{% static 'css/info.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap-datepicker.min.css' %}">
+{% endblock extra_css %}
+
+
+{% block meta_title %}{% trans "Información de Interés" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+    <li class="active">{% trans "Home" %}</li>
+{% endblock %}
+
+{% block button_add %}
+    {% if request.user.is_authenticated %}
+        <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+           data-target="#info_{{ Info.id }}">{% trans "Añadir Información" %}</a>
+        {% include "includes/form_info_new.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div class="fluid-container">
+        <div class="row">
+            <div class="col-md-12 middle blockmain">
+                {% if lista %}
+                    <div class="caja_filtro">{% include "includes/filtro_info.html" %}</div>
+                    {% for elemento in lista %}
+                        <div class="caja_info">
+                        {% if request.user.is_authenticated %}
+                            {% has_permissions_info elemento.info request.user as perms_info %}
+                            {% if perms_info %}
+                                <div class="geekly_buttons">
+                                    <a class="btn-primary btn btn-sm pull-right" href="#" data-toggle="modal"
+                                       data-target="#info_{{ elemento.info.id }}">{% trans "Edit" %}</a>
+                                    {% include "includes/form_info.html" %}
+                                    <button class="btn btn-sm btn-danger pull-right" onclick="swal({
+                                            title: 'Estás seguro',
+                                            text: '{{ elemento.info.title }} será eliminado!',
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonClass: 'btn-danger',
+                                            confirmButtonText: 'Sí, borrar la información!',
+                                            cancelButtonText: 'No, no la borres aún!',
+                                            closeOnConfirm: false,
+                                            closeOnCancel: false
+                                            },
+                                            function(isConfirm){
+                                            if (isConfirm) {
+                                            $('.confirm-info-{{ elemento.info.pk }}').click();
+                                            swal('Borrado!', '{{ elemento.info.title }} se ha borrado.', 'con éxito');
+                                            } else {
+                                            swal('Espera...', 'No podemos borrar {{ elemento.info.title }} :)', 'error');
+                                            }
+                                            });">
+                                        {% trans 'Delete' %}
+                                    </button>
+                                    <form action="delete_info" method="post" name="delete">
+                                        {% csrf_token %}
+                                        <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                               value="{{ elemento.info.pk }}">
+                                        <input type="submit" class="confirm-info-{{ elemento.info.pk }}"
+                                               style="display:none;">
+                                    </form>
+                                </div>
+                            {% endif %}
+                         {% endif %}
+                            <div class="info_title col-sm-6">
+                                <span class="tipo_info btn-info"> {% if elemento.info.tipo_informacion == 0 %}
+                                    Beca{% elif elemento.info.tipo_informacion == 1 %}
+                                    Programa{% elif elemento.info.tipo_informacion == 2 %}
+                                    Curso{% elif elemento.info.tipo_informacion == 3 %}
+                                    Concurso{% elif elemento.info.tipo_informacion == 4 %}Otros {% endif %}</span>
+                                <a href="{{ elemento.info.get_absolute_url }}">{{ elemento.info.title }}</a>
+                            </div>
+                            <div class="actions">
+                                {% if request.user.is_authenticated %}
+                                    <form action="{{ elemento.info.url }}/like" method="post"
+                                      id="likeInfo_form_{{ elemento.info.id }}">
+                                    {% csrf_token %}
+                                    <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                           value="{{ elemento.info.pk }}">
+                                        <span>
+                                            <img class="pointer {% if elemento.likeInfo %}corazon{% else %}corazon_gray{% endif %}"
+                                                 id="submit_likeInfo_{{ elemento.info.id }}"
+                                                 src="/static/images/corazon.png"
+                                                 onclick="manage_likeInfo('{{ elemento.info.id }}', '{{ elemento.info.slug }}');"/>
+                                            <span
+                                                    id="info_like_{{ elemento.info.id }}">{{ elemento.like }}</span>
+                                            <span><img src="/static/images/comments.png" style="width: 4%"/>{{ elemento.comment }}</span>
+                                        </span>
+                                    </form>
+                                {% else %}
+                                    <span>
+                                        <img class="{% if elemento.likeInfo %}corazon{% else %}corazon_gray{% endif %}"
+                                             id="submit_likeInfo_{{ elemento.info.id }}"
+                                             src="/static/images/corazon.png"/> <span
+                                            id="info_like_{{ elemento.info.id }}">{{ elemento.like }}</span>
+                                        <span><img src="/static/images/comments.png" style="width: 4%"/>{{ elemento.comment }}</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if elemento.info.descripcion %}
+                                    <div class="description">
+                                        {{ elemento.info.descripcion | safe| truncatewords_html:140 }}
+                                    </div>
+                                {% endif %}
+                                <p>
+                                    <a href="{{ elemento.info.get_absolute_url }}">{% trans "read more" %}</a>
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                    {% pagination_for lista %}
+                {% else %}
+                    <h1> Ahora mismo, no hay ninguna infomación de interés disponible. </h1>
+                    {% if permissions %} Click en el botón añadir una información de interés para ser el primero.
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'assets/bootstrap/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'assets/js/datepicker.js' %}"></script>
+    <script src="{% static 'js/info.js' %}"></script>
+    <script type="text/javascript" src="/static/filebrowser/js/AddFileBrowser.js"></script>
+{% endblock %}

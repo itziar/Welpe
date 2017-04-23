@@ -1,0 +1,30 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags adept_tags %}
+
+{% block main_sidebar_wrapper %}
+<div class="row">
+    <div class="col-md-8 wrapper-1 {% if siteconf.sidebar_alignment == 'LE' %} col-md-push-4{% endif %} content-wrapper">
+        {% editable siteconf.sidebar_alignment %}
+        {% if request.GET.sent %}
+            {% editable page.form.response %}
+            {{ page.form.response|richtext_filters|safe }}
+            {% endeditable %}
+        {% else %}
+            <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+                {% fields_for form %}
+                    <input class="btn btn-primary btn-large" type="submit" value="{{ page.form.button_text }}">
+            </form>
+        {% endif %}
+        {% endeditable %}
+    </div>
+    <div class="col-md-4 wrapper-2 {% if siteconf.sidebar_alignment == 'LE' %} col-md-pull-8{% endif %} sidebar{% if request.user|can_view_help %} theme-help{% endif %}"{% if request.user|can_view_help %} data-toggle="tooltip" data-placement="top" data-trigger="manual" title="You can set the alignment of this sidebar in Content -> Site configuration or by using the edit tag."{% endif %}>
+        {% with page.form as page_form %}
+        {% editable page_form.content %}
+        {{ page_form.content|richtext_filters|safe }}
+        {% endeditable %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,45 @@
+{% load mezzanine_tags %}
+
+{% if portfolioitem.featured_video %}
+{% editable portfolioitem.featured_video %}
+<div id="video" class="responsive-video-wrapper toggleable visible">
+    {{ portfolioitem.featured_video|safe }}
+</div>
+{% endeditable %}
+{% endif %}
+
+{% if portfolioitem.featured_image %}
+<div id="slideshow" class="portfolio-thumb wrapper-1 toggleable" {% if portfolioitem.featured_video %}style="display:none;"{% endif %}>
+    <div id="pi-{{ page.id }}" class="carousel slide">
+        <!-- Indicators -->
+        {% if portfolioitem.images.all %}
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            {% for image in portfolioitem.images.all %}
+            <li data-target="#pi-{{ page.id }}" data-slide-to="{{ forloop.counter }}"></li>
+            {% endfor %}
+        </ol>
+        {% endif %}
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="{{ MEDIA_URL }}{% thumbnail portfolioitem.featured_image 930 0 %}" class="img-responsive" alt="{{ page.title }} featured image">
+            </div>
+            {% for image in portfolioitem.images.all %}
+            <div class="item">
+                <img src="{{ MEDIA_URL }}{% thumbnail image.file 930 0 %}" class="img-responsive" alt="{{ image.alt_text }}">
+            </div>
+            {% endfor %}
+        </div>
+        {% if portfolioitem.images.all %}
+        <!-- Controls -->
+        <a class="left carousel-control" href="#pi-{{ page.id }}" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#pi-{{ page.id }}" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

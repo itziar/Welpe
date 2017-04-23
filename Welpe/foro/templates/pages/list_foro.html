@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+
+
+
+{% block extra_css %}
+    <link href="{% static 'css/foro.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block before_main %}
+    <img class="imgen" style="width: 100%;" src="/static/img/collaboration.jpg"/>
+{% endblock %}
+{% block main %}
+
+<div class="caja_foro">
+    {% if request.user.is_authenticated %}
+        <hr>
+        <div class="row no-margin">
+            <div class="col-md-12">
+                <h4><i class="fa fa-paper-plane-o"></i> Deja un comentario:</h4>
+                <form action="add_comment/" method="post" class="form-horizontal"
+                      enctype="multipart/form-data">{% csrf_token %}
+                    <input style="width: 100%;" placeholder="Título" type="text" name="title" value="" required>
+                    <div>
+                        <textarea class="mce_comentario" name="comentario" style="margin-top: 1%; width: 100%;"
+                                  rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" name="comment_submit" id="comment_button" class="btn btn-success"><i
+                            class="fa fa-reply"></i> Enviar
+                    </button>
+                </form>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
+    <div class="container">
+        <h2 class="page-header" style='color: #259DCD;'>Comentarios</h2>
+        {% for elemento in comments %}
+            <section class="comment-list">
+                <!-- First Comment -->
+                <article class="row no-margin">
+                    <div class="col-md-2 col-sm-2 hidden-xs">
+                        <figure class="thumbnail">
+                            <img class="img-responsive"
+                                 src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg"/>
+                            <figcaption class="text-center">{{ elemento.usuario.username }}</figcaption>
+                        </figure>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10">
+                        <div class="panel panel-default arrow left">
+                            <div class="panel-body">
+                                <header class="text-left">
+                                    <div class="comment-user"><strong>{{ elemento.titulo }}</strong></div>
+                                    <time class="comment-date" datetime="16-12-2014 01:05"><i
+                                            class="fa fa-clock-o"></i> {{ elemento.fecha }}</time>
+                                </header>
+                                <div class="comment-post">
+                                    <p>
+                                        {{ elemento.comentario }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

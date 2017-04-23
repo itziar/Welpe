@@ -1,0 +1,63 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function($) {
+    $('a.toggle-video').click(function(){
+        if (!$('#video').hasClass('visible')){
+            $('.toggleable').toggle(400).toggleClass('visible');
+            $('a.toggle').parent().toggleClass('disabled');
+        }
+    })
+    $('a.toggle-slideshow').click(function(){
+        if (!$('#slideshow').hasClass('visible')){
+            $('.toggleable').toggle(400).toggleClass('visible');
+            $('a.toggle').parent().toggleClass('disabled');
+        }
+    })
+});
+</script>
+
+{% endblock %}
+
+{% block main_sidebar_wrapper %}
+{% if portfolioitem.featured_video and portfolioitem.featured_image %}
+<div id="visuals-select" class="portfolio-navigation wrapper-1">
+    <ul class="portfolio-navigation-list">
+        <li class="disabled"><a href="#visuals-select" class="toggle toggle-video">Show video</a></li>
+        <li><a href="#visuals-select" class="toggle toggle-slideshow">Show slideshow</a></li>
+    </ul>
+</div>
+{% endif %}
+
+{% if portfolioitem.layout == 1 %}
+
+{% include "portfolio/includes/portfolioitem-visuals.html" %}
+
+<div class="row">
+    <div class="col-md-8 item-description wrapper-1">
+        {% include "portfolio/includes/portfolioitem-desc_actividad.html" %}
+    </div>
+    <div class="col-md-4 item-details wrapper-1">
+        {% include "portfolio/includes/portfolioitem-details.html" %}
+    </div>
+</div>
+
+{% else %}
+<div class="row">
+    <div class="col-md-8{% if portfolioitem.layout == 3 %} col-md-push-4{% endif %}">
+        {% include "portfolio/includes/portfolioitem-visuals.html" %}
+    </div>
+    <div class="col-md-4 item-details {% if portfolioitem.layout == 3 %} col-md-pull-8{% endif %}">
+        <div class="wrapper-1">
+            {% include "portfolio/includes/portfolioitem-desc_actividad.html" %}
+        </div>
+        <div class="wrapper-1">
+            {% include "portfolio/includes/portfolioitem-details.html" %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

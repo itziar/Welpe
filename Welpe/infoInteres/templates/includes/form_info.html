@@ -1,0 +1,116 @@
+{% load mezzanine_tags i18n %}
+
+<form action="/informacion/add/" method="post" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+    <div id="info_{{ info.id }}{{ elemento.info.id }}" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    {% if elemento.info %}
+                        <h4 class="modal-title" style="color:black">Editar la información de interés</h4>
+                    {% else %}
+                        <h4 class="modal-title" style="color:black">Añadir la infomación de interés</h4>
+                    {% endif %}
+                </div>
+                <div class="modal-body" style="margin-right:15px;">
+                    <fieldset>
+                        <legend>Por favor, completa el formulario</legend>
+                        <span class="form-requirements">Los campos azules son obligatorios</span>
+                        <div class="form-group">
+                            <label for="title_{{ info.id }}{{ elemento.info.id }}" class="control-label">Título:</label>
+                            <div class="col-lg-12">
+                                <input id="title_{{ info.id }}{{ elemento.info.id }}"
+                                       class="required-element form-control" placeholder="{% trans 'Título' %}"
+                                       type="text" name="title" value="{{ info.title }}{{ elemento.info.title }}"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="url_{{ info.id }}{{ elemento.info.id }}" class="control-label">URL:</label>
+                            <div class="col-lg-12">
+                                <input id="url_{{ info.id }}{{ elemento.info.id }}" class="form-control"
+                                       placeholder="{% trans 'url' %}" type="url"
+                                       name="url" value="{{ info.url }}{{ elemento.info.url }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="descripcion" for="descripcion_{{ info.id }}{{ elemento.info.id }}"
+                                   class="control-label">Descripcion de la información de interés</label>
+                            <div class="col-lg-12">
+                                <textarea name="descripcion"
+                                          class="form-control mce_descripcion_{{ info.id }}{{ elemento.info.id }}"
+                                          rows="3" id="descripcion_{{ info.id }}{{ elemento.info.id }}"
+                                          value="{{ info.descripcion }}{{ elemento.info.descripcion }}">
+                                    {{ info.descripcion }}{{ elemento.info.descripcion }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cuando_{{ info.id }}{{ elemento.info.id }}" class="control-label">Cuando</label>
+                            <div class="col-lg-12">
+                                <input id="cuando_{{ info.id }}{{ elemento.info.id }}" class="form-control"
+                                       type="text" name="cuando"
+                                       value="{{ info.cuando }}{{ elemento.info.cuando }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="donde_{{ info.id }}{{ elemento.info.id }}" class="control-label">Donde:</label>
+                            <div class="col-lg-12">
+                                <input id="donde_{{ info.id }}{{ elemento.info.id }}" class="form-control"
+                                       type="text" name="donde"
+                                       value="{{ info.donde }}{{ elemento.info.donde }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo_{{ info.id }}{{ elemento.info.id }}" class="control-label">Tipo de información</label>
+                            <div class="col-lg-12">
+                                <select class="form-control" id="tipo_info" name="tipo_info">
+                                    <option {% if elemento.info.tipo_info == 0 or info.tipo_info == 0 %}selected="Beca" {% endif %}>Beca
+                                    </option>
+                                    <option {% if elemento.info.tipo_info == 1 or info.tipo_info == 1 %}selected="Programa" {% endif %}>
+                                        Programa
+                                    </option>
+                                    <option {% if elemento.info.tipo_info == 2 or info.tipo_info == 2 %}selected="Curso" {% endif %}>curso
+                                    </option>
+                                    <option {% if elemento.info.tipo_info == 3 or info.tipo_info == 3 %}selected="Concurso" {% endif %}>
+                                        Concurso
+                                    </option>
+                                    <option {% if elemento.info.tipo_info == 4 or info.tipo_info == 4 %}selected="Otros" {% endif %}>Otros
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="archivo" for="id_fichero_info{{ info.id }}{{ elemento.info.id }}" class="control-label">Fichero
+                                adjunto:</label>
+                            <div class="col-lg-12">
+                                <input id="uploadOfertaFile_{{ info.id }}{{ elemento.info.id }}"
+                                       {% if elemento.info.attached_file %}placeholder="elemento.info.attached_file|getnames"
+                                       {% elif  info.attached_file %}placeholder="info.attached_file|getnames"
+                                       {% else %}placeholder="Adjuntar fichero"{% endif %} disabled="disabled"/>
+                                <div class="fileUpload btn-xs btn btn-primary">
+                                    <span>Subir Fichero</span>
+                                    <input type="file" class="upload" id="id_fichero_info{{ info.id }}{{ elemento.info.id }}"
+                                           name="archivo"
+                                           onchange="selectFile('id_fichero_info{{ info.id }}{{ elemento.info.id }}','uploadOfertaFile_{{ info.id }}{{ elemento.info.id }}')">
+                                </div>
+                                {% if elemento.info.attached_file %}
+                                    <p><strong>*NOTA:</strong> Si seleccionas un nuevo fichero, ¡será reemplazado si ya
+                                        había alguno!</p>
+                                    <span class="control-label">
+                                            <input type="checkbox" name="delete_file"> Borrar <a
+                                            href="{{ info.archivo.url }}{{ elemento.info.archivo.url }}" target="_blank">elemento.info.attached_file|getnames info.attached_file|getnames</a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="pk" value="{{ info.pk }}{{ elemento.info.pk }}">
+                    <input type="submit" class="btn btn-success pull-right" value="{% trans 'Save' %}">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,102 @@
+{% load mezzanine_tags keyword_tags  %}
+{% load pages_tags i18n staticfiles %}
+
+
+<div class="description resumen">{{actividad.descripcion | richtext_filters | safe}}</div>
+<div class="row">
+    {% if actividad.attached_file %}
+        <div >
+            <div class="btn btn-warning btn-sm" ><a href="{% static 'media/' %}{{ actividad.attached_file }}" target="_blank" style=" color: white;">Descargar archivo</a></div>
+        </div>
+        <br>
+    {% endif %}
+    <div class="col-xs6 col-md-6 col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Actividad
+                </h3>
+            </div>
+            <div class="panel-body">
+            {% if request.user.is_authenticated %}
+                    <form action="{{ actividad.get_absolute_url }}/like" method="post"
+                          id="likeAct_form_{{ actividad.id }}">{% csrf_token %}
+
+                        <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                               value="{{ actividad.pk }}">
+
+                            <span><img class="puntero desc_corazon {% if likeAct %}corazon{% else %}corazon_gray{% endif %}"
+                                    id="submit_likeAct_{{ actividad.id }}" src="/static/images/corazon.png"
+                                    onclick="manage_likeAct('{{ actividad.id }}', '{{ actividad.slug }}');"/> <span
+                                    id="actividad_like_{{ actividad.id }}">{{ number_of_likes }}</span>
+                             </span>
+                     </form>
+                        {% else %}
+                            <span><img class="desc_corazon puntero {% if likeAct %}corazon{% else %}corazon_gray{% endif %}"
+                                    id="submit_likeAct_{{ actividad.id }}" src="/static/images/corazon.png"
+                            /> <span
+                                    id="actividad_like_{{ actividad.id }}">{{ number_of_likes }}</span>
+                            </span>
+                        {% endif %}
+             <p><img src="/static/images/comments.png" style="width: 8%"/>{{ comments.count }}</p>
+
+                {% if actividad.start_date > today %}
+                    <span class="label label-info pull-right" id="actividad"></span>
+                {% endif %}
+                <i class="glyphicon glyphicon-calendar"></i>
+                <span><strong>from: </strong> {{actividad.start_date |date:"d/M/Y"|lower}} <br>
+                    <i class="glyphicon glyphicon-calendar"></i>
+                    <strong>to: </strong> {{actividad.finish_date |date:"d/M/Y"|lower}}
+                </span>
+
+            </div>
+        </div>
+    </div>
+    {% if actividad.permitir_inscriptions %}
+    <div class="col-xs4 col-md-6 col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Periodo de registro
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% if actividad.fecha_inscripcion_inicio > today %}
+                    <span class="label label-info pull-right" id="registro"></span>
+                {% endif %}
+                <i class="glyphicon glyphicon-calendar"></i>
+                <span><strong>from: </strong> {{actividad.fecha_inscripcion_inicio |date:"d/M/Y"|lower}} <br>
+                    <i class="glyphicon glyphicon-calendar"></i>
+                    <strong>to: </strong> {{actividad.fecha_inscripcion_final |date:"d/M/Y"|lower}}
+                </span>
+                <br>
+                <div class="participantes">
+                         <i class="glyphicon glyphicon-user"></i><strong>Registered: </strong>
+                        {% if actividad.limite_participantes %}
+                            <span>{{num_participantes}}/{{actividad.limit}}</span>
+                        {% else %}
+                            <span>{{num_participantes}} </span>
+                        {% endif %}
+                </div>
+                {% if actividad.lista_espera %}
+                    <i class="glyphicon glyphicon-user"></i><strong>Waiting: </strong>{{num_espera|length}}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="clear"></div>
+    {% if actividad.url %}
+    <div class="idioma">
+        <i class="glyphicon glyphicon-link"></i><strong>Link: </strong><span>{{ actividad.url }}</span>
+    </div>
+    {% endif %}
+
+
+
+
+
+
+
+

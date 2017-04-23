@@ -1,0 +1,77 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags static adept_tags %}
+
+{% block extra_js %}
+<script src="{% static "assets/isotope-site/jquery.isotope.min.js" %}"></script>
+<script>
+$(document).ready(function() {
+    // Isotope Portfolio
+    var $container = $('#isotope-portfolio-container');
+    var $filter = $('.portfolio-filter');
+    $(window).load(function () {
+        // Initialize Isotope
+        $container.isotope({
+            itemSelector: '.portfolio-item-wrapper',
+            layoutMode: 'masonry'
+        });
+        $('.portfolio-filter a').click(function () {
+            var selector = $(this).attr('data-filter');
+            $container.isotope({ filter: selector });
+            return false;
+        });
+        $filter.find('a').click(function () {
+            var selector = $(this).attr('data-filter');
+            $filter.find('a').parent().removeClass('active');
+            $(this).parent().addClass('active');
+        });
+    });
+    $(window).smartresize(function () {
+        $container.isotope('reLayout');
+    });
+});
+</script>
+{% endblock %}
+
+{% block main_section_class %}colored-wrapper{% endblock %}
+
+{% block main_sidebar_wrapper %}
+{% if categories %}
+<ul class="portfolio-filter nav nav-pills">
+    <li class="active"><a href="#" data-filter="*">All</a></li>
+    {% for category in categories %}
+    <li><a href="#" data-filter=".{{ category.slug }}">{{ category }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+<!-- /.portfolio-filter -->
+{% if request.user|can_view_help %}<span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="As an admin there will be an edit tag right here that will let you choose if this portfolio should have 2, 3 or 4 items per row."></span>{% endif %}
+{% editable page.portfolio.columns %}
+<div class="row">
+    <div id="isotope-portfolio-container">
+        {% for item in items %}
+        <div class="col-xs-12 col-sm-6 col-md-{{ page.portfolio.columns }} portfolio-item-wrapper{% for category in item.categories.all %} {{ category.slug }}{% endfor %}">
+            <div class="portfolio-item">
+                {% if item.featured_video %}
+                <div class="responsive-video-wrapper toggleable visible">
+                    {{ item.featured_video|safe }}
+                </div>
+                {% elif item.featured_image %}
+                <div class="portfolio-thumb">
+                    <img src="{{ MEDIA_URL }}{% thumbnail item.featured_image 450 300 %}" class="img-responsive" alt="{{ item.title }}">
+                    <div class="image-overlay"></div>
+                    <a href="{{ MEDIA_URL }}{% thumbnail item.featured_image 900 0 %}" rel="prettyPhoto[pp_gal]"  class="portfolio-zoom"><i class="fa fa-eye"></i></a>
+                    <a href="{{ item.get_absolute_url }}" class="portfolio-link"><i class="fa fa-link"></i></a>
+                </div>
+                {% endif %}
+                <div class="portfolio-content">
+                    <h5><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h5>
+                    <p>{{ item.description_from_content|truncatewords_html:10|safe }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endeditable %}
+{% endblock %}

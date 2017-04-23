@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %} style="height: 100%;bottom: 0px;">
+{% load pages_tags mezzanine_tags i18n staticfiles adept_tags blog_tags staticfiles %}
+{% load accounts_tags %}
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <title>{% block meta_title %}Welcome{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+
+    {% compress css %}
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'assets/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <!-- Plugins CSS -->
+    <link href="{% static 'assets/UItoTop/css/ui.totop.css' %}" rel="stylesheet">
+        <!-- REVOLUTION BANNER CSS SETTINGS -->
+    <!-- Custom Stylesheet For This Template -->
+    <link href="{% static 'assets/css/stylesheet.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/skins.css' %}" rel="stylesheet">
+    <link href="{% static 'css/mezzatheme.css' %}" rel="stylesheet">
+    <!-- Font Awesome  -->
+    <link href="{% static 'assets/font-awesome-4.0.3/css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static 'css/tokenmanager.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/commons_fonts_embedded.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/devportal.css' %}" rel="stylesheet" >
+    <link href="{% static 'assets/css/blue.css' %}" rel="stylesheet">
+
+    {% block extra_css %}{% endblock %}
+    {% endcompress %}
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic|Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <script>
+        var item_template = '<li><a href="{% templatetag openvariable %}image_b{% templatetag closevariable %}"><img src="{% templatetag openvariable %}image_s{% templatetag closevariable %}" alt="{% templatetag openvariable %}title{% templatetag closevariable %}" /></a></li>'
+    </script>
+
+    {% compress js %}
+    <script src="{% static 'assets/js/jquery-2.0.3.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
+    <script src="{% static 'assets/js/cookies.js' %}"></script>
+
+
+    {% block extra_js %}{% endblock %}
+    {% endcompress %}
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="{% static "assets/js/html5shiv.js" %}"></script>
+    <script src="{% static "assets/js/respond.min.js" %}"></script>
+    <![endif]-->
+
+    {% block extra_head %}{% endblock %}
+
+</head>
+<body id="{% block body_id %}body{% endblock %}" style="height: 100%;bottom: 0px;">
+    <!--COOKIES-->
+    <div class="msg-cookie" id="msg-cookie" style="display: none;">
+        <div class="wrap">
+            <p>Utilizamos cookies propias y de terceros para mejorar tu experiencia y nuestros servicios, analizando la navegación en nuestro sitio. Si continuas navegando, consideramos que aceptas su uso. Puedes obtener más información en nuestra <a class="a2" href="/public/politica-cookies">Política de Cookies. </a>.</p>
+            <a class="accept-button">Aceptar</a>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    {% get_site_conf as siteconf %}
+    <div id="main-wrapper" class="color-skin-{{ siteconf.color_scheme }}" style="height: 100%;bottom: 0px;">
+       <header id="header-1" class="header">
+            <div class="container" style="margin: 0px 2%;">
+                <div class="row">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/"> <img src="/static/images/logo.png" style="width: 38%; margin-top: -26px;"></a>
+                    </div>
+                    <!-- /.header-info-wrapper -->
+                    <div class="col-xs-12 col-sm-8 social-link-wrapper text-center">
+                        <ul class="list-inline">
+                             {% if request.user.is_authenticated %}
+                                 <li>Hola <a style="color: white;" href =/profile/{{request.user.id }}>{{ request.user.username }}!</a> <i data-icon="user"></i></li>
+                                <li>
+                                    <a href="/accounts/logout">
+                                       <button type="button" class="btn btn-default btn-xs">
+                                           Logout <div class="glyphicon glyphicon-remove" aria-hidden="true"></div>
+                                        </button>
+                                    </a>
+                                </li>
+                            {% else %}
+                                {% include "accounts/includes/user_panel.html" %}
+                            {% endif %}
+                                {% if request.user.is_authenticated %}
+                                {% block home_search %}
+                                    <li class="search">
+                                        <form action="{% url 'search' %}" class="search-form">
+                                        <input class="form-control" placeholder="{% trans 'Search' %}" type="text" name="q" value="{{ request.REQUEST.q }}">
+                                        </form>
+                                    </li>
+                                {% endblock %}
+                            {% endif %}
+                            {% if request.user|can_view_help %}<li><span class="theme-help" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Edit these in Site -> Settings in the admin"></span></li>{% endif %}
+                        </ul>
+                        <!-- /.social-links -->
+                    </div>
+                    <!-- /.social-link-wrapper -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </header>
+        <header id="header-2" class="header">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                        </button>
+                        <a class="navbar-brand" href="/">{{ settings.SITE_TITLE|slice:":3" }}<span>{{ settings.SITE_TITLE|slice:"3:" }}.</span>
+                        {% if request.user|can_view_help %}<span class="theme-help" data-toggle="tooltip" data-placement="right" data-trigger="manual" title="The Site Title from Site -> Settings in the admin shows here."></span>{% endif %}
+                        </a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+
+                    <div class="collapse navbar-collapse navbar-ex1-collapse">
+                        {% page_menu "pages/menus/dropdown.html" %}
+                        <!-- /.nav -->
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container -->
+            </nav>
+            <!-- /.navbar -->
+        </header>
+
+
+        <section class="section">
+            <div class="row">
+                <div class="col-xs-12 col-md-12 content-wrapper">
+                    <div class="panel panel-default login-div " style="border: none;">
+                        <div class="panel-body ">
+                            <h2 class="text-center">Welcome to {{ settings.SITE_TITLE }}</h2>
+                                <div class="boton_accounts">
+                                    <button onclick="document.location.href='/accounts/login'"></button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    <footer id="footer-total" style="position:relative;bottom:0;width: 100%;">
+        <footer id="footer-1" class="footer">
+            <div class="container">
+                <div class="row">
+                    {% if request.user.is_authenticated %}
+                    <div class="col-md-3">
+                    {% else %}
+                    <div class="col-md-6">
+                    {% endif %}
+                        <div class="widget about-us">
+                            {% if request.user|can_view_help %}<span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="The Site Title from Site -> Settings in the admin shows here."></span>{% endif %}
+                            <span class="footer-brand">{{ settings.SITE_TITLE|slice:":3" }}<span>{{ settings.SITE_TITLE|slice:"3:" }}.</span></span>
+                            {% editable siteconf.footer_description %}
+                            {{ siteconf.footer_description|richtext_filters|safe }}
+                            {% endeditable %}
+                        </div>
+                        <!-- /.about-us -->
+                    </div>
+                    <!-- /.col-md-3 -->
+                    {% if request.user.is_authenticated %}
+                    <div class="col-md-6">
+                        <div class="widget popular-posts">
+                            {% editable siteconf.footer_blog_heading %}
+                            <h5 class="subpage-title">{{ siteconf.footer_blog_heading }}</h5>
+                            {% endeditable %}
+                            {% if recent_posts %}
+                            <ul class="recent-posts">
+                                {% for blog_post in recent_posts|slice:":3" %}
+                                <li>
+                                    {% if blog_post.featured_image %}
+                                    <img src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 128 128 %}" alt="Post Image">
+                                    {% endif %}
+                                    <h5>
+                                        <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
+                                        <small>{% trans "Posted" %} {{ blog_post.publish_date|date:"F j, Y" }}</small>
+                                    </h5>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p>We haven't posted anything yet, check back soon</p>
+                            {% endif %}
+                        </div>
+                        <!-- /.popular-posts -->
+                    </div>
+                    <!-- /.col-md-3 -->
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                    <div class="col-md-3">
+                    {% else %}
+                    <div class="col-md-6">
+                    {% endif %}
+                        <div class="widget tagcloud">
+                            {% editable siteconf.footer_menu_heading %}
+                            <h5 class="subpage-title">{{ siteconf.footer_menu_heading }}</h5>
+                            {% endeditable %}
+                            {% if request.user|can_view_help %}<div class="text-center"><span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual" title='Mark pages as "Popular pages (show in footer)" to have them show here.'></span></div>{% endif %}
+                            <ul class="tagcloud-list">
+                                {% page_menu "pages/menus/flat_footer.html" %}
+                            </ul>
+                        </div>
+                        <!-- /.tagcloud -->
+                    </div>
+                    <!-- /.col-md-3 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </footer>
+
+        <footer id="footer-2" class="footer" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 footer-info-wrapper">
+                        <span>
+                            {% page_menu "pages/menus/footer.html" %}
+                        </span>
+                    </div>
+                    <!-- /.footer-info-wrapper -->
+                    <div class="col-xs-12 col-sm-2 social-link-wrapper">
+                        <ul class="social-links">
+                            {% if request.user|can_view_help %}<li><span class="theme-help" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Edit these in Site -> Settings in the admin"></span></li>{% endif %}
+                            {% if settings.SOCIAL_LINK_FACEBOOK %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}"><i class="fa fa-facebook"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_GOOGLE %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_GOOGLE }}"><i class="fa fa-google-plus"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_TWITTER %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}"><i class="fa fa-twitter"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_PINTEREST %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_PINTEREST }}"><i class="fa fa-pinterest"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_LINKEDIN %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_LINKEDIN }}"><i class="fa fa-linkedin"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_DRIBBBLE %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DRIBBBLE }}"><i class="fa fa-dribbble"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <!-- /.social-link-wrapper -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </footer>
+        <!-- /#footer-2 -->
+        </footer>
+    </div>
+    <!-- /#main-wrapper -->
+
+    {% include "includes/footer_scripts.html" %}
+</body>
+</html>

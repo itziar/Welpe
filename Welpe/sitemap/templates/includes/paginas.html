@@ -1,0 +1,42 @@
+{% load pages_tags mezzanine_tags %}
+
+        <ul class="sitemap_son">
+        {% for actual in page_branch %}
+        {% if actual.in_sitemap %}
+            {% if actual.has_children %}
+                <li>
+                    <i class="glyphicon glyphicon-menu-right"></i><a href="{{ actual.get_absolute_url }}">
+                        {{ actual.title }}
+                    </a>
+                    {{ actual.basicModels.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.basicContent.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withleftmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withbothmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                </li>
+                <ul>
+                    {% page_menu actual %}
+                </ul>
+            {% else %}
+                <li>
+                    <i class="glyphicon glyphicon-menu-right"></i><a href="{{ actual.get_absolute_url }}">
+                        {{ actual.title }}
+                    </a>
+                    {{ actual.basicModels.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.basicContent.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withleftmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withbothmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                </li>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        </ul>

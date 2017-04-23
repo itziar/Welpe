@@ -1,0 +1,313 @@
+
+ul#categories {
+    list-style: outside none none;
+    margin: 0 0 200px;
+    padding: 0;
+}
+
+ul#categories > li {
+    border-top: 1px solid rgba(146, 186, 138, 0.3);
+    clear: both;
+    display: block;
+    float: none;
+    margin: 0 0 20px;
+    overflow: hidden;
+    padding: 0;
+}
+
+ul#categories > li:first-child {
+    border-top: medium none;
+}
+
+ul#categories > li > .info {
+    display: inline;
+    float: left;
+    margin: 0 20px 0 0;
+    width: 280px;
+}
+
+ul#categories > li > .info h3 {
+    padding: 7px 0 0;
+}
+
+ul#categories > li > .info p {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 15px;
+    line-height: 20px;
+}
+
+ul#categories > li > .content {
+    display: inline;
+    float: right;
+    padding: 20px 0 0;
+    width: 640px;
+}
+
+ul#categories > li > .content a.expander {
+    display: block;
+    opacity: 0.1;
+    text-align: center;
+    transition: all 0.3s ease 0s;
+}
+
+ul#categories > li > .content a.expander:hover {
+    opacity: 0.1;
+}
+
+ul#categories > li > .content a.expander.hidden {
+    height: 0;
+}
+
+ul.categorized_addons {
+    clear: both;
+    display: block;
+    float: none;
+    list-style: outside none none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    box-sizing: content-box;
+}
+
+ul.categorized_addons > li.categorized_addon {
+    cursor: pointer;
+    display: inline;
+    float: left;
+    height: 130px;
+    overflow: hidden;
+    transition: height 0.3s ease 0s;
+    width: 160px;
+}
+
+ul.categorized_addons > li.categorized_addon a.content {
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+    width: 160px;
+    margin: 5px;
+}
+
+ul.categorized_addons > li.categorized_addon a.content img {
+    display: block;
+    opacity: 1;
+    margin: 0 auto;
+    transition: all 0.4s ease 0s;
+}
+
+ul.categorized_addons > li.categorized_addon a.content h3 {
+    margin: 0;
+    opacity: 0.6;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    text-align: center;
+    transition: all 0.3s ease 0s;
+    font-size: 14px;
+}
+
+ul.categorized_addons > li.categorized_addon a.content h3 span.state {
+    opacity: 0.4;
+}
+
+ul.categorized_addons > li.categorized_addon a.content p.summary {
+    font-size: 12px;
+    margin: 0;
+    opacity: 0;
+    padding: 4px 10px 0;
+    text-align: center;
+    transition: all 0.4s ease 0s;
+}
+
+ul.categorized_addons > li.categorized_addon.active, ul.categorized_addons > li.categorized_addon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 0 rgba(0, 0, 0, 0.1) inset;
+    transition: all 0.2s ease 0.2s;
+}
+
+ul.categorized_addons > li.categorized_addon.active .content, ul.categorized_addons > li.categorized_addon:hover .content {
+    margin-top: -60px;
+    transition: all 0.3s ease 0.2s;
+}
+
+ul.categorized_addons > li.categorized_addon.active .content img, ul.categorized_addons > li.categorized_addon:hover .content img {
+    opacity: 0;
+    transition: all 0.3s ease 0.2s;
+}
+
+ul.categorized_addons > li.categorized_addon.active .content h3, ul.categorized_addons > li.categorized_addon:hover .content h3 {
+    opacity: 1;
+    transition: all 0.3s ease 0s;
+}
+
+ul.categorized_addons > li.categorized_addon.active .content p.summary, ul.categorized_addons > li.categorized_addon:hover .content p.summary {
+    opacity: 0.6;
+    transition: all 0.3s ease 0.2s;
+}
+
+ul.categorized_addons > li.categorized_addon.hidden {
+    border: medium none;
+    height: 0;
+}
+
+ul.categorized_addons > li {
+    margin: 0;
+    padding: 0;
+}
+
+#addon-features-list > li {
+    border: 0;
+}
+
+#addon-logo {
+    width: 64px;
+    height: 64px;
+}
+
+.usage {
+    overflow: auto;
+    margin-bottom: 10px;
+}
+
+.code-box {
+    border-radius: 5px;
+    background: #F0F0F0;
+    padding: 15px;
+    font-family: "Inconsolata";
+}
+
+.addon-info-block {
+    padding-bottom: 30px;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+div.addon_header > div > div {
+    float: left;
+    margin-left: 5px;
+}
+
+div.addon_header > div > div > h2 {
+    margin-top: 0px;
+}
+
+div.addon_header > div > div > span.description {
+    font-style: italic;
+}
+
+div.addon_header {
+    margin-top: 20px;
+}
+
+div.addon_header > div.subscription-button {
+    float:right;
+}
+
+div.modal-body > div {
+    height: 34px;
+    margin-bottom: 2px;
+}
+
+/* use bootstrap with less and this style too
+ @media (max-width: @screen-xs-max) { ... }
+ */
+@media (max-width: 767px) {
+    div.modal-body > div {
+        height: 68px;
+        margin-bottom: 2px;
+    }
+}
+
+div.modal-body > div > label {
+    padding-top: 7px;
+}
+
+div.modal-footer > button {
+    width: 75px;
+}
+
+a.navbar-btn > i.signinstyle {
+    font-size: none;
+    font: normal normal normal 18px/1 FontAwesome;
+}
+
+a.navbar-btn {
+    border: 1px solid #777;
+    background-color: transparent;
+    color: #777;
+    font-size: 13px;
+}
+
+a.navbar-btn:hover {
+    border: 1px solid #333;
+}
+
+ul.navbar-right > li.dropdown > a.dropdown-toggle > img {
+    width: 28px;
+    height: 28px;
+    margin-top: -11px;
+}
+
+div.gray-section {
+    border-top: 1px solid #AAAAAA;
+    background-color: #F0F0F0;
+    box-shadow: 0px 3px 3px #999;
+}
+
+div.top-position {
+    margin-top: -20px;
+}
+
+div.container-fluid > div.row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: -5px;
+}
+
+div.container-fluid > div.row > div.col-xs-8 > h1{
+    font-family: "Poiret One";
+    font-weight: bold;
+    color: #09C;
+    text-shadow: 1px 2px 4px #DADADA;
+}
+
+div.container-fluid > div.row > div.col-md-8 > h1{
+    font-family: "Poiret One";
+    font-weight: bold;
+    color: #09C;
+    text-shadow: 1px 2px 4px #DADADA;
+}
+
+div.container-fluid > div.row > div.col-xs-8 > a.btn-default {
+    border: 1px solid #AAA;
+    background-color: transparent;
+}
+
+div.container-fluid > div.row > div.col-xs-8 > div > a.btn-default:hover {
+    border: 1px solid #333;
+    background-color: #EEE;
+}
+
+div.container-fluid > div.row > div.col-xs-8 > div > a.btn-default > i.signinstyle {
+    font-size: none;
+    font: normal normal normal 26px/1 FontAwesome;
+}
+
+div.container-fluid > div.row > div.col-xs-8 > div.text-center > img.img-responsive {
+    display:block;
+    margin:auto;
+}
+
+div.footer {
+    background-color: #F9F9F9;
+    border-top: 1px solid #EAEAEA;
+}
+div.footer > div {
+    padding-top: 10px;
+}
+
+.revoke-btn {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}

@@ -1,0 +1,32 @@
+.img-center{
+    display: block;
+	margin: 0px auto;
+	text-align: center;
+}
+#img-profile{
+	padding: 10px;
+}
+.container #img-profile{
+	margin-top: 16px;
+}
+.margin-img{
+	margin-right: 20px;
+}
+.text-center{
+	margin-top: 10px;
+}
+
+@media(min-width: 767px){ /*Desktop*/
+	.container #img-profile{
+		margin-bottom: 16px;
+	}
+    .margin-well{
+        margin-top: 16px;
+    }
+}
+
+@media(max-width: 767px){ /*Mobile and Tablet*/
+    .margin-well{
+        margin-top: 10px;
+    }
+}

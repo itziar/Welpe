@@ -1,0 +1,37 @@
+{% load mezzanine_tags i18n %}
+{% load actividadTags %}
+{% load profileTags %}
+
+
+
+<section class="miniactividad">
+    {% if listado_miniactividades.count > 0 %}
+        <div class="row">
+            {% for elemento in listado_miniactividades %}
+                <div class="col-md-6">
+                    <article id="card_{{ elemento.miniactividad.id }}"
+                             class="elemento panel panel-default">
+                        <div class="panel-body">
+                            <h3 class="elemento-title">
+                                <a href="#" data-toggle="modal"
+                                   data-target="#show_elemento_{{ elemento.miniactividad.id }}">
+                                    {{ elemento.miniactividad.titulo }}
+                                </a>
+                            </h3>
+                            {% for author in elemento.autores %}
+                                <div class="author">
+                                    <span class="author-name">{{ author.name }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% include "includes/miniactividad.html" %}
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        Todavía no hay miniactividades propuestas
+    {% endif %}
+
+</section>
+

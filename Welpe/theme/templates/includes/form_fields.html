@@ -1,0 +1,39 @@
+{% load mezzanine_tags i18n %}
+
+{% with form_for_fields.non_field_errors as non_field_errors %}
+{% if non_field_errors or form_for_fields.errors %}
+<div class="form-errors">
+    {% for error in non_field_errors %}
+    <div class="alert alert-danger non-field-error">{{ error }}</div>
+    {% empty %}
+    <div class="alert alert-danger field-error">{% trans "Please correct the errors below." %}</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+{% nevercache %}
+<input type="hidden" name="referrer" value="{{ request.META.HTTP_REFERER }}">
+{% csrf_token %}
+{% endnevercache %}
+
+{% for field in form_for_fields %}
+{% if field.is_hidden %}
+{{ field }}
+{% else %}
+<div class="form-group input_{{ field.id_for_label }} {{ field.field.type }}
+{% if field.errors %} has-error{% endif %}">
+    <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+    {{ field }}
+    {% if field.errors %}
+    <p class="help-block">
+        {% for e in field.errors %}
+        {% if not forloop.first %} / {% endif %}{{ e }}
+        {% endfor %}
+    </p>
+    {% elif field.help_text %}
+    <p class="help-block">{{ field.help_text }}</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endfor %}

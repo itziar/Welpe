@@ -1,0 +1,25 @@
+{% extends "error.html" %}
+
+                {% block servererror %}
+                    <h1>Internal Server Error: <small><font face="Tahoma" color="red">Error 500</font></small></h1>
+                    <br />
+                    <p>
+                        Something wrong has happened!
+                    </p>
+                    <p>
+                        Make sure that the Web site address displayed in the address bar of your browser is spelled and formatted correctly.
+                    </p>
+                    <p>
+                        If you reached this page by clicking a link, <a href="/public/contact">contact the webmaster</a> in order to alert us that the link is incorrectly formatted.
+                    </p>
+                    <p>
+                        You can contact your webmaster anyway by clicking <a href="/public/contact">here</a> or <a href="javascript:document.location.reload();">try again</a> (reloading the page).
+                    </p>
+                    <p>
+                        Use your browser <b>Back</b> button to navigate to the page you have previously come from or click <a href="javascript:history.go(-1)">here</a>.
+                    </p>
+                    <p>
+                      <b>What about forgetting that this ever happened :) , you could just press this neat little button to go to our Home page:</b>
+                      <a href="/" class="btn btn-large btn-info"><span class="glyphicon glyphicon-home"></span> Take Me Home</a>
+                    </p>
+                {% endblock %}

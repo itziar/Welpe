@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n staticfiles adept_tags blog_tags staticfiles %}
+{% load accounts_tags %}
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <title>{% block meta_title %}{{ page.title }}{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    {% ifinstalled mezzanine.blog %}
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url 'blog_post_feed' 'rss' %}">
+        <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url 'blog_post_feed' 'atom' %}">
+    {% endifinstalled %}
+    {% compress css %}
+        <!-- Bootstrap Core CSS -->
+        <link href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <!-- Plugins CSS -->
+        <link href="{% static 'assets/UItoTop/css/ui.totop.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/prettyPhoto/css/prettyPhoto.css' %}" rel="stylesheet">
+        <!-- REVOLUTION BANNER CSS SETTINGS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/rs-plugin/css/settings.css' %}" media="screen"/>
+        <!-- Custom Stylesheet For This Template -->
+        <link href="{% static 'assets/css/stylesheet.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/css/skins.css' %}" rel="stylesheet">
+        <link href="{% static 'css/mezzatheme.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/css/default.css' %}" rel="stylesheet">
+        <!-- Font Awesome  -->
+        <link href="{% static 'assets/font-awesome-4.0.3/css/font-awesome.css' %}" rel="stylesheet">
+        <link href="{% static 'css/highlight.css' %}" rel="stylesheet">
+        <link href="{% static 'css/tokenmanager.css' %}" rel="stylesheet">
+        <link href="{% static 'css/devportal.css' %}" rel="stylesheet">
+        <link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/sweetalert.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/css/blue.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css">
+        {% block extra_css %}{% endblock %}
+    {% endcompress %}
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic|Montserrat:400,700'
+          rel='stylesheet' type='text/css'>
+    <script>
+        var item_template = '<li><a href="{% templatetag openvariable %}image_b{% templatetag closevariable %}"><img src="{% templatetag openvariable %}image_s{% templatetag closevariable %}" alt="{% templatetag openvariable %}title{% templatetag closevariable %}" /></a></li>'
+    </script>
+    {% compress js %}
+        <script src="{% static 'assets/js/jquery-2.0.3.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
+        <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
+        <script src="{% static 'assets/prettyPhoto/js/jquery.prettyPhoto.js' %}"></script>
+        <script src="{% static 'assets/jflickrfeed/jflickrfeed.min.js' %}"></script>
+        <script src="{% static 'assets/UItoTop/js/easing.js' %}"></script>
+        <script src="{% static 'assets/UItoTop/js/jquery.ui.totop.min.js' %}"></script>
+        <script src="{% static 'assets/FitVids.js/jquery.fitvids.js' %}"></script>
+        <script src="{% static 'assets/js/run_prettify.js' %}"></script>
+        <script src="{% static 'assets/js/cookies.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'assets/js/dataTables.bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/js/sweetalert.min.js' %}"></script>
+        <script src="{% static 'assets/js/icheck.min.js' %}"></script>
+        <script src="{% static 'assets/js/platform_social_buttons.js' %}"></script>
+        <script type="text/javascript">yam.platform.yammerShare();</script>
+        <script src="{% static 'assets/js/jQuery.htmlClean.js' %}"></script>
+        <script src="{% static 'assets/js/extraScripts.js' %}"></script>
+        <script type="text/javascript">
+            $(document).ready(function ($) {
+                var $dropdowns = $('li.dropdown'); // Specifying the element is faster for older browsers
+                /**
+                 * Mouse events
+                 *
+                 * @description Mimic hoverIntent plugin by waiting for the mouse to 'settle' within the target before triggering
+                 */
+                $dropdowns
+                    .on('mouseover', function () // Mouseenter (used with .hover()) does not trigger when user enters from outside document window
+                    {
+                        var $this = $(this);
+                        if ($this.prop('hoverTimeout')) {
+                            $this.prop('hoverTimeout', clearTimeout($this.prop('hoverTimeout')));
+                        }
+                        $this.prop('hoverIntent', setTimeout(function () {
+                            $this.addClass('open');
+                        }, 250));
+                    })
+                    .on('mouseleave', function () {
+                        var $this = $(this);
+                        if ($this.prop('hoverIntent')) {
+                            $this.prop('hoverIntent', clearTimeout($this.prop('hoverIntent')));
+                        }
+                        $this.prop('hoverTimeout', setTimeout(function () {
+                            $this.removeClass('open');
+                        }, 250));
+                    });
+                /**
+                 * Touch events
+                 *
+                 * @description Support click to open if we're dealing with a touchscreen
+                 */
+                if ('ontouchstart' in document.documentElement) {
+                    $dropdowns.each(function () {
+                        var $this = $(this);
+                        this.addEventListener('touchstart', function (e) {
+                            if (e.touches.length === 1) {
+                                // Prevent touch events within dropdown bubbling down to document
+                                e.stopPropagation();
+                                // Toggle hover
+                                if (!$this.hasClass('open')) {
+                                    // Prevent link on first touch
+                                    if (e.target === this || e.target.parentNode === this) {
+                                        e.preventDefault();
+                                    }
+                                    // Hide other open dropdowns
+                                    $dropdowns.removeClass('open');
+                                    $this.addClass('open');
+
+                                    // Hide dropdown on touch outside
+                                    document.addEventListener('touchstart', closeDropdown = function (e) {
+                                        e.stopPropagation();
+
+                                        $this.removeClass('open');
+                                        document.removeEventListener('touchstart', closeDropdown);
+                                    });
+                                }
+                            }
+                        }, false);
+                    });
+                }
+            });
+            $(document).ready(function () {
+                // PrettyPhoto
+                $("a[rel^='prettyPhoto']").prettyPhoto({
+                    theme: 'light_square',
+                    social_tools: false
+                });
+                // FitVids
+                $(".responsive-video-wrapper").fitVids();
+                {% if settings.FLICKR_ID %}
+                    // jflickrfeed
+                    $('.flickr-photos-list').jflickrfeed({
+                        limit: 9,
+                        qstrings: {
+                            id: '{{ settings.FLICKR_ID }}'
+                        },
+                        itemTemplate: item_template
+                    });
+                {% endif %}
+                // jQuery UItoTop
+                $().UItoTop({easingType: 'easeOutQuart'});
+                // Skin Chooser
+                $(".color-skin").click(function () {
+                    var cls = this.id;
+                    $(".color-skin").removeClass("active");
+                    $(this).addClass("active");
+                    $("#main-wrapper").removeClass();
+                    $("#main-wrapper").addClass(cls);
+                });
+            });
+        </script>
+    {% endcompress %}
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="{% static 'assets/js/html5shiv.js' %}"></script>
+        <script src="{% static 'assets/js/respond.min.js' %}"></script>
+        <![endif]-->
+    {% block extra_head %}{% endblock %}
+</head>
+<body id="{% block body_id %}body{% endblock %}">
+    <!--COOKIES-->
+    <div class="msg-cookie" id="msg-cookie" style="display: none;">
+        <div class="wrap">
+            <p>Utilizamos cookies propias y de terceros para mejorar su experiencia y nuestros servicios, analizando la
+                navegación en nuestro Sitio Web. Si continúa navegando, usted está aceptando su uso. Puede obtener más
+                información en nuestra <a class="a2" href="/politica-cookies/"> Política de Cookies.</a>.</p>
+            <a class="accept-button">Aceptar</a>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+{% blog_recent_posts 6 as recent_posts %}
+{% get_site_conf as siteconf %}
+<div id="main-wrapper" class="color-skin-{{ siteconf.color_scheme }}">
+    <header id="header-1" class="header">
+        <div class="container" style="margin: 0px 2%;">
+            <div class="row">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/"> <img src="/static/images/logo.png" style="width: 38%; margin-top: -26px;"></a>
+                </div>
+                <!-- /.header-info-wrapper -->
+                <div class="col-xs-12 col-sm-8 social-link-wrapper text-center">
+                    <ul class="list-inline">
+                        {% if request.user.is_authenticated %}
+                            <li>Hola <a style="color: white;"
+                                        href=/profile/{{ request.user.id }}>{{ request.user.username }}!</a> <i
+                                    data-icon="user"></i></li>
+                            <li>
+                                <a href="/accounts/logout">
+                                    <button type="button" class="btn btn-default btn-xs">
+                                        Logout
+                                        <div class="glyphicon glyphicon-remove" aria-hidden="true"></div>
+                                    </button>
+                                </a>
+                            </li>
+                        {% else %}
+                            {% include "accounts/includes/user_panel.html" %}
+                        {% endif %}
+                        <!--EL BLOQUE DE BUSQUEDA SIEMPRE ESTARÁ ACCESIBLE-->
+                        {% block home_search %}
+                            <li class="search pull-right">
+                                <form action="{% url 'search' %}" class="search-form">
+                                    <input class="form-control" placeholder="{% trans 'Search' %}" type="text" name="q"
+                                           value="{{ request.REQUEST.q }}">
+                                </form>
+                            </li>
+                        {% endblock %}
+                        {% if request.user|can_view_help %}
+                            <li><span class="theme-help" data-toggle="tooltip" data-placement="left"
+                                      data-trigger="manual" title="Edit these in Site -> Settings in the admin"></span>
+                            </li>{% endif %}
+                    </ul>
+                    <!-- /.social-links -->
+                </div>
+                <!-- /.social-link-wrapper -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </header>
+    <!-- /.header-1 -->
+    <header id="header-2" class="header">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    {% page_menu "pages/menus/dropdown.html" %}
+                    <!-- /.nav -->
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        <!-- /.navbar -->
+    </header>
+    <!-- /#header-2 -->
+
+    {% block all_content %}
+        <section id="page-title-wrapper" class="section page-title-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 page-title">
+                        {% if is_profile %}
+                            <h4>Perfil de {% if profile %}
+                               {{ profile.usuario.first_name }} {{ profile.usuario.last_name }}
+                                {% else %}{{ user.first_name }} {{ user.last_name }}{% endif %}</h4>
+                        {% else %}
+                            {% block button_add %}{% endblock %}
+                            <h4>{{ page.title }}</h4>
+                        {% endif %}
+                    </div>
+                    <!-- /.page-title -->
+                    <div class="col-xs-6 hidden-xs breadcrumb-wrapper">
+                        {% if not is_profile %}
+                            <ol class="breadcrumb pull-right">
+                                {% page_menu "pages/menus/breadcrumb.html" %}
+                            </ol>
+                        {% endif %}
+                    </div>
+                    <!-- /.breadcrumb-wrapper -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </section>
+        <!-- /#page-title-wrapper -->
+        {% block before_main %}{% endblock %}
+        <section class="section {% block main_section_class %}{% endblock %}">
+            <div class="container">
+                {% block main_sidebar_wrapper %}
+                    {% block main %}{% endblock %}
+                {% endblock %}
+            </div>
+        </section>
+    {% endblock %}
+
+    <footer id="footer-2" class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-10 footer-info-wrapper">
+                        <span>
+                            {% page_menu "pages/menus/footer.html" %}
+                        </span>
+                </div>
+                <!-- /.footer-info-wrapper -->
+                <div class="col-xs-12 col-sm-2 social-link-wrapper">
+                    <ul class="social-links">
+                        {% if request.user|can_view_help %}
+                            <li><span class="theme-help" data-toggle="tooltip" data-placement="left"
+                                      data-trigger="manual" title="Edit these in Site -> Settings in the admin"></span>
+                            </li>{% endif %}
+                        {% if settings.SOCIAL_LINK_FACEBOOK %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}"><i
+                                    class="fa fa-facebook"></i></a></li>
+                        {% endif %}
+                        {% if settings.SOCIAL_LINK_GOOGLE %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_GOOGLE }}"><i
+                                    class="fa fa-google-plus"></i></a></li>
+                        {% endif %}
+                        {% if settings.SOCIAL_LINK_TWITTER %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}"><i
+                                    class="fa fa-twitter"></i></a></li>
+                        {% endif %}
+                        {% if settings.SOCIAL_LINK_PINTEREST %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_PINTEREST }}"><i
+                                    class="fa fa-pinterest"></i></a></li>
+                        {% endif %}
+                        {% if settings.SOCIAL_LINK_LINKEDIN %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_LINKEDIN }}"><i
+                                    class="fa fa-linkedin"></i></a></li>
+                        {% endif %}
+                        {% if settings.SOCIAL_LINK_DRIBBBLE %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DRIBBBLE }}"><i
+                                    class="fa fa-dribbble"></i></a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- /.social-link-wrapper -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </footer>
+    <!-- /#footer-2 -->
+</div>
+<!-- /#main-wrapper -->
+
+
+{% block extra_js %}{% endblock %}
+{% include "includes/footer_scripts.html" %}
+<script type='text/javascript'>
+    $("pre").addClass('prettyprint');
+</script>
+    <script type="text/javascript" src="/static/filebrowser/js/AddFileBrowser.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+    {% block evento %}{% endblock %}
+    {% block call %}{% endblock %}
+    {% block registro %}{% endblock %}
+
+</script>
+
+{% if settings.GOOGLE_ANALYTICS_ID %}
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', '{{ settings.GOOGLE_ANALYTICS_ID }}', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+{% endif %}
+
+</body>
+</html>

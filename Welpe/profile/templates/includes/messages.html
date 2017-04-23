@@ -1,0 +1,60 @@
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load infoTags %}
+{% load profileTags %}
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#accordion_mensajes" ).accordion();
+  } );
+  </script>
+
+<div id="accordion_mensajes">
+    <h3>Mensajes Recibidos</h3>
+    <div>
+        {% if mensajes.recibidos %}
+            {% for elemento in  mensajes.recibidos %}
+               <div class="caja">
+                     <div class="title">
+                        De: {{ elemento.remitente}}
+                          <span>
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            {{ elemento.date |date:"d/M/Y"|lower }}
+                        </span>
+                    </div>
+                    <div class="body">
+                        <p>{{elemento.body}}</p>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Mensajes que mostrar</h5>
+        {% endif %}
+    </div>
+    <h3>Mensajes Enviados</h3>
+    <div>
+        {% if mensajes.enviados %}
+            {% for elemento in  mensajes.enviados %}
+               <div class="caja">
+                     <div class="title">
+                        A: {{ elemento.destinatario }}
+                          <span>
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            {{ elemento.date |date:"d/M/Y"|lower }}
+                        </span>
+                    </div>
+                    <div class="body">
+                        <p>{{elemento.body}}</p>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h5>No hay Mensajes que mostrar</h5>
+        {% endif %}
+    </div>
+</div>

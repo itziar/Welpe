@@ -1,0 +1,25 @@
+.sitemap_a{
+	font-size: 1.2em;
+	font-weight: bold;
+
+}
+.sitemap_li {
+	list-style:none;
+	margin-top: 30px; 
+}
+
+.sitemap{
+	color: #23527C;
+}
+.sitemap_son li{
+	list-style:none;
+	font-size: 1em;
+}
+
+.sitemap_li p,.sitemap_son p{
+	color:black;
+}
+
+ul.sitemap_son {
+	padding-bottom: 20px;
+}

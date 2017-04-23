@@ -1,0 +1,42 @@
+{% load mezzanine_tags %}
+
+        {% if blog_post.featured_video %}
+        <div class="responsive-video-wrapper">
+            {{ blog_post.featured_video|safe }}
+        </div>
+        {% elif blog_post.featured_image and not blog_post.images.all %}
+        <div class="post-thumb">
+            <img src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 690 0 %}" class="img-responsive" alt="Responsive image">
+        </div>
+        {% elif blog_post.images.all %}
+        <div class="post-slider">
+            <div id="carousel-{{ blog_post.id }}" class="carousel slide">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel-{{ blog_post.id }}" data-slide-to="0" class="active"></li>
+                    {% for image in blog_post.images.all %}
+                    <li data-target="#carousel-{{ blog_post.id }}" data-slide-to="{{ forloop.counter }}"></li>
+                    {% endfor %}
+                </ol>
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 690 0 %}" class="img-responsive" alt="{{ image.alt_text }}">
+                    </div>
+                    {% for image in blog_post.images.all %}
+                    <div class="item">
+                        <img src="{{ MEDIA_URL }}{% thumbnail image.file 690 0 %}" class="img-responsive" alt="{{ image.alt_text }}">
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-{{ blog_post.id }}" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-{{ blog_post.id }}" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+        </div>
+        <!-- /.post-slider -->
+        {% endif %}

@@ -1,0 +1,44 @@
+{% load mezzanine_tags i18n %}
+{% load actividadTags %}
+{% get_name datos.usuario as prettyname %}
+{% get_name request.user as newprettyname%}
+{% get_mail datos.usuario as prettymail %}
+{% get_mail request.user as newprettymail %}
+
+<form action="registrate/" method="post" class="form-horizontal"
+        onsubmit="javascript: return registration('phone{{tipo}}_{{datos.id}}','passport{{tipo}}_{{datos.id}}')">
+<div id="{{tipo}}_{{datos.id}}" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Registration</h4>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <legend>Comprueba que los datos son correctos</legend>
+                    <div class="form-group">
+                        {% csrf_token %}
+                        <label for="nombre_{{tipo}}_{{datos.id}}" class="col-lg-2 control-label">Nombre:</label>
+                        <div class="col-lg-10">
+                            <input id="nombre_{{tipo}}_{{datos.id}}" class="form-control" disabled="" placeholder="{% trans 'nombre y apellidos' %}"
+                                   type="text" name="nombre" value="{%if prettyname%}{{ prettyname}}{% else %}{{newprettyname}}{% endif %}">
+                        </div>
+                        <label for="email_{{tipo}}_{{datos.id}}" class="col-lg-2 control-label">Email:</label>
+                        <div class="col-lg-10">
+                            <input id="email_{{tipo}}_{{datos.id}}" class="form-control" disabled="" placeholder="{% trans 'email' %}" type="email"
+                                   name="email" value="{% if prettymail %}{{ prettymail}}{% else %}{{newprettymail}}{% endif %}">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <input readonly="readonly" type="hidden" name="id_usuario" value="{{datos.usuario.id}}">
+                <input type="submit" class="btn btn-success pull-right" value="{% trans 'Save' %}">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+

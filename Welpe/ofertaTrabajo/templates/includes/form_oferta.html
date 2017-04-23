@@ -1,0 +1,102 @@
+{% load mezzanine_tags i18n %}
+
+<form action="/ofertas/add/" method="post" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+    <div id="oferta_{{ oferta.id }}{{ elemento.oferta.id}}" class="modal fade" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    {% if elemento.oferta %}
+                        <h4 class="modal-title" style="color:black">Editar la oferta</h4>
+                    {% else %}
+                        <h4 class="modal-title" style="color:black">Añadir la oferta</h4>
+                    {% endif %}
+                </div>
+                <div class="modal-body" style="margin-right:15px;">
+                    <fieldset>
+                        <legend>Por favor, completa el formulario</legend>
+                        <span class="form-requirements">Los campos azules son obligatorios</span>
+                        <div class="form-group">
+                            <label for="title_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Título:</label>
+                            <div class="col-lg-12">
+                                <input id="title_{{ oferta.id  }}{{ elemento.oferta.id }}" class="required-element form-control" placeholder="{% trans 'Título' %}"
+                                   type="text" name="title" value="{{ oferta.title }}{{ elemento.oferta.title }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="url_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">URL de la empresa:</label>
+                            <div class="col-lg-12">
+                                <input id="url_{{ oferta.id }}{{ elemento.oferta.id }}" class="form-control" placeholder="{% trans 'url' %}" type="url"
+                                       name="url" value="{{ oferta.url }}{{ elemento.oferta.url }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="descripcion" for="descripcion_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Descripcion de la oferta</label>
+                            <div class="col-lg-12">
+                                <textarea name="descripcion" class="form-control mce_descripcion_{{ oferta.id }}{{ elemento.oferta.id }}" rows="3" id="descripcion_{{ oferta.id }}{{ elemento.oferta.id }}" value="{{ oferta.descripcion}}{{ elemento.oferta.descripcion}}">{{ oferta.descripcion}}{{ elemento.oferta.descripcion}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="como_aplicar" for="como_aplicar_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Cómo aplicar</label>
+                            <div class="col-lg-12">
+                                    <textarea name="como_aplicar" class="form-control mce_como_aplicar_{{ oferta.id }}{{ elemento.oferta.id }}" rows="3" id="como_aplicar_{{ oferta.id }}{{ elemento.oferta.id }}" value="{{ oferta.como_aplicar}}{{ elemento.oferta.como_aplicar}}">{{ elemento.oferta.como_aplicar}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <label for="donde_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Donde:</label>
+                                <div class="col-lg-12">
+                                    <input id="donde_{{ oferta.id }}{{ elemento.oferta.id }}" class="form-control" placeholder="{% trans 'calle, municipio, ...' %}" type="text" name="donde"
+                                       value="{{ oferta.donde }}{{ elemento.oferta.donde }}">
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cuando_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Cuando</label>
+                            <div class="col-lg-12">
+                                <input id="cuando_{{ oferta.id }}{{ elemento.oferta.id }}" class="form-control" placeholder="{% trans 'verano, ...' %}" type="text" name="cuando"
+                                   value="{{ oferta.cuando }}{{ elemento.oferta.cuando }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="salario_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Salario o compensación económica</label>
+                            <div class="col-lg-12">
+                                <input id="oferta_{{ oferta.id }}{{ elemento.oferta.id }}" class="form-control" placeholder="{% trans 'salario o compensación económica' %}" type="text" name="salario"
+                                        value="{{ oferta.salario }}{{ elemento.oferta.salario }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo_{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Tipo de contrato</label>
+                            <div class="col-lg-12">
+                                <select class="form-control" id="tipo_contrato" name="tipo_contrato">
+                                    <option {% if elemento.oferta.tipo_contrato == 0 or oferta.tipo_contrato == 0 %}selected="Beca" %} {% endif %}>Prácticas</option>
+                                    <option {% if elemento.oferta.tipo_contrato == 1 or oferta.tipo_contrato == 1 %}selected="Indefinido" {% endif %}>Indefinido</option>
+                                    <option {% if elemento.oferta.tipo_contrato == 2 or oferta.tipo_contrato == 2 %}selected="Otros" {% endif %}>Otros</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="archivo" for="id_fichero_oferta{{ oferta.id }}{{ elemento.oferta.id }}" class="control-label">Fichero adjunto:</label>
+                            <div class="col-lg-12">
+                               <input id="uploadOfertaFile_{{ oferta.id }}{{ elemento.oferta.id }}" {% if elemento.oferta.attached_file %}placeholder="elemento.oferta.attached_file|getnames"{% else %}placeholder="Adjuntar fichero"{% endif %} disabled="disabled" />
+                                <div class="fileUpload btn-xs btn btn-primary">
+                                    <span>Subir Fichero</span>
+                                    <input type="file" class="upload" id="id_fichero_oferta{{ oferta.id }}{{ elemento.oferta.id }}" name="archivo" onchange="selectFile('id_fichero_oferta{{ oferta.id }}{{ elemento.oferta.id }}','uploadOfertaFile_{{ oferta.id }}{{ elemento.oferta.id }}')">
+                                </div>
+                                {% if elemento.oferta.attached_file %}
+                                    <p><strong>*NOTA:</strong> Si seleccionas un nuevo fichero, ¡será reemplazado si ya había alguno!</p>
+                                    <span class="control-label">
+                                            <input type="checkbox" name="delete_file"> Borrar <a href="{{ oferta.archivo.url}}{{ elemento.oferta.archivo.url}}" target="_blank">elemento.oferta.attached_file|getnames</a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="pk" value="{{ oferta.pk }}{{ elemento.oferta.pk }}">
+                    <input type="submit" class="btn btn-success pull-right" value="{% trans 'Save' %}">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

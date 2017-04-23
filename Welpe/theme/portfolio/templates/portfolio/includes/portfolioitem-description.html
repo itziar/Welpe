@@ -1,0 +1,7 @@
+{% load mezzanine_tags adept_tags %}
+
+            {% editable portfolioitem.layout portfolioitem.description_heading portfolioitem.content %}
+            {% if request.user|can_view_help %}<span class="theme-help" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="The edit tag that shows up here will allows editing this content as well as the page layout."></span>{% endif %}
+            <h5 class="subpage-title">{{ portfolioitem.description_heading }}</h5>
+            {{ portfolioitem.content|richtext_filters|safe }}
+            {% endeditable %}

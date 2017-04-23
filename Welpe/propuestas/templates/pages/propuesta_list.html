@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load propuestasTags %}
+
+
+{% block extra_css %}
+    <link href="{% static 'css/propuestas.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+
+{% block meta_title %}{% trans "Propuestas de Actividades" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+    <li class="active">{% trans "Home" %}</li>
+{% endblock %}
+
+
+{% block button_add %}
+    {% if request.user.is_authenticated %}
+        <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+           data-target="#propuesta_">{% trans "Nueva Propuesta" %}</a>
+        {% include "includes/form_propuesta_new.html" %}
+    {% endif %}
+{% endblock %}
+
+
+{% block main %}
+    <div class="fluid-container">
+        <div class="row">
+            <div class="col-md-12 middle blockmain">
+                {% if lista %}
+                    <div class="caja_filtro">{% include "includes/filtro_propuesta.html" %}</div>
+                    {% for elemento in lista %}
+                        <div class="caja_propuesta">
+                            {% if request.user.is_authenticated %}
+                                {% has_permissions_propuesta elemento.propuesta request.user as permissions %}
+                                {% if permissions %}
+                                    <div class="geekly_buttons">
+                                        <a class="btn-primary btn btn-sm pull-right" href="#" data-toggle="modal"
+                                           data-target="#propuesta_{{ elemento.propuesta.id }}">{% trans "Edit" %}</a>
+                                        {% include "includes/form_propuesta.html" %}
+                                        <button class="btn btn-sm btn-danger pull-right" onclick="swal({
+                                                title: 'Estás seguro',
+                                                text: '{{ elemento.propuesta.title }} será eliminado!',
+                                                type: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonClass: 'btn-danger',
+                                                confirmButtonText: 'Sí, borrar la propuesta!',
+                                                cancelButtonText: 'No, no la borres aún!',
+                                                closeOnConfirm: false,
+                                                closeOnCancel: false
+                                                },
+                                                function(isConfirm){
+                                                if (isConfirm) {
+                                                $('.confirm-propuesta-{{ elemento.propuesta.pk }}').click();
+                                                swal('Borrado!', '{{ elemento.propuesta.title }} se ha borrado.', 'con éxito');
+                                                } else {
+                                                swal('Espera...', 'No podemos borrar {{ elemento.propuesta.title }} :)', 'error');
+                                                }
+                                                });">
+                                            {% trans 'Delete' %}
+                                        </button>
+                                        <form action="delete_propuesta" method="post" name="delete">
+                                            {% csrf_token %}
+                                            <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                                   value="{{ elemento.propuesta.pk }}">
+                                            <input type="submit" class="confirm-propuesta-{{ elemento.propuesta.pk }}"
+                                                   style="display:none;">
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                                <div class="propuesta_title col-sm-6">
+                                    <span class="estado_propuesta btn-info"> {% if elemento.propuesta.estado_propuesta == 0 %}
+                                        Enviado{% elif elemento.propuesta.estado_propuesta == 1 %}
+                                        Aceptado{% elif elemento.propuesta.estado_propuesta == 2 %}
+                                        Rechazado{% endif %}</span>
+                                    <a href="{{ elemento.propuesta.get_absolute_url }}">{{ elemento.propuesta.title }}</a>
+                                </div>
+                            <div class="actions">
+                                {% if request.user.is_authenticated %}
+                                    <form action="{{ elemento.propuesta.get_absolute_url }}/like" method="post"
+                                      id="likePropuesta_form_{{ elemento.propuesta.id }}">
+                                    {% csrf_token %}
+                                    <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                           value="{{ elemento.propuesta.pk }}">
+                                        <span>
+                                            <img class="puntero {% if elemento.likePropuesta %}corazon{% else %}corazon_gray{% endif %}"
+                                                 id="submit_likePropuesta_{{ elemento.propuesta.id }}"
+                                                 src="/static/images/corazon.png"
+                                                 onclick="manage_likePropuesta('{{ elemento.propuesta.id }}', '{{ elemento.propuesta.slug }}');"/>
+                                            <span
+                                                    id="propuesta_like_{{ elemento.propuesta.id }}">{{ elemento.like }}</span>
+                                            <span><img src="/static/images/comments.png" style="width: 4%"/>{{ elemento.comment }}</span>
+                                        </span>
+                                    </form>
+                                {% else %}
+                                    <span>
+                                        <img class="{% if elemento.likePropuesta %}corazon{% else %}corazon_gray{% endif %}"
+                                             id="submit_likePropuesta_{{ elemento.info.id }}"
+                                             src="/static/images/corazon.png"/> <span
+                                            id="propuesta_like_{{ elemento.propuesta.id }}">{{ elemento.like }}</span>
+                                        <span><img src="/static/images/comments.png" style="width: 4%"/>{{ elemento.comment }}</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if elemento.propuesta.descripcion %}
+                                    <div class="description">
+                                        {{ elemento.propuesta.descripcion | safe| truncatewords_html:140 }}
+                                    </div>
+                                {% endif %}
+                                <p>
+                                    <a href="{{ elemento.propuesta.get_absolute_url }}">{% trans "read more" %}</a>
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                    {% pagination_for lista %}
+                {% else %}
+                    <h1> Ahora mismo, no hay ninguna propuesta disponible. </h1>
+                    {% if permissions %} Click en el botón nueva propuesta para ser el primero.
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/propuesta.js' %}"></script>
+{% endblock %}

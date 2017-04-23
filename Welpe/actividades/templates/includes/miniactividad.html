@@ -1,0 +1,42 @@
+{% load mezzanine_tags i18n  %}
+{% load actividadTags %}
+
+
+<div id="show_elemento_{{ elemento.miniactividad.id }}" class="modal fade">
+    <div class="modal-dialog modal-lg miniactividad-detail" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    {{elemento.miniactividad.titulo}}
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="description">
+                    {{ elemento.miniactividad.descripcion | safe }}
+                </div>
+                {% for author in elemento.autores %}
+                <div class="media">
+                    <div class="media-left">
+                        {% if author.photo %}
+                        <img class="media-object" src="{{ MEDIA_URL }}{% thumbnail author.photo 100 0 %}">
+                        {% endif %}
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <span class="author-name">{{author.name}}</span>
+                        </h4>
+                        <div class="bio">{{ author.bio| safe }}</div>
+
+                    </div>
+                </div>
+                {% endfor %}
+                {% if elemento.miniactividad.archivo %}<a href="{{elemento.miniactividad.archivo.url}}" target="_blank">{{ elemento.miniactividad.archivo|getnames }}</a>{% endif %}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>

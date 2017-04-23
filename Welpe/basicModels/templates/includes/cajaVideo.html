@@ -1,0 +1,25 @@
+{% load mezzanine_tags i18n %}
+            {%if modelo.video_id%}
+                <div class="multimediaVideo">
+                            {% if modelo.hostVideo == 1 %}
+                                <div class="video">
+                                    <iframe src="https://player.vimeo.com/video/{{ modelo.video_id }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                    {%if modelo.video_footer%}
+                                        <span class="mediaFooter">
+                                            {{modelo.video_footer| richtext_filters|safe}}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            {% elif modelo.hostVideo == 2 %}
+                                <div class="video">
+                                    <iframe  class="videoSize" type="text/html" src="http://www.youtube.com/embed/{{ modelo.video_id }}"frameborder="0"/> </iframe>
+                                </div>
+                            {% endif %}
+                </div>
+                {%if modelo.video_footer%}
+                    <div class="mediaFooter">
+                        {{modelo.video_footer| richtext_filters|safe}}
+                    </div>
+                {% endif %}
+            {% endif %}                
+                <div class="clear"></div>

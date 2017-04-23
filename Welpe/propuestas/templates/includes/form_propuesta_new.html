@@ -1,0 +1,80 @@
+{% load mezzanine_tags i18n propuestasTags %}
+{% get_name elemento.propuesta.usuario as prettyname %}
+{% get_name request.user as newprettyname %}
+{% get_mail elemento.propuesta.usuario as prettymail %}
+{% get_mail request.user as newprettymail %}
+
+<form action="/propuestas/add/" method="post" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+    <div id="propuesta_" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    {% if elemento.propuesta %}
+                        <h4 class="modal-title" style="color:black">Editar la propuesta</h4>
+                    {% else %}
+                        <h4 class="modal-title" style="color:black">Nueva propuesta</h4>
+                    {% endif %}
+                </div>
+                <div class="modal-body" style="margin-right:15px;">
+                    <fieldset>
+                        <legend>Por favor, completa el formulario</legend>
+                        <span class="form-requirements">Los campos con asterisco son obligatorios</span>
+                        <div class="form-group">
+                            <label for="title_" class="control-label">Título: *</label>
+                            <div class="col-lg-12">
+                                <input id="title_"
+                                       class="required-element form-control" placeholder="{% trans 'Título' %}"
+                                       type="text" name="title" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="descripcion" for="descripcion_"
+                                   class="control-label">Descripcion</label>
+                            <div class="col-lg-12">
+                                <textarea name="descripcion"
+                                          class="form-control mce_descripcion_"
+                                          rows="3" id="descripcion_"
+                                          value=""></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label name="archivo" for="id_fichero_propueta"
+                                   class="control-label">Fichero
+                                adjunto:</label>
+                            <div class="col-lg-12">
+                                <input id="uploadPropuestaFile_"
+                                       {% if elemento.propuesta.attached_file %}placeholder="elemento.propuesta.attached_file|getnames"
+
+                                       {% else %}placeholder="Adjuntar fichero"{% endif %} disabled="disabled"/>
+                                <div class="fileUpload btn-xs btn btn-primary">
+                                    <span>Subir Fichero</span>
+                                    <input type="file" class="upload"
+                                           id="id_fichero_propuesta{{ propuesta.id }}{{ elemento.propuesta.id }}"
+                                           name="archivo"
+                                           onchange="selectFile('id_fichero_propuesta{{ elemento.propuesta.id }}','uploadPropuestaFile_{{ elemento.info.id }}')">
+                                </div>
+                                {% if elemento.propuesta.attached_file %}
+                                    <p><strong>*NOTA:</strong> Si seleccionas un nuevo fichero, ¡será reemplazado si ya
+                                        había alguno!</p>
+                                    <span class="control-label">
+                                            <input type="checkbox" name="delete_file"> Borrar <a
+                                            href="{{ elemento.propuesta.archivo.url }}" target="_blank">elemento.propuesta.attached_file|getnames info.attached_file|getnames</a>
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="pk" value="">
+                    <input readonly="readonly" type="hidden" name="id_usuario"
+                           value="">
+                    <input type="submit" class="btn btn-success pull-right" value="{% trans 'Save' %}">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

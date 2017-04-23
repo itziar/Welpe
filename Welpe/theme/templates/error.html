@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n future staticfiles adept_tags blog_tags staticfiles %}
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width">
+
+        <title>{% block meta_title %}{{ page.title }}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+        <!-- Bootstrap Core CSS -->
+        <link href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <!-- Font Awesome  -->
+        <link href="{% static 'assets/font-awesome-4.0.3/css/font-awesome.css' %}" rel="stylesheet">
+        <link href="{% static 'css/highlight.css' %}" rel="stylesheet" >
+        <link href="{% static 'css/tokenmanager.css' %}" rel="stylesheet" >
+        <link href="{% static 'css/commons_fonts_embedded.css' %}" rel="stylesheet" >
+        <link href="{% static 'css/tef-button.css' %}" rel="stylesheet" >
+        <link href="{% static 'css/devportal.css' %}" rel="stylesheet" >
+        <!-- Google Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic|Montserrat:400,700' rel='stylesheet' type='text/css'>
+        <!-- Custom Stylesheet For This Template -->
+        <link href="{% static 'assets/css/stylesheet.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/css/error.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/css/skins.css' %}" rel="stylesheet">
+
+        <script src="{% static 'assets/js/jquery-2.0.3.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
+        <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    </head>
+    <body id="{% block body_id %}body{% endblock %}">
+        <div id="main-wrapper" class="color-skin-{{ siteconf.color_scheme }}">
+
+
+            <header id="header-1" class="header">
+                <div class="container">
+                    <div class="logo">
+                    </div>
+                </div>
+                <!-- /.container -->
+            </header>
+            <!-- /.header-1 -->
+
+            <header id="header-2" class="header">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="container">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="fa fa-bars"></span>
+                            </button>
+                            <a class="navbar-brand" href="/">{{ settings.SITE_TITLE|slice:":3" }}<span>{{ settings.SITE_TITLE|slice:"3:" }}.</span>
+                            {% if request.user|can_view_help %}<span class="theme-help" data-toggle="tooltip" data-placement="right" data-trigger="manual" title="The Site Title from Site -> Settings in the admin shows here."></span>{% endif %}
+                            </a>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                    </div>
+                    <!-- /.container -->
+                </nav>
+                <!-- /.navbar -->
+            </header>
+            <!-- /#header-2 -->
+
+            <div class="box6">
+                <h1>Oops</h1><br> <h2>you failed!!</h2>
+            </div>
+            <div class="center">
+                {% block servererror %}
+
+                {% endblock %}
+            </div>
+
+        </div>
+
+
+        <footer id="footer-2" class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 footer-info-wrapper">
+                        <div class="nav-footer">
+            	            <span>© 2015 Telefónica Investigación y Desarrollo</span>
+            	        </div>
+                    </div>
+                    <!-- /.footer-info-wrapper -->
+                    <div class="col-xs-12 col-sm-2 social-link-wrapper">
+                        <ul class="social-links">
+                            {% if request.user|can_view_help %}<li><span class="theme-help" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Edit these in Site -> Settings in the admin"></span></li>{% endif %}
+                            {% if settings.SOCIAL_LINK_FACEBOOK %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}"><i class="fa fa-facebook"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_GOOGLE %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_GOOGLE }}"><i class="fa fa-google-plus"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_TWITTER %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}"><i class="fa fa-twitter"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_PINTEREST %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_PINTEREST }}"><i class="fa fa-pinterest"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_LINKEDIN %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_LINKEDIN }}"><i class="fa fa-linkedin"></i></a></li>
+                            {% endif %}
+                            {% if settings.SOCIAL_LINK_DRIBBBLE %}
+                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DRIBBBLE }}"><i class="fa fa-dribbble"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <!-- /.social-link-wrapper -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </footer>
+        <!-- /#footer-2 -->
+    </body>
+</html>

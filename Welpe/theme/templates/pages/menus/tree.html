@@ -1,0 +1,24 @@
+{% load i18n pages_tags %}
+
+{% spaceless %}
+{% if page_branch_in_menu %}
+	<ul class="nav nav-list navlist-menu-level-{{ branch_level }}">
+		{% for page in page_branch %}
+			{% if page.in_menu %}
+				{% if page.is_current_or_ascendant or not page.is_primary %}
+					<li class="{% if page.is_current %} active{% endif %}{% if page.is_current_or_ascendant %} active-branch{% endif %}" id="tree-menu-{{ page.html_id }}">
+						<a href="{{ page.get_absolute_url }}">
+							<i class="{% if page.is_primary %} glyphicon glyphicon-menu-hamburger
+							{% else %}{% if page.is_current_parent  %} glyphicon glyphicon-plus{% endif %}
+							{% endif %}"aria-hidden="true"></i>
+							<i class="{% if page.is_current  %} glyphicon glyphicon-menu-right {% endif %}"aria-hidden="true"></i>
+							{{ page.title }}
+						</a>
+					</li>
+					{% page_menu page %}
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+	</ul>
+{% endif %}
+{% endspaceless %}

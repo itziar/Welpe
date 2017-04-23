@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+{% block title %}{% trans "Home" %}{% endblock %}
+ {% block extra_css %}
+ <link rel="stylesheet" href="{% static "css/sitemap.css" %}">
+{% endblock %}
+{% block main %}
+<div class="sitemap">
+
+    <ul>
+        {% for actual in page_branch %}
+        {% if actual.in_sitemap %}
+            {% if actual.is_primary%}
+
+            {% if actual.has_children_in_menu %}
+                <li class="sitemap_li">
+                    <a class="sitemap_a"href="{{ actual.get_absolute_url }}">
+                        {{ actual.title }}
+                    </a>
+                    {{ actual.basicModels.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.basicContent.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withleftmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withbothmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                </li>
+                {% page_menu "includes/paginas.html" actual%}
+           {% else %}
+                <li class="sitemap_li">
+                    <a class="sitemap_a" href="{{ actual.get_absolute_url }}">
+                        {{ actual.title }}
+                    </a>
+                    {{ actual.basicModels.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.basicContent.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.homepage_talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.news.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.talks.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withleftmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                    {{ actual.withbothmenu.summary | richtext_filters|safe | truncatewords_html:100 }}
+                </li>
+            {% endif %}
+             {% endif %}
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+
+</div>
+{% endblock %}
+
+

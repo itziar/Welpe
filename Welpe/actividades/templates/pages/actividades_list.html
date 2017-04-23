@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load actividadTags %}
+{% load profileTags %}
+
+{% block extra_css %}
+    <link href="{% static 'css/actividades.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap-datepicker.min.css' %}">
+{% endblock extra_css %}
+
+
+{% block meta_title %}{% trans "Actividades" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+    <li class="active">{% trans "Home" %}</li>
+{% endblock %}
+
+{% block button_add %}
+    {% if request.user.is_authenticated %}
+    {% has_permissions request.user as perm_actividades %}
+    {% if perm_actividades %}
+        <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+           data-target="#actividad_">{% trans "Nueva Actividad" %}</a>
+        {% include "includes/form_actividad.html" %}
+    {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div class="fluid-container">
+        <div class="row">
+            <div class="col-md-12 middle blockmain">
+                {% if lista %}
+                    <div class="caja_filtro">{% include "includes/filtro_actividades.html" %}</div>
+                    {% for elemento in lista %}
+                        <div class="caja_actividad">
+                        {% if request.user.is_authenticated %}
+                            {% has_permissions_actividad elemento.actividad request.user as permissions %}
+                            {% if permissions %}
+                                <div class="geekly_buttons">
+                                     <a class="btn-primary btn btn-sm pull-right" href="#" data-toggle="modal"
+                                       data-target="#actividad_{{ elemento.actividad.id }}">{% trans "Edit" %}</a>
+                                    {% include "includes/form_actividad.html" %}
+
+                                    <button class="btn btn-sm btn-danger pull-right" onclick="swal({
+                                            title: 'Estás seguro',
+                                            text: '{{ elemento.actividad.title }} será eliminado!',
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonClass: 'btn-danger',
+                                            confirmButtonText: 'Sí, borrar!',
+                                            cancelButtonText: 'No, no lo borres aún!',
+                                            closeOnConfirm: false,
+                                            closeOnCancel: false
+                                            },
+                                            function(isConfirm){
+                                            if (isConfirm) {
+                                            $('.confirm-actividad-{{ elemento.actividad.pk }}').click();
+                                            swal('Borrado!', '{{ elemento.actividad.title }} se ha borrado.', 'con éxito');
+                                            } else {
+                                            swal('Espera...', 'No podemos borrar {{ event.title }} :)', 'error');
+                                            }
+                                            });">
+                                        {% trans 'Delete' %}
+                                    </button>
+                                    <form action="delete_actividad" method="post" name="delete">
+                                        {% csrf_token %}
+                                        <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                               value="{{ elemento.actividad.pk }}">
+                                        <input type="submit" class="confirm-actividad-{{ elemento.actividad.pk }}"
+                                               style="display:none;">
+                                    </form>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                         <div class="actividad_title col-sm-6">
+                                <a href="{{ elemento.actividad.get_absolute_url }}">{{ elemento.actividad.title }}</a>
+                            </div>
+                            <div class="dates">
+                         <div class="actions">
+                                {% if request.user.is_authenticated %}
+                                    <form action="{{ elemento.actividad.url }}/like" method="post"
+                                          id="likeAct_form_{{ elemento.actividad.id }}">
+                                        {% csrf_token %}
+                                        <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                               value="{{ elemento.actividad.pk }}">
+                                        <span>
+                                            <img class="pointer {% if elemento.likeAct %}corazon{% else %}corazon_gray{% endif %}"
+                                                 id="submit_likeAct_{{ elemento.actividad.id }}"
+                                                 src="/static/images/corazon.png"
+                                                 onclick="manage_likeAct('{{ elemento.actividad.id }}', '{{ elemento.actividad.slug }}');"/>
+                                            <span
+                                                    id="actividad_like_{{ elemento.actividad.id }}">{{ elemento.like }}</span>
+                                            <span><img src="/static/images/comments.png"
+                                                       style="width: 4%"/>{{ elemento.comment }}</span>
+                                        </span>
+                                    </form>
+                                {% else %}
+                                    <span>
+                                        <img class="{% if elemento.likeAct %}corazon{% else %}corazon_gray{% endif %}"
+                                             id="submit_likeAct_{{ elemento.actividad.id }}"
+                                             src="/static/images/corazon.png"/> <span
+                                            id="actividad_like_{{ elemento.actividad.id }}">{{ elemento.like }}</span>
+                                        <span><img src="/static/images/comments.png"
+                                                   style="width: 4%"/>{{ elemento.comment }}</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <span><strong>from: </strong> {{ elemento.actividad.start_date |date:"d/M/Y"|lower }} <br>
+                    				<i class="glyphicon glyphicon-calendar"></i>
+                    				<strong>to: </strong> {{ elemento.actividad.finish_date |date:"d/M/Y"|lower }}
+                				</span>
+                            </div>
+                            {% if elemento.actividad.lugar %}
+                                <div class="localizacion">
+                                    <i class="glyphicon glyphicon-map-marker"></i><strong>Lugar:</strong>
+                                    <span>
+									{% if elemento.actividad.lugar %}
+                                        La actividad se realizará en: {{ elemento.actividad.lugar }}
+                                    {% else %}
+                                        Todavía no se ha especificado el lugar donde se realizará la actividad
+                                    {% endif %}
+								</span>
+                                </div>
+                            {% endif %}
+                            {% if elemento.actividad.url %}
+                                <div class="url">
+                                    <i class="glyphicon glyphicon-link"></i><strong>Link: </strong><span>{{ elemento.actividad.url }}</span>
+                                </div>
+                            {% endif %}
+                            {% if elemento.actividad.descripcion %}
+                                <div class="talk_description">
+                                    {{ elemento.actividad.descripcion | safe | truncatewords_html:50 }}
+                                </div>
+                            {% endif %}
+                            <p>
+                                <a href="{{ elemento.actividad.get_absolute_url }}">{% trans "read more" %}</a>
+                            </p>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                    {% pagination_for lista %}
+                {% else %}
+                    <h1> Ahora mismo, no hay ninguna actividad programada. </h1>
+                    Click en el botón añadir actividad para ser el primero.
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'assets/bootstrap/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'assets/js/datepicker.js' %}"></script>
+    <script src="{% static 'js/actividades.js' %}"></script>
+{% endblock %}

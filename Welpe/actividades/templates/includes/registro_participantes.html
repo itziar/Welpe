@@ -1,0 +1,189 @@
+{% load mezzanine_tags i18n %}
+{% load actividadTags %}
+
+
+{% if today >= actividad.fecha_inscripcion_inicio  and today <= actividad.fecha_inscripcion_final %}
+    {% if not is_registered and not is_registered_espera %}
+        {% if actividad.limite_participantes %}
+            {% if lista_participantes.count <= actividad.limit %}
+                <a class="btn btn-success btn-lg" href="#" data-toggle="modal"
+                   data-target="#registration_{{ participante.id }}">{% trans "Register" %}</a>
+            {% else %}
+                {% if actividad.lista_espera %}
+                    <p>{{ lista_espera.count }} people in waiting list before you</p>
+                    <a class="btn btn-success btn-lg" href="#" data-toggle="modal"
+                       data-target="#registration_{{ participante.id }}">{% trans "Register" %}</a>
+                {% else %}
+                    <p>Lo sentimos, no se admiten más registros</p>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <a class="btn btn-success btn-lg" href="#" data-toggle="modal"
+               data-target="#registration_{{ participante.id }}">{% trans "Register" %}</a>
+        {% endif %}
+
+        {% include "includes/form_registro.html" with datos=participante tipo="registration" %}
+    {% endif %}
+{% endif %}
+
+{% if lista_participantes.count > 0 %}
+    {% if request.user.is_authenticated %}
+        {% has_permissions_actividad actividad request.user as permissions %}
+        {% if permissions or is_registered %}
+            <h1>Registered people</h1>
+            <div>
+                <form action="download" method="post" name="download">
+                    {% csrf_token %}
+                    <input type="hidden" name="what" value="registered">
+                    <input type="submit" class="btn btn-warning btn-sm" value="{% trans 'Download' %}">
+                </form>
+            </div>
+            <table id="registeredTable" class="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre y apellidos</th>
+                    <th>Email</th>
+                    {% if today >= actividad.fecha_inscripcion_inicio  and today <= actividad.start_date or permissions %}
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for participante in lista_participantes %}
+                    {% if permissions or participante.usuario == request.user %}
+                        <tr>
+                            <td>{{ participante.id }}</td>
+                            <td>
+                                {% get_name participante.usuario as prettyname %}
+                                <strong>{{ prettyname }}</strong>
+                            </td>
+                            <td>{{ participante.usuario.email }}</td>
+                            {% if today >= actividad.fecha_inscripcion_inicio  and today <= actividad.start_date or permissions %}
+                                <td>
+                                    <a class="btn-primary btn btn-sm" href="#" data-toggle="modal"
+                                       data-target="#registration_{{ participante.id }}">{% trans "Edit" %}</a>
+                                    {% include "includes/form_registro.html" with datos=participante tipo="registration" %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" onclick="swal({
+                                            title: 'Are you sure?',
+                                            text: 'Your registration will be cancelled!',
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonClass: 'btn-danger',
+                                            confirmButtonText: 'Yes, cancel it!',
+                                            cancelButtonText: 'No, do not cancel plx!',
+                                            closeOnConfirm: false,
+                                            closeOnCancel: false
+                                            },
+                                            function(isConfirm){
+                                            if (isConfirm) {
+                                            $('.confirm-{{ participante.usuario.id }}').click();
+                                            swal('Cancelled!', 'Your registration has been cancelled.', 'success');
+                                            } else {
+                                            swal('Calm...', 'We have not cancelled you registration :)', 'error');
+                                            }
+                                            });">
+                                        {% trans 'Cancel' %}
+                                    </button>
+
+                                    <form action="delete" method="post" name="delete" style="display: none">
+                                        {% csrf_token %}
+                                        <input readonly="readonly" class="form-control" type="hidden" name="id_usuario"
+                                               value="{{ participante.usuario.id }}">
+                                        <input class="confirm-{{ participante.usuario.id }}" type="submit"
+                                               value="{{ participante.usuario.id }}">
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+{% elif request.user.is_superuser %}
+    <p>No registrations yet</p>
+{% endif %}
+
+{% if lista_espera %}
+    {% if request.user.is_authenticated %}
+        {% has_permissions_actividad actividad request.user as permissions %}
+        {% if permissions or is_registered_espera %}
+            <h1>Waiting List</h1>
+            <div>
+                <form action="download" method="post" name="download">
+                    {% csrf_token %}
+                    <input type="hidden" name="what" value="waiting">
+                    <input type="submit" class="btn btn-warning btn-sm" value="{% trans 'Download' %}">
+                </form>
+            </div>
+            <table id="waitingTable" class="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre y apellidos</th>
+                    <th>Email</th>
+                    {% if today >= actividad.fecha_inscripcion_inicio  and today <= actividad.start_date or permissions %}
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for espera in lista_espera %}
+                    {% if request.user.is_superuser or espera.usuario == request.user or  permissions %}
+                        <tr>
+                            <td>{{ espera.id }}</td>
+                            <td>
+                                {% get_name espera.usuario as prettyname %}
+                                <strong>{{ prettyname }}</strong>
+                            </td>
+                            <td>{{ espera.usuario.email }}</td>
+                            {% if today >= actividad.fecha_inscripcion_inicio  and today <= actividad.start_date or permissions %}
+                                <td>
+                                    <a class="btn-primary btn btn-sm" href="#" data-toggle="modal"
+                                       data-target="#espera_{{ espera.id }}">{% trans "Edit" %}</a>
+                                    {% include "includes/form_registro.html" with datos=espera tipo="espera" %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" onclick="swal({
+                                            title: 'Are you sure?',
+                                            text: 'Your wait will be cancelled!',
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonClass: 'btn-danger',
+                                            confirmButtonText: 'Yes, cancel it!',
+                                            cancelButtonText: 'No, do not cancel plx!',
+                                            closeOnConfirm: false,
+                                            closeOnCancel: false
+                                            },
+                                            function(isConfirm){
+                                            if (isConfirm) {
+                                            $('.confirm-{{ espera.usuario.id }}').click();
+                                            swal('Cancelled!', 'Your wait has been cancelled.', 'success');
+                                            } else {
+                                            swal('Calm...', 'We have not cancelled you wait :)', 'error');
+                                            }
+                                            });">
+                                        {% trans 'Cancel' %}
+                                    </button>
+                                    <form action="delete" method="post" name="delete" style="display: none">
+                                        {% csrf_token %}
+                                        <input readonly="readonly" class="form-control" type="hidden" name="id_usuario"
+                                               value="{{ espera.usuario.id }}">
+                                        <input class="confirm-{{ espera.usuario.id }}" type="submit"
+                                               value="{{ espera.usuario.id }}">
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% endif %}
+{% endif %}

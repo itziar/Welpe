@@ -1,0 +1,27 @@
+{% load i18n mezzanine_tags comment_tags %}
+<div id="post-comments">
+<h5 class="subpage-title">{% trans "Comments" %}</h5>
+{% if settings.COMMENTS_DISQUS_SHORTNAME %}
+{% include "generic/includes/disqus_comments.html" %}
+{% else %}
+<script>
+$(function($) {
+    $('.comment-reply').click(function() {
+        $('.reply-form').hide();
+        $(this).parent().parent().parent().children('.reply-form').toggle();
+    });
+});
+</script>
+<style>.input_id_honeypot {display:none !important;}</style>
+{% comment_thread object_for_comments %}
+<h5 class="subpage-title">{% trans "Add Comment" %}</h5>
+<form class="comment-form" method="post" id="comment" action="{{ comment_url }}#comment">
+    {% if not request.POST.replied_to %}
+    {% fields_for posted_comment_form %}
+    {% else %}
+    {% fields_for unposted_comment_form %}
+    {% endif %}
+    <input class="btn btn-flat flat-color" type="submit" value="{% trans "Comment" %}">
+</form>
+{% endif %}
+</div>

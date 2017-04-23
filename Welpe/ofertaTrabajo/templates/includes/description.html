@@ -1,0 +1,108 @@
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load ofertasTags %}
+{% load profileTags %}
+<div class="fluid-container caja_oferta">
+        <div class="row">
+            <div class="col-md-12 middle blockmain">
+            {% if request.user.is_authenticated %}
+                {% has_permissions request.user as permissions %}
+                {% if permissions %}
+                    <div class="geekly_buttons">
+                     <a class="btn-primary btn btn-sm pull-right color_white" href="#" data-toggle="modal" data-target="#oferta_{{ oferta.id }}">{% trans "Edit" %}</a>
+                        {% include "includes/form_oferta.html" %}
+                        <button class="btn btn-sm btn-danger pull-right" onclick="swal({
+                                title: 'Estás seguro',
+                                text: '{{ oferta.title }} será eliminado!',
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonClass: 'btn-danger',
+                                confirmButtonText: 'Sí, borrar la oferta!',
+                                cancelButtonText: 'No, no la borres aún!',
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                                },
+                                function(isConfirm){
+                                if (isConfirm) {
+                                $('.confirm-oferta-{{ oferta.pk }}').click();
+                                swal('Borrado!', '{{ oferta.title }} se ha borrado.', 'con éxito');
+                                } else {
+                                swal('Espera...', 'No podemos borrar  {{ oferta.title }} :)', 'error');
+                                }
+                                });">
+                            {% trans 'Delete' %}
+                        </button>
+                        <form action="delete_oferta" method="post" name="delete">
+                            {% csrf_token %}
+                            <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                                   value="{{ oferta.pk }}">
+                            <input type="submit" class="confirm-oferta-{{ oferta.pk }}"
+                                   style="display:none;">
+                        </form>
+                    </div>
+                {% endif %}
+            {% endif %}
+                <div class="oferta_title col-sm-6">
+                    <span class="tipo_contrato btn-info"> {% if oferta.tipo_contrato == 0 %}
+                        Prácticas{% elif oferta.tipo_contrato == 1 %}Indefinido{% elif oferta.tipo_contrato == 2 %}
+                        Otros {% endif %}</span>
+                    <a href="{{ oferta.get_absolute_url }}">{{ oferta.title }}</a>
+                </div>
+                <div class="actions">
+                {% if request.user.is_authenticated %}
+                    <form action="{{ oferta.get_absolute_url }}/like" method="post"
+                          id="likeOferta_form_{{ oferta.id }}">
+                        {% csrf_token %}
+                        <input readonly="readonly" class="form-control" type="hidden" name="pk"
+                               value="{{ oferta.pk }}">
+
+                            <span><img class="puntero {% if likeOferta %}corazon{% else %}corazon_gray{% endif %}"
+                                    id="submit_likeOferta_{{ oferta.id }}" src="/static/images/corazon.png"
+                                    onclick="manage_likeOferta('{{ oferta.id }}', '{{ oferta.slug }}');"/> <span
+                                    id="oferta_like_{{ oferta.id }}">{{ number_of_likes }}</span>
+                            <span><img src="/static/images/comments.png" style="width: 4%"/>{{ comments.count }}</span>
+                            </span>
+                     </form>
+                        {% else %}
+                            <span><img class="{% if likeOferta %}corazon{% else %}corazon_gray{% endif %}"
+                                    id="submit_likeOferta_{{ oferta.id }}" src="/static/images/corazon.png"
+                            /> <span
+                                    id="oferta_like_{{ oferta.id }}">{{ number_of_likes }}</span>
+                            <span><img src="/static/images/comments.png" style="width: 4%"/>{{ comments.count }}</span>
+                            </span>
+                        {% endif %}
+                </div>
+                <br><br>
+                {% if oferta.descripcion %}
+                    <div class="destacado_oferta">Descripción de la oferta</div>
+                    <p>{{ oferta.descripcion }}</p>
+                {% endif %}
+                {% if oferta.como_aplicar %}
+                    <div class="destacado_oferta">¿Cómo aplicar?</div>
+                    <p>{{ oferta.como_aplicar }}</p>
+                {% endif %}
+                {% if oferta.url %}
+                    <div class="destacado_oferta">URL de la empresa/oferta</div>
+                    <p><a href="{{ oferta.url }}">{{ oferta.url }}</a></p>
+                {% endif %}
+                {% if oferta.cuando %}
+                    <div class="destacado_oferta">¿Cuándo?</div>
+                    <p>{{ oferta.cuando }}</p>
+                {% endif %}
+                {% if oferta.donde %}
+                    <div class="destacado_oferta">¿Dónde?</div>
+                    <p>{{ oferta.donde }}</p>
+                {% endif %}
+                <div class="destacado_oferta">Honorarios</div>
+                {% if oferta.salario %}
+                    <p>{{ oferta.salario }}</p>
+                {% else %}
+                    <p>No especificado</p>
+                {% endif %}
+                {% if oferta.attached_file %}<div class="destacado_oferta">Archivo adjunto</div>
+                    <p><a href="{{ oferta.attached_file.url }}" target="_blank">{{ oferta.attached_file|getnames }}</a></p>
+                {% endif %}
+            </div>
+        </div>
+        <br>
+    </div>

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+
+{% block extra_css %}
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet" >
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap-datepicker.min.css' %}" >
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css">
+    <style>
+        .btn {
+            font-family: 'Montserrat', sans-serif !important;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 10px !important;
+            padding: 8px 10px;
+        }
+        .color_white{
+            color: white !important;
+        }
+
+    </style>
+{% endblock extra_css%}
+
+{% block meta_title %}{% trans "Perfil de Usuario" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+    <li class="active">{% trans "Home" %}</li>
+{% endblock %}
+
+{% block main %}
+    <div id="tabs">
+        <ul>
+            <li><a href="#profile">Perfil</a></li>
+            {% if request.user.is_authenticated %}
+                {% if request.user == user %}
+                    <li><a href="#messages">Mensajes</a></li>
+                    <li><a href="#favs">Favoritos</a></li>
+                    <li><a href="#activities">Actividades</a></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+        <div id="profile">
+             {% include "includes/profile.html" %}
+        </div>
+        {% if request.user.is_authenticated %}
+            {% if request.user == user %}
+                 <div id="messages">
+                    <!-- Se incluirán los mensajes mandados entre usuarios -->
+                    {% include "includes/messages.html" %}
+                </div>
+                <div id="favs">
+                    <!-- Se incluirán todos los eventos guardados como favoritos -->
+                    {% include "includes/favorites.html" %}
+                </div>
+                <div id="activities">
+                    <!-- Se incluirán todas las actividades a las que pertenezca (apuntado o creado)-->
+                    {% include "includes/activities.html" %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript" src="/static/filebrowser/js/AddFileBrowser.js"></script>
+    <script>
+    $( function() {
+    $( "#tabs" ).tabs();
+  } );
+  </script>
+{% endblock %}

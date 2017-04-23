@@ -1,0 +1,35 @@
+{% load mezzanine_tags i18n %}
+
+<div class="container">
+    <form action="/informacion/" method="post" class="navbar-form navbar-center" role="search">{% csrf_token %}
+        <div class="filter-form">
+            <div class="input-group form-group">
+                <input class="input-sm form-control" placeholder="{% trans "Titulo o contenido" %}" type="text"
+                       name="content" value="{{ request.POST.content }}">
+            </div>
+            <div class="input-group form-group" data-icon="down">
+                <select id="tipo_contrato" name="tipo_info">
+                    <option value="">-- Tipo de información --</option>
+                    <option {% if request.POST.tipo_info == 0 %}selected="Beca" {% endif %}>Beca</option>
+                    <option {% if request.POST.tipo_info == 1 %}selected="Programa" {% endif %}>Programa</option>
+                    <option {% if request.POST.tipo_info == 2 %}selected="Curso" {% endif %}>curso</option>
+                    <option {% if request.POST.tipo_info == 3 %}selected="Concurso" {% endif %}>Concurso</option>
+                    <option {% if request.POST.tipo_info == 4 %}selected="Otros" {% endif %}>Otros</option>
+                </select>
+            </div>
+            {% if request.user.is_authenticated %}
+                <div class="input-group form-group">
+                    <input type="checkbox" name="like" value="like"  {% if request.POST.like %} checked{% endif %}>Guardado<br>
+                </div>
+            {% endif %}
+            <div class="input-group form-group">
+                <input type="submit" class="btn-primary significant" value="{% trans "Buscar" %}">
+            </div>
+        </div>
+    </form>
+    <form action="/informacion/clear" method="post" class="navbar-form navbar-center" role="search">{% csrf_token %}
+        <div class="input-group form-group">
+            <input type="submit" class="btn-primary significant" value="{% trans "Eliminar filtros" %}">
+        </div>
+    </form>
+</div>

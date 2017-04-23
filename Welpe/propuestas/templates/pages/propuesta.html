@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+{% load pages_tags i18n staticfiles %}
+{% load propuestasTags %}
+{% load profileTags %}
+
+{% block extra_css %}
+    <link href="{% static 'css/propuestas.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css">
+    <style>
+        .btn {
+            font-family: 'Montserrat', sans-serif !important;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 10px !important;
+            padding: 8px 10px;
+        }
+        .color_white{
+            color: white !important;
+        }
+    </style>
+{% endblock extra_css %}
+
+{% block button_add %}
+    {% if request.user.is_authenticated %}
+        <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+           data-target="#propuesta_">{% trans "Nueva propuesta" %}</a>
+        {% include "includes/form_propuesta_new.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block meta_title %}{% trans "Propuesta" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+    <li class="active">{% trans "Home" %}</li>
+{% endblock %}
+
+{% block main %}
+    <div id="tabs_prop">
+        <ul>
+            <li><a href="#description">Descripción</a></li>
+            <li><a href="#comments">comentarios</a></li>
+        </ul>
+        <div id="description">
+             {% include "includes/desc_propuesta.html" %}
+        </div>
+        <div id="comments">
+            <!-- Se incluirán los mensajes mandados entre usuarios -->
+            {% include "includes/comments.html" %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/propuesta.js' %}"></script>
+     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#tabs_prop" ).tabs();
+        } );
+    </script>
+{% endblock %}
