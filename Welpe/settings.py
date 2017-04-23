@@ -233,8 +233,6 @@ INSTALLED_APPS = (
     "Welpe.actividades",
     "Welpe.profile",
     "Welpe.foro",
-    #"Welpe.comments",
-    "Welpe.subscriptions",
     "Welpe.propuestas",
     "django.contrib.admin",
     "django.contrib.auth",
