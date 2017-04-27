@@ -33,16 +33,17 @@
                 <!-- First Comment -->
                 <article class="row no-margin">
                     <div class="col-md-2 col-sm-2 hidden-xs">
-                        {% if elemento.anonimo %}
-                            User anonimo
+                    <figure class="thumbnail">
+                        {% if elemento.usuario.profile.photo and not elemento.anonimo %}
+                            <div class="image-overlay"></div>
+                            <img id="myImg" src="{{ MEDIA_URL }}{{ elemento.usuario.profile.photo }}" alt="" width="100">
                         {% else %}
-                            <figure class="thumbnail">
-                                <img class="img-responsive"
-                                     src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg"/>
-                                <figcaption class="text-center">{{ elemento.usuario.username }}</figcaption>
-                            </figure>
+                            <div class="image-overlay"></div>
+                            <img id="myImg" src="{% static 'img/profile.png' %}" alt="" width="100">
                         {% endif %}
-                    </div>
+                        <figcaption class="text-center">{% if elemento.anonimo %}Anónimo{% else %}{{ elemento.usuario.username }}{% endif %}</figcaption>
+                    </figure>
+                </div>
 
                     <div class="col-md-9 col-sm-9">
                         <div class="panel panel-default arrow left">

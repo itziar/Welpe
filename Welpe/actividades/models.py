@@ -161,6 +161,8 @@ class CommentsActividad(models.Model):
     actividad = models.ForeignKey(Actividades, on_delete=models.CASCADE)
     titulo = models.TextField(max_length=150)
     comentario = RichTextField()
+    # posibilidad de que el comentario sea anónimo
+    anonimo = models.BooleanField(default=False)
     # posibilidad de subir archivos?
     fecha = models.DateTimeField(auto_now_add=True)
 

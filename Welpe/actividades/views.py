@@ -135,7 +135,12 @@ def add_comment(request, actividad):
     if request.method == "POST":
         titulo = utils.getfromPost(request, "title")
         comentario = utils.getfromPost(request, "comentario")
-        new_comment = CommentsActividad(titulo=titulo, comentario=comentario, actividad=actividad, usuario=request.user)
+        try:
+            existe = request.POST['anonimo']
+            anonimo = True
+        except:
+            anonimo = False
+        new_comment = CommentsActividad(titulo=titulo, comentario=comentario, actividad=actividad, usuario=request.user, anonimo=anonimo)
         new_comment.save()
     return redirect(actividad)
 

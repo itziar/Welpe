@@ -27,9 +27,14 @@
             <article class="row no-margin">
                 <div class="col-md-2 col-sm-2 hidden-xs">
                     <figure class="thumbnail">
-                        <img class="img-responsive"
-                             src="http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg"/>
-                        <figcaption class="text-center">{{ elemento.usuario.username }}</figcaption>
+                        {% if elemento.usuario.profile.photo and not elemento.anonimo %}
+                            <div class="image-overlay"></div>
+                            <img id="myImg" src="{{ MEDIA_URL }}{{ elemento.usuario.profile.photo }}" alt="" width="100">
+                        {% else %}
+                            <div class="image-overlay"></div>
+                            <img id="myImg" src="{% static 'img/profile.png' %}" alt="" width="100">
+                        {% endif %}
+                        <figcaption class="text-center">{% if elemento.anonimo %}Anónimo{% else %}{{ elemento.usuario.username }}{% endif %}</figcaption>
                     </figure>
                 </div>
 
