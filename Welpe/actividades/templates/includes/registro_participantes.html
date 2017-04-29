@@ -3,6 +3,7 @@
 
 
 {% if today >= actividad.fecha_inscripcion_inicio  and today <= actividad.fecha_inscripcion_final %}
+     {% if request.user.is_authenticated %}
     {% if not is_registered and not is_registered_espera %}
         {% if actividad.limite_participantes %}
             {% if lista_participantes.count <= actividad.limit %}
@@ -24,6 +25,7 @@
 
         {% include "includes/form_registro.html" with datos=participante tipo="registration" %}
     {% endif %}
+         {% endif %}
 {% endif %}
 
 {% if lista_participantes.count > 0 %}

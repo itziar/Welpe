@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5cf0dac5-f8f0-4e10-af23-fcb6501b225e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/actividades/models.py" afterPath="$PROJECT_DIR$/Welpe/actividades/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/actividades/templates/includes/comentarios_actividades.html" afterPath="$PROJECT_DIR$/Welpe/actividades/templates/includes/comentarios_actividades.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/actividades/views.py" afterPath="$PROJECT_DIR$/Welpe/actividades/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/foro/templates/pages/list_foro.html" afterPath="$PROJECT_DIR$/Welpe/foro/templates/pages/list_foro.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/infoInteres/models.py" afterPath="$PROJECT_DIR$/Welpe/infoInteres/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/infoInteres/templates/includes/comentarios.html" afterPath="$PROJECT_DIR$/Welpe/infoInteres/templates/includes/comentarios.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/infoInteres/views.py" afterPath="$PROJECT_DIR$/Welpe/infoInteres/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/ofertaTrabajo/templates/includes/comments.html" afterPath="$PROJECT_DIR$/Welpe/ofertaTrabajo/templates/includes/comments.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/profile/templates/pages/login.html" afterPath="$PROJECT_DIR$/Welpe/profile/templates/pages/login.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/actividades/templates/includes/registro_participantes.html" afterPath="$PROJECT_DIR$/Welpe/actividades/templates/includes/registro_participantes.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Welpe/actividades/templates/pages/actividad.html" afterPath="$PROJECT_DIR$/Welpe/actividades/templates/pages/actividad.html" />
     </list>
     <ignored path="Welpe.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -48,18 +40,60 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Welpe/ofertaTrabajo/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="105" column="16" lean-forward="true" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
+            <state relative-caret-position="578">
+              <caret line="105" column="30" lean-forward="true" selection-start-line="105" selection-start-column="30" selection-end-line="105" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Welpe/actividades/views.py">
+      <file leaf-file-name="actividad.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Welpe/actividades/templates/pages/actividad.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="144" column="30" lean-forward="true" selection-start-line="144" selection-start-column="30" selection-end-line="144" selection-end-column="30" />
+            <state relative-caret-position="68">
+              <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="registro_participantes.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Welpe/actividades/templates/includes/registro_participantes.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="27" column="17" lean-forward="false" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="oferta.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Welpe/ofertaTrabajo/templates/pages/oferta.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="profileTags.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Welpe/profile/templatetags/profileTags.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-135">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ofertasTags.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Welpe/ofertaTrabajo/templatetags/ofertasTags.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -146,8 +180,6 @@
         <option value="$PROJECT_DIR$/Welpe/ofertaTrabajo/templates/includes/description.html" />
         <option value="$PROJECT_DIR$/Welpe/actividades/templates/includes/miniactividades.html" />
         <option value="$PROJECT_DIR$/Welpe/propuestas/templates/includes/desc_propuesta.html" />
-        <option value="$PROJECT_DIR$/Welpe/actividades/templates/pages/actividad.html" />
-        <option value="$PROJECT_DIR$/Welpe/actividades/templates/includes/registro_participantes.html" />
         <option value="$PROJECT_DIR$/Welpe/actividades/urls.py" />
         <option value="$PROJECT_DIR$/Welpe/actividades/defaults.py" />
         <option value="$PROJECT_DIR$/Welpe/actividades/utilsMiniActividades.py" />
@@ -186,6 +218,8 @@
         <option value="$PROJECT_DIR$/Welpe/infoInteres/views.py" />
         <option value="$PROJECT_DIR$/Welpe/actividades/templates/includes/comentarios_actividades.html" />
         <option value="$PROJECT_DIR$/Welpe/actividades/views.py" />
+        <option value="$PROJECT_DIR$/Welpe/actividades/templates/includes/registro_participantes.html" />
+        <option value="$PROJECT_DIR$/Welpe/actividades/templates/pages/actividad.html" />
       </list>
     </option>
   </component>
@@ -280,6 +314,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -695,7 +733,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="776" extended-state="7" />
+    <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16931638" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -906,7 +944,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="307" />
+      <option name="time" value="308" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Python.DjangoServer">
@@ -915,44 +953,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Welpe/infoInteres/static/js/info.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Welpe/infoInteres/templates/includes/form_info_new.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="112" column="7" lean-forward="false" selection-start-line="112" selection-start-column="7" selection-end-line="112" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Welpe/infoInteres/templates/includes/form_info.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="115" column="7" lean-forward="false" selection-start-line="115" selection-start-column="7" selection-end-line="115" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Welpe/foro/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Welpe/foro/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#15#54#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Welpe/foro/defaults.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1066,13 +1066,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Welpe/actividades/templatetags/actividadTags.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-461">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Welpe/actividades/templates/includes/form_actividad.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3408">
@@ -1107,7 +1100,7 @@
         <state relative-caret-position="-1786">
           <caret line="110" column="16" lean-forward="false" selection-start-line="110" selection-start-column="16" selection-end-line="110" selection-end-column="16" />
           <folding>
-            <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#0#39#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1302,14 +1295,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Welpe/ofertaTrabajo/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="105" column="16" lean-forward="true" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Welpe/actividades/templates/includes/comentarios_actividades.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -1320,8 +1305,68 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Welpe/actividades/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="144" column="30" lean-forward="true" selection-start-line="144" selection-start-column="30" selection-end-line="144" selection-end-column="30" />
+        <state relative-caret-position="221">
+          <caret line="95" column="42" lean-forward="true" selection-start-line="95" selection-start-column="42" selection-end-line="95" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Welpe/ofertaTrabajo/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="105" column="30" lean-forward="true" selection-start-line="105" selection-start-column="30" selection-end-line="105" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Welpe/ofertaTrabajo/templatetags/ofertasTags.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Welpe/profile/templatetags/profileTags.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-135">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Welpe/actividades/templatetags/actividadTags.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#25#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Welpe/ofertaTrabajo/templates/pages/oferta.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Welpe/actividades/templates/includes/registro_participantes.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="27" column="17" lean-forward="false" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Welpe/actividades/templates/pages/actividad.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
           <folding />
         </state>
       </provider>
