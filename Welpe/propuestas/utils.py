@@ -15,7 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from .models import Propuestas, CommentsPropuesta
 from Welpe.profile.models import LikePropuesta
 
-from mezzanine.accounts.views import User
+from Welpe.manageUser.views import User
 
 utilsForAll = UtilsForAll()
 

@@ -225,6 +225,7 @@ if DJANGO_VERSION < (1, 9):
 ################
 
 INSTALLED_APPS = (
+    "Welpe.manageUser",
     "Welpe.theme",
     "Welpe.basicModels",
     "Welpe.basicContent",
@@ -252,7 +253,7 @@ INSTALLED_APPS = (
     "mezzanine.forms",
     "mezzanine.galleries",
     "mezzanine.twitter",
-    "mezzanine.accounts",
+
     # "mezzanine.mobile",
 )
 
@@ -261,7 +262,6 @@ INSTALLED_APPS = (
 # response phase the middleware will be applied in reverse order.
 MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.UpdateCacheMiddleware",
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     # Uncomment if using internationalisation or localisation
     # 'django.middleware.locale.LocaleMiddleware',
@@ -342,3 +342,4 @@ else:
 
 
 TINYMCE_SETUP_JS = "js/tinyconfig.js"
+ACCOUNTS_VERIFICATION_REQUIRED=True

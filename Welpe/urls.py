@@ -58,9 +58,7 @@ urlpatterns += [
     # "/.html" - so for this case, the template "pages/index.html"
     # should be used if you want to customize the homepage's template.
     # NOTE: Don't forget to import the view function too!
-    url('^accounts', include('Welpe.profile.urls')),
-    url(r'^comments/', include('django_comments.urls')),
-    #url("^password_change/", 'Welpe.profile.views.notallowed'),
+    url('^accounts/', include('Welpe.manageUser.urls')),
     url('^profile', include('Welpe.profile.urls')),
     url('^ofertas', include('Welpe.ofertaTrabajo.urls')),
     url('^actividades', include('Welpe.actividades.urls')),

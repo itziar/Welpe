@@ -47,6 +47,7 @@ class Profile(models.Model):
         super(Profile, self).delete(*args, **kwargs)
 
 
+
 class LikeOferta(models.Model):
     oferta = models.ForeignKey(OfertaTrabajo, on_delete=models.CASCADE)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

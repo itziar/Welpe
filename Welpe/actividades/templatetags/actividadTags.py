@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 from django.core.exceptions import ObjectDoesNotExist
 from mezzanine import template
-from mezzanine.accounts.views import User
+from Welpe.manageUser.views import User
 register = template.Library()
 
 @register.filter

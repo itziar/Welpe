@@ -20,7 +20,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q
-from mezzanine.accounts.views import User
+from Welpe.manageUser.views import User
 
 utils = PropuestasUtils()
 

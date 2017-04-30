@@ -1,6 +1,6 @@
 # templatetags/future.py
 from django import template
-from mezzanine.accounts.views import User
+from Welpe.manageUser.views import User
 from django.core.exceptions import ObjectDoesNotExist
 register = template.Library()
 

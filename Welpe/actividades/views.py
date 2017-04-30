@@ -14,7 +14,7 @@ from Welpe.actividades.utilsMiniActividades import UtilsMiniActividades
 from Welpe.actividades.utils import ActividadesUtils
 from .models import Actividades, MiniActividad, AsistentesMiniActividad, UsuariosRegistradosActividades, \
     UsuariosListaEsperaActividades, OrganizadorMiniActividad, CommentsActividad
-from mezzanine.accounts.views import User
+from Welpe.manageUser.views import User
 from Welpe.profile.models import LikeActividad
 # Import django global objects
 from django.shortcuts import redirect
