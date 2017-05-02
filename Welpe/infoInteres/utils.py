@@ -14,8 +14,8 @@ from Welpe.site_utils import UtilsForAll
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
-from .models import InfoInteres, CommentsInfo
-from Welpe.profile.models import LikeInfo
+from .models import InfoInteres
+from Welpe.profile.models import LikeInfo, Comments
 
 
 
@@ -59,7 +59,7 @@ class InfoUtils:
                     info = {}
                     info["info"] = elemento
                     info["like"] = LikeInfo.objects.filter(info=elemento).count()
-                    info["comment"]=CommentsInfo.objects.filter(info=elemento).count()
+                    info["comment"]=Comments.objects.filter(page=elemento).count()
                     if not user.is_authenticated():
                         LikeInfo.objects.get(info=elemento, usuario=user)
                         info["likeInfo"] = True
@@ -73,7 +73,7 @@ class InfoUtils:
                 info = {}
                 info["info"] = elemento
                 info["like"] = LikeInfo.objects.filter(info=elemento).count()
-                info["comment"] = CommentsInfo.objects.filter(info=elemento).count()
+                info["comment"] = Comments.objects.filter(page=elemento).count()
                 try:
                     if user.is_authenticated():
                         LikeInfo.objects.get(info=elemento, usuario=user)

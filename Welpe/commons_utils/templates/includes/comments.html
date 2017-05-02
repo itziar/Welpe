@@ -1,20 +1,22 @@
 {% load mezzanine_tags keyword_tags %}
 {% load pages_tags i18n staticfiles %}
 {% load ofertasTags %}
-{% load comments %}
+{% load actividadTags %}
+{% load infoTags %}
+{% load propuestasTags %}
 {% if request.user.is_authenticated %}
     <hr>
     <div class="row no-margin">
         <div class="col-md-12">
             <h4><i class="fa fa-paper-plane-o"></i> Deja un comentario:</h4>
-            <form action="comentario/" method="post" class="form-horizontal"
+            <form action="comentario" method="post" class="form-horizontal"
                   enctype="multipart/form-data">{% csrf_token %}
                 <input style="width: 100%;" placeholder="Título" type="text" name="title" value="" required>
                 <div>
                     <textarea class="mce_comentario" name="comentario" style="margin-top: 1%; width: 100%;"
                               rows="3"></textarea>
                 </div>
-                <div class="input-group form-group">
+                 <div class="input-group form-group">
                     <input type="checkbox" name="anonimo" value="true" >Anónimo<br>
                 </div>
                 <button type="submit" name="comment_submit" id="comment_button" class="btn btn-success"><i
@@ -24,7 +26,7 @@
         </div>
     </div>
     <hr>
-{% else %}
+    {% else %}
     <hr>
     <div class="row no-margin">
         <div class="col-md-12">
@@ -33,13 +35,14 @@
     </div>
     <hr>
 {% endif %}
-<div class="container">
-    <h2 class="page-header" style='color: #259DCD;'>Comentarios</h2>
-    {% for elemento in comments %}
-        <section class="comment-list">
-            <!-- First Comment -->
-            <article class="row no-margin">
-                <div class="col-md-2 col-sm-2 hidden-xs">
+{% if comments %}
+    <div class="container">
+        <h2 class="page-header" style='color: #259DCD;'>Comentarios</h2>
+        {% for elemento in comments %}
+            <section class="comment-list">
+                <!-- First Comment -->
+                <article class="row no-margin">
+                    <div class="col-md-2 col-sm-2 hidden-xs">
                     <figure class="thumbnail">
                         {% if elemento.usuario.profile.photo and not elemento.anonimo %}
                             <div class="image-overlay"></div>
@@ -48,27 +51,30 @@
                             <div class="image-overlay"></div>
                             <img id="myImg" src="{% static 'img/profile.png' %}" alt="" width="100">
                         {% endif %}
-                        <figcaption class="text-center">{% if elemento.anonimo %}Anónimo{% else %}{{ elemento.usuario.username }}{% endif %}</figcaption>
+                        <figcaption class="text-center">{% if elemento.anonimo %}Anónimo{% else %}<a href="/profile/{{ elemento.usuario.id }}">{{ elemento.usuario.username }}</a>{% endif %}</figcaption>
                     </figure>
                 </div>
 
-                <div class="col-md-10 col-sm-10">
-                    <div class="panel panel-default arrow left">
-                        <div class="panel-body">
-                            <header class="text-left">
-                                <div class="comment-user"><strong>{{ elemento.titulo }}</strong></div>
-                                <time class="comment-date" datetime="16-12-2014 01:05"><i
-                                        class="fa fa-clock-o"></i> {{ elemento.fecha }}</time>
-                            </header>
-                            <div class="comment-post">
-                                <p>
-                                    {{ elemento.comentario }}
-                                </p>
+                    <div class="col-md-9 col-sm-9">
+                        <div class="panel panel-default arrow left">
+                            <div class="panel-body">
+                                <header class="text-left">
+                                    <div class="comment-user"><strong>{{ elemento.titulo }}</strong></div>
+                                    <time class="comment-date" datetime="16-12-2014 01:05"><i
+                                            class="fa fa-clock-o"></i> {{ elemento.fecha }}</time>
+                                </header>
+                                <div class="comment-post">
+                                    <p>
+                                        {{ elemento.comentario }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </article>
-        </section>
-    {% endfor %}
-</div>
+                </article>
+            </section>
+        {% endfor %}
+    </div>
+{% else %}
+     <h2 class="page-header" style='color: #259DCD;'>Todavía no hay comentarios</h2>
+{% endif %}

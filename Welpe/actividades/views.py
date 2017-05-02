@@ -1,35 +1,35 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
-# Create your views here.
 import os
-import sys
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseForbidden
-from mezzanine.pages.models import Page
-from Welpe.profile.models import LikeActividad
-from Welpe.actividades.utilsRegistros import UtilsRegistros
-from Welpe.actividades.utilsMiniActividades import UtilsMiniActividades
-from Welpe.actividades.utils import ActividadesUtils
-from .models import Actividades, MiniActividad, AsistentesMiniActividad, UsuariosRegistradosActividades, \
-    UsuariosListaEsperaActividades, OrganizadorMiniActividad, CommentsActividad
-from Welpe.manageUser.views import User
-from Welpe.profile.models import LikeActividad
-# Import django global objects
-from django.shortcuts import redirect
-# Import utils and mezzanine objects
-from mezzanine.utils.views import TemplateResponse, paginate
-from mezzanine.conf import settings
 from datetime import date
-from django.http import JsonResponse
-from django.contrib.auth.models import User
+
 import xlwt
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.http import HttpResponse, HttpResponseForbidden
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from mezzanine.conf import settings
+from mezzanine.pages.models import Page
+from mezzanine.utils.views import TemplateResponse
+
+from Welpe.actividades.utils import ActividadesUtils
+from Welpe.actividades.utilsMiniActividades import UtilsMiniActividades
+from Welpe.actividades.utilsRegistros import UtilsRegistros
+from Welpe.commons_utils.utils import AllUtils
+from Welpe.manageUser.views import User
+from Welpe.profile.models import Comments
+from Welpe.profile.models import LikeActividad
+from .models import Actividades, MiniActividad, UsuariosRegistradosActividades, \
+    OrganizadorMiniActividad
 
 utils = ActividadesUtils()
 utilsRegistros = UtilsRegistros()
 utilsMiniActividades = UtilsMiniActividades()
+utilsAll = AllUtils()
 
 
 def clear_filter(request):
@@ -110,7 +110,7 @@ def view_actividad(request, actividad=None, template="pages/actividad.html"):
     # metemos el usuario para que nos diga si esta o no registrado en la ponencia
     listado_miniactividades = utilsMiniActividades.getMiniActividades(actividad, request.user)
 
-    comments = CommentsActividad.objects.filter(actividad=actividad)
+    comments = Comments.objects.filter(page=request.page)
     context = {"actividad": actividad,
                "inicio_registro": inicio_registro,
                "final_registro": final_registro,
@@ -129,20 +129,10 @@ def view_actividad(request, actividad=None, template="pages/actividad.html"):
 
 
 @login_required
-def add_comment(request, actividad):
+def add_comment(request, url):
     """Devuelve la pagina del foro y almacena comentarios nuevos"""
-    actividad = utils.getActividad(actividad)
-    if request.method == "POST":
-        titulo = utils.getfromPost(request, "title")
-        comentario = utils.getfromPost(request, "comentario")
-        try:
-            existe = request.POST['anonimo']
-            anonimo = True
-        except:
-            anonimo = False
-        new_comment = CommentsActividad(titulo=titulo, comentario=comentario, actividad=actividad, usuario=request.user, anonimo=anonimo)
-        new_comment.save()
-    return redirect(actividad)
+    page = utilsAll.add_comment(request)
+    return redirect(page)
 
 
 @login_required
@@ -267,7 +257,7 @@ def add_actividad(request):
         actividad.url = url
         actividad.adminlist = adminlist
         actividad.title = title.decode('utf-8')  # \mezzanine\pages\models.py in save  self.titles = " / ".join(titles)
-        actividad.descripcion = descripcion_actividad
+        actividad.descripcion = descripcion_actividad.decode('utf-8')
         actividad.permitir_inscriptions = permitir_inscriptions
         actividad.fecha_inscripcion_inicio = fecha_inscripcion_inicio
         actividad.fecha_inscripcion_final = fecha_inscripcion_final
@@ -279,7 +269,8 @@ def add_actividad(request):
         actividad.lista_espera = lista_espera
         actividad.enviar_notificaciones = enviar_notificaciones
         actividad.email_organizador = email_organizador
-        actividad.attached_file = attached_file
+        if attached_file or unlinkarchivo:
+            actividad.attached_file = attached_file
         actividad.in_menus = in_menus
     else:
         actividad = Actividades(
@@ -290,7 +281,7 @@ def add_actividad(request):
             url=url,
             adminlist=adminlist,
             title=title.decode('utf-8'),  # \mezzanine\pages\models.py in save  self.titles = " / ".join(titles)
-            descripcion=descripcion_actividad,
+            descripcion=descripcion_actividad.decode('utf-8'),
             permitir_inscriptions=permitir_inscriptions,
             fecha_inscripcion_inicio=fecha_inscripcion_inicio,
             fecha_inscripcion_final=fecha_inscripcion_final,

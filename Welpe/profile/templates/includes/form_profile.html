@@ -72,7 +72,7 @@
                         <div class="col-lg-12">
                             <input id="tel_{{profile.id}}" class="form-control"
                                    placeholder="{% trans 'teléfono' %}" type="text" name="telefono"
-                               value="{{ profile.tel }}" >
+                               value="{{ profile.telefono }}" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -108,47 +108,47 @@
                         </div>
                     {% if grupo.name == "alumnos" %}
                         <div class="form-group">
-                            <label for="titulacion_{{profile.id}}" class="control-label">Grado/Titulación:*</label>
+                            <label for="titulacion_{{profile_alumno.id}}" class="control-label">Grado/Titulación:*</label>
                             <div class="col-lg-12">
-                                <input id="titulacion_{{profile.id}}" class="form-control" placeholder="{% trans 'grado o titulación' %}" type="text" name="titulacion"
-                                   value="{{ profile.grado }}" required>
+                                <input id="titulacion_{{profile_alumno.id}}" class="form-control" placeholder="{% trans 'grado o titulación' %}" type="text" name="titulacion"
+                                   value="{{ profile_alumno.grado }}" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="curso_{{profile.id}}" class="control-label">Curso:</label>
+                            <label for="curso_{{profile_alumno.id}}" class="control-label">Curso:</label>
                             <div class="col-lg-12">
-                                <input id="curso_{{profile.id}}" class="form-control" placeholder="{% trans 'curso' %}" type="number" name="curso"
-                                   value="{{ profile.curso }}" required>
+                                <input id="curso_{{profile_alumno.id}}" class="form-control" placeholder="{% trans 'curso' %}" type="number" name="curso"
+                                   value="{{ profile_alumno.curso }}" required>
                             </div>
                         </div>
                     {% endif %}
                     {% if grupo.name == "profesores" %}
                         <div class="form-group">
-                            <label for="formacion_{{profile.id}}" class="control-label">Formación: </label>
+                            <label for="formacion_{{profile_profesor.id}}" class="control-label">Formación: </label>
                             <div class="col-lg-12">
-                                <input id="formacion_{{profile.id}}" class="form-control" placeholder="{% trans 'formación' %}" type="text" name="formacion"
-                                   value="{{ profile.formacion }}">
+                                <input id="formacion_{{profile_profesor.id}}" class="form-control" placeholder="{% trans 'formación' %}" type="text" name="formacion"
+                                   value="{{ profile_profesor.formacion }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="puesto_{{profile.id}}" class="control-label">Puesto: </label>
+                            <label for="puesto_{{profile_profesor.id}}" class="control-label">Puesto: </label>
                             <div class="col-lg-12">
-                                <input id="puesto_{{profile.id}}" class="form-control" placeholder="{% trans 'puesto' %}" type="text" name="puesto"
-                                   value="{{ profile.puesto }}">
+                                <input id="puesto_{{profile_profesor.id}}" class="form-control" placeholder="{% trans 'puesto' %}" type="text" name="puesto"
+                                   value="{{ profile_profesor.puesto }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="departamento_{{profile.id}}" class="control-label">Departamento:*</label>
+                            <label for="departamento_{{profile_profesor.id}}" class="control-label">Departamento:*</label>
                             <div class="col-lg-12">
-                                <input id="departamento_{{profile.id}}" class="form-control" placeholder="{% trans 'departamento' %}" type="text" name="departamento"
-                                   value="{{ profile.departamento }}" required>
+                                <input id="departamento_{{profile_profesor.id}}" class="form-control" placeholder="{% trans 'departamento' %}" type="text" name="departamento"
+                                   value="{{ profile_profesor.departamento }}" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="investigacion_{{profile.id}}" class="control-label">Investigación:</label>
+                            <label for="investigacion_{{profile_profesor.id}}" class="control-label">Investigación:</label>
                             <div class="col-lg-12">
-                                <input id="departamento_{{profile.id}}" class="form-control" placeholder="{% trans 'investigación' %}" type="text" name="investigacion"
-                                   value="{{ profile.investigacion }}">
+                                <input id="departamento_{{profile_profesor.id}}" class="form-control" placeholder="{% trans 'investigación' %}" type="text" name="investigacion"
+                                   value="{{ profile_profesor.investigacion }}">
                             </div>
                         </div>
                     {% endif %}

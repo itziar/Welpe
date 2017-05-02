@@ -1,28 +1,28 @@
 # coding=utf-8
 
 from __future__ import unicode_literals
-# Create your views here.
-# Import models
+
 import os
-from mezzanine.pages.models import Page
-from django.contrib.auth.decorators import *
-from .models import Propuestas, CommentsPropuesta
-from Welpe.profile.models import LikePropuesta
-# Import django global objects
-from django.shortcuts import redirect
-# Import utils and mezzanine objects
-from mezzanine.utils.views import TemplateResponse, paginate
-from mezzanine.conf import settings
 from datetime import date
-from django.http import JsonResponse
-from Welpe.propuestas.utils import PropuestasUtils
-from django.core.exceptions import ObjectDoesNotExist
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.http import HttpResponseForbidden
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from mezzanine.pages.models import Page
+from mezzanine.utils.views import TemplateResponse
+
+from Welpe.commons_utils.utils import AllUtils
 from Welpe.manageUser.views import User
+from Welpe.profile.models import Comments
+from Welpe.profile.models import LikePropuesta
+from Welpe.propuestas.utils import PropuestasUtils
+from .models import Propuestas
 
 utils = PropuestasUtils()
+utilsAll = AllUtils()
 
 
 def clear_filter(request):
@@ -86,7 +86,7 @@ def view_propuesta(request, propuesta=None, template="pages/propuesta.html"):
     today = date.today()
     like = utils.getLikePropuesta(propuesta, request.user)
     number_of_likes = LikePropuesta.objects.filter(propuesta=propuesta).count()
-    comments = CommentsPropuesta.objects.filter(propuesta=propuesta)
+    comments = Comments.objects.filter(page=request.page)
     context = {"propuesta": propuesta,
                "today": today,
                "likeInfo": like,
@@ -100,21 +100,10 @@ def view_propuesta(request, propuesta=None, template="pages/propuesta.html"):
 
 
 @login_required
-def add_comment(request, propuesta):
+def add_comment(request, url):
     """Devuelve la pagina del foro y almacena comentarios nuevos"""
-    propuesta = utils.getPropuesta(propuesta)
-    if request.method == "POST":
-        try:
-            existe = request.POST['anonimo']
-            anonimo = True
-        except:
-            anonimo = False
-        titulo = utils.getfromPost(request, "title")
-        comentario = utils.getfromPost(request, "comentario")
-        new_comment = CommentsPropuesta(titulo=titulo, comentario=comentario, propuesta=propuesta, usuario=request.user,
-                                        anonimo=anonimo)
-        new_comment.save()
-    return redirect(propuesta)
+    page = utilsAll.add_comment(request)
+    return redirect(page)
 
 
 @login_required
@@ -125,7 +114,6 @@ def like_propuesta(request, propuesta=None):
     :param info: el evento donde se encuentra la ponencia
     :return: retorna un json que cuenta el numero de users preregistrados y los muestra
     """
-
     propuesta = utils.getPropuesta(propuesta)
     if request.POST:
         guardado = utils.getLikePropuesta(propuesta, request.user)
@@ -185,27 +173,26 @@ def add_propuesta(request):
     unlinkarchivo = False
     if delete_file:
         unlinkarchivo = True
-        if propuesta:
-            cola, fichero = os.path.split(propuesta.attached_file.path)
-            propuesta.attached_file.delete()
     if propuesta and attached_file:
-        if propuesta.attached_file:
-            cola, fichero = os.path.split(propuesta.attached_file.path)
-            propuesta.attached_file.delete()
+        if propuesta.archivo:
+            cola, fichero = os.path.split(propuesta.archivo.path)
+            propuesta.archivo.delete()
     if unlinkarchivo and not attached_file:
         attached_file = ""
     # TODO: cambiar espacios por guiones
     if propuesta:
         propuesta.title = title.decode('utf-8')
-        propuesta.descripcion = descripcion
-        propuesta.usuario = user
+        propuesta.slug = "propuestas/" + unicode(title, "utf-8")
+        propuesta.descripcion = descripcion.decode('utf-8')
         propuesta.estado_propuesta = estado_propuesta
-        propuesta.archivo = attached_file
+        if attached_file or unlinkarchivo:
+            propuesta.archivo = attached_file
 
     else:
         propuesta = Propuestas(
             title=title.decode('utf-8'),
-            descripcion=descripcion,
+            slug="propuestas/" + unicode(title, "utf-8"),
+            descripcion=descripcion.decode('utf-8'),
             usuario=user,
             estado_propuesta=estado_propuesta,
             archivo=attached_file,
@@ -244,7 +231,7 @@ def estado(request, propuesta=None):
     :return: retorna a la pagina principal del evento
     """
     propuesta = utils.getPropuesta(propuesta)
-    #TODO permissions
+    # TODO permissions
     if not propuesta.has_permissions(request.user):
         return HttpResponseForbidden()
 
@@ -262,7 +249,7 @@ def estado(request, propuesta=None):
         user = utils.getUserInfoId(id_usuario)
         if not user:
             raise Exception("Cant find user")
-        #todo
+        # todo
         propuesta = utils.getPropuestaUsuario(propuesta, pk, user)
 
         propuesta.estado_propuesta = estado

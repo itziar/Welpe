@@ -9,13 +9,14 @@ from django.template.loader import get_template
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from datetime import date
 from Welpe.site_utils import UtilsForAll
-
+from Welpe.propuestas.models import Propuestas
 
 from django.contrib.sites.shortcuts import get_current_site
-from .models import Propuestas, CommentsPropuesta
+
 from Welpe.profile.models import LikePropuesta
 
 from Welpe.manageUser.views import User
+from Welpe.profile.models import Comments
 
 utilsForAll = UtilsForAll()
 
@@ -56,7 +57,7 @@ class PropuestasUtils:
                     propuesta = {}
                     propuesta["propuesta"] = elemento
                     propuesta["like"] = LikePropuesta.objects.filter(propuesta=elemento).count()
-                    propuesta["comment"] = CommentsPropuesta.objects.filter(propuesta=elemento).count()
+                    propuesta["comment"] = Comments.objects.filter(page=elemento).count()
                     if user.is_authenticated():
                         LikePropuesta.objects.get(propuesta=elemento, usuario=user)
                         propuesta["likePropuesta"] = True
@@ -70,7 +71,7 @@ class PropuestasUtils:
                 propuesta = {}
                 propuesta["propuesta"] = elemento
                 propuesta["like"] = LikePropuesta.objects.filter(propuesta=elemento).count()
-                propuesta["comment"] = CommentsPropuesta.objects.filter(propuesta=elemento).count()
+                propuesta["comment"] = Comments.objects.filter(page=elemento).count()
                 try:
                     if user.is_authenticated():
                         LikePropuesta.objects.get(propuesta=elemento, usuario=user)

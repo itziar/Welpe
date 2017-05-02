@@ -235,6 +235,7 @@ INSTALLED_APPS = (
     "Welpe.profile",
     "Welpe.foro",
     "Welpe.propuestas",
+    "Welpe.commons_utils",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -343,3 +344,4 @@ else:
 
 TINYMCE_SETUP_JS = "js/tinyconfig.js"
 ACCOUNTS_VERIFICATION_REQUIRED=True
+ACCOUNTS_PROFILE_MODEL = "profile.Profile"

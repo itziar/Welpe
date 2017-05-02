@@ -8,10 +8,10 @@ from django.template import Context
 from django.template.loader import get_template
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from datetime import date
-from .models import UsuariosRegistradosActividades, Actividades, CommentsActividad
+from .models import UsuariosRegistradosActividades, Actividades
 from django.contrib.sites.shortcuts import get_current_site
 from Welpe.site_utils import UtilsForAll
-from Welpe.profile.models import LikeActividad
+from Welpe.profile.models import LikeActividad, Comments
 
 utilsForAll = UtilsForAll()
 
@@ -68,7 +68,7 @@ class ActividadesUtils:
                     actividad = {}
                     actividad["actividad"] = elemento
                     actividad["like"] = LikeActividad.objects.filter(actividad=elemento).count()
-                    actividad["comment"] = CommentsActividad.objects.filter(actividad=elemento).count()
+                    actividad["comment"] = Comments.objects.filter(page=elemento).count()
                     if user.is_authenticated():
                         LikeActividad.objects.get(actividad=elemento, usuario=user)
                         actividad["likeAct"] = True
@@ -82,7 +82,7 @@ class ActividadesUtils:
                 actividad = {}
                 actividad["actividad"] = elemento
                 actividad["like"] = LikeActividad.objects.filter(actividad=elemento).count()
-                actividad["comment"] = CommentsActividad.objects.filter(actividad=elemento).count()
+                actividad["comment"] = Comments.objects.filter(page=elemento).count()
                 try:
                     if user.is_authenticated():
                         LikeActividad.objects.get(actividad=elemento, usuario=user)

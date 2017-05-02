@@ -1,24 +1,14 @@
 from __future__ import unicode_literals
 
-import Welpe.settings
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponseForbidden, Http404
-from django.template import Context
-from django.template.loader import get_template
-from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
-from datetime import date
-from Welpe.site_utils import UtilsForAll
-
-# from accounts.templatetags.accounts_tags import get_name, get_mail
-
-
-
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
-from .models import OfertaTrabajo, CommentsOferta
-from Welpe.profile.models import LikeOferta
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseForbidden, Http404
+from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 
+from Welpe.profile.models import LikeOferta, Comments
+from Welpe.site_utils import UtilsForAll
+from .models import OfertaTrabajo
 
 utilsForAll = UtilsForAll()
 
@@ -59,7 +49,7 @@ class OfertasUtils:
                     oferta = {}
                     oferta["oferta"] = elemento
                     oferta["like"] = LikeOferta.objects.filter(oferta=elemento).count()
-                    oferta["comment"] = CommentsOferta.objects.filter(oferta=elemento).count()
+                    oferta["comment"] = Comments.objects.filter(page=elemento).count()
                     if user.is_authenticated():
                         LikeOferta.objects.get(oferta=elemento, usuario=user)
                         oferta["likeOferta"] = True
@@ -73,7 +63,7 @@ class OfertasUtils:
                 oferta = {}
                 oferta["oferta"] = elemento
                 oferta["like"] = LikeOferta.objects.filter(oferta=elemento).count()
-                oferta["comment"] = CommentsOferta.objects.filter(oferta=elemento).count()
+                oferta["comment"] = Comments.objects.filter(page=elemento).count()
                 try:
                     if user.is_authenticated():
                         LikeOferta.objects.get(oferta=elemento, usuario=user)
@@ -84,8 +74,6 @@ class OfertasUtils:
                     oferta["likeOferta"] = False
                 listado_ofertas_likes.append(oferta)
         return listado_ofertas_likes
-
-
 
     def getOfertaByPK(self, pk=None):
         if not pk:
@@ -119,7 +107,6 @@ class OfertasUtils:
         """Given a field return its file value if exists. Return an empty string otherwise."""
         return utilsForAll.getfilefromPost(request, campo)
 
-
     def getExcelHeader_for_proposals(self, event):
         """
         adaptar
@@ -141,7 +128,6 @@ class OfertasUtils:
         columns.append((u"Prop. Status", 4000))
         columns.append((u"File", 6000))
         return columns
-
 
     def getExcelHeader_for_register(self, event):
         """
@@ -168,7 +154,6 @@ class OfertasUtils:
             columns.append((u"Food indications", 10000))
 
         return columns
-
 
     def getExcelContent_for_register(self, event, participante):
         """
@@ -197,7 +182,6 @@ class OfertasUtils:
             columns.append(participante.food_indications)
 
         return columns
-
 
     def getExcelContent_for_proposals(self, event, propuesta):
         """

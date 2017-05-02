@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^/delete_propuesta$', views.delete_propuesta),
     url(r'^/(?P<propuesta>.*)/$', views.view_propuesta),
     url(r'^/(?P<propuesta>.*)/like$', views.like_propuesta),
-    url(r'^/(?P<propuesta>.*)/comentario$', views.add_comment),
+    url(r'^/(?P<url>.*)/comentario$', views.add_comment),
     url(r'^/clear$', views.clear_filter),
     url("^/$", views.list_propuesta, name="home_propuesta"),
 ]

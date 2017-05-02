@@ -3,25 +3,28 @@ from __future__ import unicode_literals
 
 import os
 
-from django.core.exceptions import ObjectDoesNotExist
-
-from .models import Profile, Message
-
-from Welpe.profile.utils import ProfileUtils
-from Welpe.manageUser.views import User
-from mezzanine.utils.views import TemplateResponse
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from mezzanine.utils.views import TemplateResponse
+
+from Welpe.manageUser.views import User
+from Welpe.profile.utils import ProfileUtils
+from .models import Profile, Message, ProfileProfesor, ProfileAlumno
 
 utils = ProfileUtils()
 
 
 def view_profile(request, user, template='pages/profile.html'):
-    usuario = User.objects.get(pk=user)
+    user = User.objects.get(pk=user)
     try:
-        profile = utils.getProfileByUser(usuario)
+        profile = utils.getProfileByUser(user)
     except ObjectDoesNotExist, e:
         profile = None
+    try:
+        grupo = user.groups.get()
+    except:
+        grupo = None
     if request.POST:
         # sacar los datos del formulario
         dni = utils.getfromPost(request, "dni")
@@ -29,25 +32,18 @@ def view_profile(request, user, template='pages/profile.html'):
         url = utils.getfromPost(request, "url")
         telefono = utils.getfromPost(request, "telefono")
         location = utils.getfromPost(request, "location")
-        titulacion = utils.getfromPost(request, "titulacion")
-        curso = utils.getfromPost(request, "curso")
-        formacion = utils.getfromPost(request, "formacion")
-        puesto = utils.getfromPost(request, "puesto")
-        departamento = utils.getfromPost(request, "departamento")
-        investigacion = utils.getfromPost(request, "investigacion")
         show_email = utils.getfromPost(request, "show_email")
         if show_email:
             show_email = True
         else:
             show_email = False
         # save formulario
-        if not usuario:
-            usuario = request.user
+        if not user:
+            user = request.user
         delete_file = utils.getfromPost(request, "delete_file")
         image = utils.getfilefromPost(request, 'image')
         if image == "/static/media/":
             image = ""
-
         unlinkarchivo = False
         if delete_file:
             unlinkarchivo = True
@@ -61,7 +57,7 @@ def view_profile(request, user, template='pages/profile.html'):
         if unlinkarchivo and not image:
             image = ""
         if profile:
-            profile.usuario = usuario
+            profile.usuario = user
             profile.dni = dni
             profile.bio = desc
             profile.pagina_web = url
@@ -69,16 +65,9 @@ def view_profile(request, user, template='pages/profile.html'):
             profile.location = location
             profile.show_email = show_email
             profile.photo = image
-            profile.grado = titulacion
-            profile.curso = curso
-            profile.formacion = formacion
-            profile.puesto = puesto
-            profile.departamento = departamento
-            profile.investigacion = investigacion
-
         else:
             profile = Profile(
-                usuario=usuario,
+                usuario=user,
                 dni=dni,
                 bio=desc,
                 pagina_web=url,
@@ -86,24 +75,68 @@ def view_profile(request, user, template='pages/profile.html'):
                 location=location,
                 show_email=show_email,
                 photo=image,
-                grado=titulacion,
-                curso=curso,
-                formacion=formacion,
-                puesto=puesto,
-                departamento=departamento,
-                investigacion=investigacion
             )
         profile.save()
-    try:
-        grupo = usuario.groups.get()
-    except:
-        grupo = None
-    # sacar favoritos
-    likes = utils.getLikes(usuario)
-    actividades = utils.getActividades(usuario)
-    mensajes = utils.getMensajes(usuario)
-    context = {"profile": profile, "user": usuario, "user_pedido": user, "is_profile": True, 'grupo': grupo,
-               'likes': likes, 'actividades': actividades, 'mensajes': mensajes}
+        if grupo.name == "profesores":
+            formacion = utils.getfromPost(request, "formacion")
+            puesto = utils.getfromPost(request, "puesto")
+            departamento = utils.getfromPost(request, "departamento")
+            investigacion = utils.getfromPost(request, "investigacion")
+            try:
+                profesor = utils.getProfileProfesorByUser(user)
+            except ObjectDoesNotExist, e:
+                profesor = None
+            if profesor:
+                profesor.usuario = user
+                profesor.formacion = formacion
+                profesor.puesto = puesto
+                profesor.departamento = departamento
+                profesor.investigacion = investigacion
+            else:
+                profesor = ProfileProfesor(
+                    usuario = user,
+                    formacion=formacion,
+                    puesto=puesto,
+                    departamento=departamento,
+                    investigacion=investigacion
+                )
+            profesor.save()
+        if grupo.name == "alumnos":
+            titulacion = utils.getfromPost(request, "titulacion")
+            curso = utils.getfromPost(request, "curso")
+            try:
+                alumno = utils.getProfileAlumnoByUser(user)
+            except ObjectDoesNotExist, e:
+                alumno = None
+            if alumno:
+                alumno.usuario = user
+                alumno.grado = titulacion
+                alumno.curso = curso
+            else:
+                alumno = ProfileAlumno(
+                    usuario = user,
+                    grado=titulacion,
+                    curso=curso,
+                )
+            alumno.save()
+            # sacar favoritos
+    perfil_profesor=None
+    if grupo.name == "profesores":
+        try:
+            perfil_profesor = utils.getProfileProfesorByUser(user)
+        except ObjectDoesNotExist, e:
+            perfil_profesor = None
+    perfil_alumno = None
+    if grupo.name == "alumnos":
+        try:
+            perfil_alumno = utils.getProfileAlumnoByUser(user)
+        except ObjectDoesNotExist, e:
+            perfil_alumno = None
+    likes = utils.getLikes(user)
+    actividades = utils.getActividades(user)
+    mensajes = utils.getMensajes(user)
+    context = {"profile": profile, "user": user, "is_profile": True, 'grupo': grupo,
+               'likes': likes, 'actividades': actividades, 'mensajes': mensajes, "profile_profesor": perfil_profesor, "profile_alumno": perfil_alumno}
     templates = [template]
     return TemplateResponse(request, templates, context)
 
@@ -115,7 +148,6 @@ def send_message(request, user):
         body = utils.getfromPost(request, "body")
         destinatario = User.objects.get(pk=user)
         remitente = request.user
-
         mensaje = Message(
             destinatario=destinatario,
             remitente=remitente,

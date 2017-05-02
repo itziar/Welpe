@@ -40,8 +40,7 @@
                                 <textarea name="descripcion"
                                           class="form-control mce_descripcion_{{ info.id }}{{ elemento.info.id }}"
                                           rows="3" id="descripcion_{{ info.id }}{{ elemento.info.id }}"
-                                          value="{{ info.descripcion }}{{ elemento.info.descripcion }}">
-                                    {{ info.descripcion }}{{ elemento.info.descripcion }}</textarea>
+                                          value="{{ info.descripcion }}{{ elemento.info.descripcion }}">{{ info.descripcion }}{{ elemento.info.descripcion }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -69,7 +68,7 @@
                                     <option {% if elemento.info.tipo_info == 1 or info.tipo_info == 1 %}selected="Programa" {% endif %}>
                                         Programa
                                     </option>
-                                    <option {% if elemento.info.tipo_info == 2 or info.tipo_info == 2 %}selected="Curso" {% endif %}>curso
+                                    <option {% if elemento.info.tipo_info == 2 or info.tipo_info == 2 %}selected="Curso" {% endif %}>Curso
                                     </option>
                                     <option {% if elemento.info.tipo_info == 3 or info.tipo_info == 3 %}selected="Concurso" {% endif %}>
                                         Concurso

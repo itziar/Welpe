@@ -47,20 +47,3 @@ class Propuestas(Page, RichText, GenericContent):
         except:
             pass
         super(Propuestas, self).delete(*args, **kwargs)
-
-class CommentsPropuesta(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    propuesta = models.ForeignKey(Propuestas, on_delete=models.CASCADE)
-    titulo = models.TextField(max_length=150)
-    comentario = RichTextField()
-    #posibilidad de que el comentario sea anónimo
-    anonimo = models.BooleanField(default=False)
-    # posibilidad de subir archivos?
-    fecha = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'comentario'
-        verbose_name_plural = 'comentarios'
-
-    def __unicode__(self):
-        return u"Comentario %i" % (self.id)

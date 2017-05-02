@@ -1,28 +1,25 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
-# Create your views here.
-# Import models
 import os
-from mezzanine.pages.models import Page
-from django.contrib.auth.decorators import *
-from .models import OfertaTrabajo, CommentsOferta
-from Welpe.profile.models import LikeOferta
-# Import django global objects
-from django.shortcuts import redirect
-# Import utils and mezzanine objects
-from mezzanine.utils.views import TemplateResponse, paginate
-from mezzanine.conf import settings
 from datetime import date
-from django.http import JsonResponse
-from Welpe.ofertaTrabajo.utils import OfertasUtils
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
-from django.db.models import Q
 
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from mezzanine.pages.models import Page
+from mezzanine.utils.views import TemplateResponse
+
+from Welpe.commons_utils.utils import AllUtils
+from Welpe.ofertaTrabajo.utils import OfertasUtils
+from Welpe.profile.models import Comments
+from Welpe.profile.models import LikeOferta
+from .models import OfertaTrabajo
 
 utils = OfertasUtils()
+utilsAll = AllUtils()
 
 
 def clear_filter(request):
@@ -81,7 +78,7 @@ def view_oferta(request, oferta=None, template="pages/oferta.html"):
     today = date.today()
     like = utils.getLikeOferta(oferta, request.user)
     number_of_likes = LikeOferta.objects.filter(oferta=oferta).count()
-    comments = CommentsOferta.objects.filter(oferta=oferta)
+    comments = Comments.objects.filter(page=request.page)
 
     context = {"oferta": oferta,
                "today": today,
@@ -96,20 +93,11 @@ def view_oferta(request, oferta=None, template="pages/oferta.html"):
 
 
 @login_required
-def add_comment(request, oferta):
+def add_comment(request, url):
     """Devuelve la pagina del foro y almacena comentarios nuevos"""
-    oferta = utils.getOferta(oferta)
-    if request.method == "POST":
-        titulo = utils.getfromPost(request, "title")
-        comentario=utils.getfromPost(request, "comentario")
-        try:
-            existe=request.POST['anonimo']
-            anonimo = True
-        except:
-            anonimo=False
-        new_comment = CommentsOferta(titulo=titulo, comentario=comentario, oferta=oferta, usuario=request.user, anonimo=anonimo)
-        new_comment.save()
-    return redirect(oferta)
+    page = utilsAll.add_comment(request)
+    return redirect(page)
+
 
 @login_required
 def like_oferta(request, oferta=None):
@@ -179,43 +167,38 @@ def add_oferta(request):
     unlinkarchivo = False
     if delete_file:
         unlinkarchivo = True
-        if oferta:
-            cola, fichero = os.path.split(oferta.attached_file.path)
-            oferta.attached_file.delete()
-
     if oferta and attached_file:
         if oferta.attached_file:
             cola, fichero = os.path.split(oferta.attached_file.path)
             oferta.attached_file.delete()
-
     if unlinkarchivo and not attached_file:
         attached_file = ""
     # TODO: cambiar espacios por guiones
     if oferta:
         oferta.title = title.decode('utf-8')
-        oferta.descripcion = descripcion
-        oferta.como_aplicar = como_aplicar
+        oferta.slug = "ofertas/" + unicode(title, "utf-8")
+        oferta.descripcion = descripcion.decode('utf-8')
+        oferta.como_aplicar = como_aplicar.decode('utf-8')
         oferta.url = url
-        oferta.cuando = cuando
-        oferta.donde = donde
-        oferta.salario = salario
-        oferta.owner = request.user
+        oferta.cuando = cuando.decode('utf-8')
+        oferta.donde = donde.decode('utf-8')
+        oferta.salario = salario.decode('utf-8')
         oferta.tipo_contrato = tipo_contrato
-        oferta.attached_file = attached_file
-        oferta.slug = "ofertas/" + unicode(title, "utf-8")  # si cambia el titulo quiero que cambie el slug
+        if attached_file or unlinkarchivo:
+            oferta.attached_file = attached_file
     else:
         oferta = OfertaTrabajo(
-            title=title,
-            descripcion=descripcion,
-            como_aplicar=como_aplicar,
+            title=title.decode('utf-8'),
+            slug="ofertas/" + unicode(title, "utf-8"),
+            parent=parent,
+            descripcion=descripcion.decode('utf-8'),
+            como_aplicar=como_aplicar.decode('utf-8'),
             url=url,
-            cuando=cuando,
-            donde=donde,
-            salario=salario,
+            cuando=cuando.decode('utf-8'),
+            donde=donde.decode('utf-8'),
+            salario=salario.decode('utf-8'),
             owner=request.user,
             tipo_contrato=tipo_contrato,
-            parent=parent,
-            slug="ofertas/" + unicode(title, "utf-8"),
             attached_file=""
         )
         # guardamos antes para que el evento tenga id
@@ -241,4 +224,3 @@ def delete_oferta(request):
             raise Exception("Cant delete this event")
         oferta.delete()
     return redirect("home_ofertas")
-

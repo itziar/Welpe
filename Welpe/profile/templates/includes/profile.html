@@ -67,18 +67,18 @@
                 {% endif %}
                 <br>
                 {% if profile.location %}<i class="glyphicon glyphicon-globe"></i> {{ profile.location }}<br>{% endif %}
-                {% if profile.bio %}<p>About me: <br>{{ profile.desc }}</p>{% endif %}
-                {% if profile.pagina_web %} <i class="fa fa-external-link" aria-hidden="true"></i> {% endif %}
-                {% if profile.telefono %}<i class="glyphicon glyphicon-earphone"></i> {{ profile.telefono }}{% endif %}
+                {% if profile.bio %}<p>About me: <br>{{ profile.bio }}</p>{% endif %}
+                {% if profile.pagina_web %} <i class="fa fa-external-link" aria-hidden="true"></i> <a href="{{ profile.pagina_web }}">{{ profile.pagina_web }}</a><br>{% endif %}
+                {% if profile.telefono %}<i class="glyphicon glyphicon-earphone"></i> {{ profile.telefono }}<br>{% endif %}
                 {% if grupo.name == "alumnos" %}
-                    {% if profile.grado %}Titulación/Grado: {{ profile.grado }}{% endif %}
+                    {% if profile_alumno.grado %}Titulación/Grado: {{ profile_alumno.grado }}{% endif %}
                     <br>
-                    {% if profile.curso %}Curso: {{ profile.curso }}{% endif %}
+                    {% if profile_alumno.curso %}Curso: {{ profile_alumno.curso }}{% endif %}
                 {% elif grupo.name == "profesores" %}
-                    {% if profile.puesto %}Puesto: {{ profile.puesto }}{% endif %}
-                    {% if profile.formacion %}Formación: {{ profile.formacion }}{% endif %}
-                    {% if profile.departamento %}Departamento: {{ profile.departamento }}{% endif %}
-                    {% if profile.investigacion %}Investigación: {{ profile.investigacion }}{% endif %}
+                    {% if profile_profesor.puesto %}Puesto: {{ perfil_profesor.puesto }}{% endif %}
+                    {% if profile_profesor.formacion %}Formación: {{ profile_profesor.formacion }}{% endif %}
+                    {% if profile_profesor.departamento %}Departamento: {{ profile_profesor.departamento }}{% endif %}
+                    {% if profile_profesor.investigacion %}Investigación: {{ profile_profesor.investigacion }}{% endif %}
                 {% endif %}
             </div>
         </div>

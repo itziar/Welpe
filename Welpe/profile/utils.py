@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 
 from Welpe.site_utils import UtilsForAll
-from .models import Profile, LikeInfo, LikeOferta, LikePropuesta, LikeActividad, Message
+from .models import Profile, LikeInfo, LikeOferta, LikePropuesta, LikeActividad, Message, ProfileProfesor, ProfileAlumno
 from Welpe.actividades.models import Actividades, UsuariosRegistradosActividades, UsuariosListaEsperaActividades
 
 utilsForAll = UtilsForAll()
@@ -30,6 +30,23 @@ class ProfileUtils:
             raise ObjectDoesNotExist()
         try:
             result = Profile.objects.get(usuario=user)
+        except ObjectDoesNotExist, e:
+            return None
+        return result
+    def getProfileProfesorByUser(self, user=None):
+        if not user:
+            raise ObjectDoesNotExist()
+        try:
+            result = ProfileProfesor.objects.get(usuario=user)
+        except ObjectDoesNotExist, e:
+            return None
+        return result
+
+    def getProfileAlumnoByUser(self, user=None):
+        if not user:
+            raise ObjectDoesNotExist()
+        try:
+            result = ProfileAlumno.objects.get(usuario=user)
         except ObjectDoesNotExist, e:
             return None
         return result

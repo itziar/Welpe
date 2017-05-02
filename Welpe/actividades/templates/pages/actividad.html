@@ -29,12 +29,19 @@
 {% endblock %}
 {% block button_add %}
     {% if request.user.is_authenticated %}
-    {% has_permissions_actividad actividad request.user as permissions %}
-    {% if permissions %}
-        <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
-           data-target="#miniactividad_">{% trans "Añadir MiniActividad" %}</a>
-        {% include "includes/add_miniactividad.html" %}
-    {% endif %}
+        {% has_permissions_actividad actividad request.user as permissions %}
+        {% if permissions %}
+            <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+               data-target="#miniactividad_">{% trans "Añadir MiniActividad" %}</a>
+            {% include "includes/add_miniactividad.html" %}
+        {% else %}
+            {% has_permissions request.user as perm_actividades %}
+            {% if perm_actividades %}
+                <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
+                data-target="#actividad_">{% trans "Nueva Actividad" %}</a>
+                {% include "includes/form_actividad.html" %}
+            {% endif %}
+        {% endif %}
     {% endif %}
 {% endblock %}
 {% block main %}
@@ -101,7 +108,7 @@
                         {% endif %}
                         <div role="tabpanel" class="tab-pane fade" id="actComment">
                             <div class="tab-inner">
-                                {% include "includes/comentarios_actividades.html" %}
+                                {% include "includes/comments.html" %}
                             </div>
                         </div>
                     </div>

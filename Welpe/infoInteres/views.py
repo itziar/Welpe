@@ -2,30 +2,26 @@
 
 from __future__ import unicode_literals
 
-# Create your views here.
-# Import models
 import os
-from mezzanine.pages.models import Page
-from django.contrib.auth.decorators import *
-from .models import InfoInteres, CommentsInfo
-from Welpe.profile.models import LikeInfo
-# Import django global objects
-from django.shortcuts import redirect
-# Import utils and mezzanine objects
-from mezzanine.utils.views import TemplateResponse, paginate
-from mezzanine.conf import settings
 from datetime import date
-from django.http import JsonResponse
-from Welpe.infoInteres.utils import InfoUtils
-from django.core.exceptions import ObjectDoesNotExist
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from mezzanine.pages.models import Page
+from mezzanine.utils.views import TemplateResponse
 
-
-
+from Welpe.commons_utils.utils import AllUtils
+from Welpe.infoInteres.utils import InfoUtils
+from Welpe.profile.models import Comments
+from Welpe.profile.models import LikeInfo
+from .models import InfoInteres
 
 utils = InfoUtils()
+utilsAll = AllUtils()
+
 
 def clear_filter(request):
     '''
@@ -38,8 +34,8 @@ def clear_filter(request):
 
 def list_infos(request, template="/pages/info_list.html"):
     listado_infos = InfoInteres.objects.published()
-    filtrar_like=False
-    if request.method=="POST":
+    filtrar_like = False
+    if request.method == "POST":
         content = request.POST['content']
         if content != '':
             listado_infos = listado_infos.filter(Q(title__icontains=content) | Q(descripcion__icontains=content))
@@ -62,13 +58,12 @@ def list_infos(request, template="/pages/info_list.html"):
     return TemplateResponse(request, templates, context)
 
 
-
 def view_info(request, info=None, template="pages/info.html"):
     info = utils.getInfo(info)
     today = date.today()
     like = utils.getLikeInfo(info, request.user)
     number_of_likes = LikeInfo.objects.filter(info=info).count()
-    comments = CommentsInfo.objects.filter(info=info)
+    comments = Comments.objects.filter(page=request.page)
     context = {"info": info,
                "today": today,
                "likeInfo": like,
@@ -82,20 +77,10 @@ def view_info(request, info=None, template="pages/info.html"):
 
 
 @login_required
-def add_comment(request, info):
+def add_comment(request, url):
     """Devuelve la pagina del foro y almacena comentarios nuevos"""
-    info = utils.getInfo(info)
-    if request.method == "POST":
-        titulo = utils.getfromPost(request, "title")
-        comentario=utils.getfromPost(request, "comentario")
-        try:
-            existe = request.POST['anonimo']
-            anonimo = True
-        except:
-            anonimo=False
-        new_comment = CommentsInfo(titulo=titulo, comentario=comentario, info=info, usuario=request.user, anonimo=anonimo)
-        new_comment.save()
-    return redirect(info)
+    page = utilsAll.add_comment(request)
+    return redirect(page)
 
 
 @login_required
@@ -164,25 +149,27 @@ def add_info(request):
     # TODO: cambiar espacios por guiones
     if info:
         info.title = title.decode('utf-8')
-        info.descripcion = descripcion
+        info.slug = "informacion/" + unicode(title, "utf-8")  # si cambia el titulo quiero que cambie el slug
+        info.descripcion = descripcion.decode('utf-8')
         info.url = url
-        info.cuando = cuando
-        info.donde = donde
+        info.cuando = cuando.decode('utf-8')
+        info.donde = donde.decode('utf-8')
         info.owner = request.user
         info.tipo_informacion = tipo_info
-        info.attached_file = attached_file
-        info.slug = "informacion/" + unicode(title, "utf-8")  # si cambia el titulo quiero que cambie el slug
+        if attached_file or unlinkarchivo:
+            info.attached_file = attached_file
+
     else:
         info = InfoInteres(
-            title=title,
-            descripcion=descripcion,
+            title=title.decode('utf-8'),
+            slug="informacion/" + unicode(title, "utf-8"),
+            descripcion=descripcion.decode('utf-8'),
             url=url,
-            cuando=cuando,
-            donde=donde,
+            cuando=cuando.decode('utf-8'),
+            donde=donde.decode('utf-8'),
             owner=request.user,
             tipo_informacion=tipo_info,
             parent=parent,
-            slug="informacion/" + unicode(title, "utf-8"),
             attached_file=""
         )
         # guardamos antes para que el evento tenga id
@@ -207,4 +194,3 @@ def delete_info(request):
             raise Exception("Cant delete this event")
         info.delete()
     return redirect("home_info")
-

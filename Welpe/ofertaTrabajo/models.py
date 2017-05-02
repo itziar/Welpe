@@ -63,20 +63,3 @@ class OfertaTrabajo(Page, RichText, GenericContent):
     class Meta:
         verbose_name = _("Oferta")
         verbose_name_plural = _("Listado de Ofertas")
-
-class CommentsOferta(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    oferta = models.ForeignKey(OfertaTrabajo, on_delete=models.CASCADE)
-    titulo = models.TextField(max_length=150)
-    comentario = RichTextField()
-    #posibilidad de que el comentario sea anónimo
-    anonimo = models.BooleanField(default=False)
-    # posibilidad de subir archivos?
-    fecha = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'comentario'
-        verbose_name_plural = 'comentarios'
-
-    def __unicode__(self):
-        return u"Comentario %i" % (self.id)

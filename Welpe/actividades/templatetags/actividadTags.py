@@ -21,7 +21,7 @@ def has_permissions_actividad(actividad, user):
         grupo = user.groups.get()
     except:
         grupo = None
-    if user.is_superuser or (grupo.name == "profesores")  or (user == actividad.owner) or (user.email in actividad.adminlist):
+    if user.is_superuser or (user == actividad.owner) or (user.email in actividad.adminlist):
             return True
     return False
 

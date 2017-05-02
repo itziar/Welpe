@@ -12,8 +12,6 @@ import shutil
 from Welpe import settings
 
 
-
-
 def user_directory_informacion(informacion, filename):
     # file will be uploaded to MEDIA_ROOT/informaicon/<informacion_id>/<filename>
     return 'informacion/{0}/{1}'.format(informacion.pk, filename)
@@ -42,11 +40,11 @@ class InfoInteres(Page, RichText, GenericContent):
         default=TipoInformacion.Otros, blank=False)
 
     def has_permissions(self, user):
-        '''
+        """
         This function checks if an user has permissions to do something with an offers
         :param user:
         :return: value of comparation
-        '''
+        """
         if user.is_superuser or (user == self.owner):
             return True
         return False
@@ -64,21 +62,3 @@ class InfoInteres(Page, RichText, GenericContent):
     class Meta:
         verbose_name = _("Información Interesante")
         verbose_name_plural = _("Listado de información interesante")
-
-
-class CommentsInfo(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    info = models.ForeignKey(InfoInteres, on_delete=models.CASCADE)
-    titulo = models.TextField(max_length=150)
-    comentario = RichTextField()
-    # posibilidad de que el comentario sea anónimo
-    anonimo = models.BooleanField(default=False)
-    # posibilidad de subir archivos?
-    fecha = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'comentario'
-        verbose_name_plural = 'comentarios'
-
-    def __unicode__(self):
-        return u"Comentario %i" % (self.id)

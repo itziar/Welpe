@@ -7,7 +7,7 @@ from mezzanine.core.fields import RichTextField
 from django.contrib.auth.models import User
 
 
-class Comments(models.Model):
+class Foro(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     titulo = models.TextField(max_length=150)
     comentario = RichTextField()

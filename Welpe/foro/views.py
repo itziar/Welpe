@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from Welpe.foro.utils import ForoUtils
 from django.shortcuts import redirect
 from mezzanine.utils.views import TemplateResponse, paginate
-from .models import Comments
+from .models import Foro
 
 utils = ForoUtils()
 
@@ -14,7 +14,7 @@ def list_foro(request, template="pages/list_foro.html"):
     templates = []
     templates.append(u'pages/list_foro.html')
     templates.append(template)
-    comments = Comments.objects.all()
+    comments = Foro.objects.all()
     context = {"comments": comments}
     return TemplateResponse(request, templates, context)
 
@@ -25,6 +25,6 @@ def add_comment(request):
     if request.method == "POST":
         titulo = utils.getfromPost(request, "title")
         comentario = utils.getfromPost(request, "comentario")
-        new_comment = Comments(titulo=titulo, comentario=comentario, usuario=request.user)
+        new_comment = Foro(titulo=titulo, comentario=comentario, usuario=request.user)
         new_comment.save()
     return redirect(list_foro)

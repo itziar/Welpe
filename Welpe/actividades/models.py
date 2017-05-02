@@ -154,26 +154,6 @@ class AsistentesMiniActividad(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-
-
-class CommentsActividad(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    actividad = models.ForeignKey(Actividades, on_delete=models.CASCADE)
-    titulo = models.TextField(max_length=150)
-    comentario = RichTextField()
-    # posibilidad de que el comentario sea anónimo
-    anonimo = models.BooleanField(default=False)
-    # posibilidad de subir archivos?
-    fecha = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'comentario'
-        verbose_name_plural = 'comentarios'
-
-    def __unicode__(self):
-        return u"Comentario %i" % (self.id)
-
-
 class CommentsMiniActividad(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     miniactividad = models.ForeignKey(MiniActividad, on_delete=models.CASCADE)
