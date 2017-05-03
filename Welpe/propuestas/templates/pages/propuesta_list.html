@@ -19,7 +19,7 @@
 {% block button_add %}
     {% if request.user.is_authenticated %}
         <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
-           data-target="#propuesta_">{% trans "Nueva Propuesta" %}</a>
+           data-target="#propuesta_">{% trans "Crear propuesta" %}</a>
         {% include "includes/form_propuesta_new.html" %}
     {% endif %}
 {% endblock %}

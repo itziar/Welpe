@@ -19,7 +19,7 @@
 {% block button_add %}
     {% if request.user.is_authenticated %}
         <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
-           data-target="#info_{{ Info.id }}">{% trans "Añadir Información" %}</a>
+           data-target="#info_{{ Info.id }}">{% trans "Añadir nueva información" %}</a>
         {% include "includes/form_info_new.html" %}
     {% endif %}
 {% endblock %}

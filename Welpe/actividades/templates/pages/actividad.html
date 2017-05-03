@@ -32,13 +32,13 @@
         {% has_permissions_actividad actividad request.user as permissions %}
         {% if permissions %}
             <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
-               data-target="#miniactividad_">{% trans "Añadir MiniActividad" %}</a>
+               data-target="#miniactividad_">{% trans "Crear MiniActividad" %}</a>
             {% include "includes/add_miniactividad.html" %}
         {% else %}
             {% has_permissions request.user as perm_actividades %}
             {% if perm_actividades %}
                 <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
-                data-target="#actividad_">{% trans "Nueva Actividad" %}</a>
+                data-target="#actividad_">{% trans "Crear Actividad" %}</a>
                 {% include "includes/form_actividad.html" %}
             {% endif %}
         {% endif %}

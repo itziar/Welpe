@@ -21,7 +21,7 @@
     {% has_permissions request.user as perm_actividades %}
     {% if perm_actividades %}
         <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
-           data-target="#actividad_">{% trans "Nueva Actividad" %}</a>
+           data-target="#actividad_">{% trans "Crear Actividad" %}</a>
         {% include "includes/form_actividad.html" %}
     {% endif %}
     {% endif %}
