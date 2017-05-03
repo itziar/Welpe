@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from __future__ import unicode_literals
-
+from mezzanine.conf import settings
 import os
 from datetime import date
 
@@ -18,7 +18,7 @@ from Welpe.infoInteres.utils import InfoUtils
 from Welpe.profile.models import Comments
 from Welpe.profile.models import LikeInfo
 from .models import InfoInteres
-
+from mezzanine.utils.views import paginate
 utils = InfoUtils()
 utilsAll = AllUtils()
 
@@ -53,6 +53,9 @@ def list_infos(request, template="/pages/info_list.html"):
     templates.append(u'pages/info_list.html')
     # context = {"lista": lista, "most_viewed_talks":most_viewed_talks, "most_rated_talks":most_rated_talks}
     listado_infos = utils.getLikeCommentInfos(request.user, listado_infos, filtrar_like)
+    listado_infos = paginate(listado_infos, request.GET.get("page", 1),
+                     settings.BLOG_POST_PER_PAGE,
+                     settings.MAX_PAGING_LINKS)
     context = {"lista": listado_infos}
     templates.append(template)
     return TemplateResponse(request, templates, context)
@@ -114,7 +117,7 @@ def add_info(request):
     cuando = utils.getfromPost(request, 'cuando')
     donde = utils.getfromPost(request, 'donde')
     url = utils.getfromPost(request, 'url')
-
+    in_menus = False
     tipo_info = request.POST['tipo_info']
     if tipo_info == 'Beca':
         tipo_info = 0
@@ -170,7 +173,8 @@ def add_info(request):
             owner=request.user,
             tipo_informacion=tipo_info,
             parent=parent,
-            attached_file=""
+            attached_file="",
+            in_menus = in_menus,
         )
         # guardamos antes para que el evento tenga id
         info.save()

@@ -1,9 +1,8 @@
 # coding=utf-8
 from __future__ import unicode_literals
-
+from mezzanine.conf import settings
 import os
 from datetime import date
-
 import xlwt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -15,7 +14,6 @@ from django.shortcuts import redirect
 from mezzanine.conf import settings
 from mezzanine.pages.models import Page
 from mezzanine.utils.views import TemplateResponse
-
 from Welpe.actividades.utils import ActividadesUtils
 from Welpe.actividades.utilsMiniActividades import UtilsMiniActividades
 from Welpe.actividades.utilsRegistros import UtilsRegistros
@@ -25,7 +23,7 @@ from Welpe.profile.models import Comments
 from Welpe.profile.models import LikeActividad
 from .models import Actividades, MiniActividad, UsuariosRegistradosActividades, \
     OrganizadorMiniActividad
-
+from mezzanine.utils.views import paginate
 utils = ActividadesUtils()
 utilsRegistros = UtilsRegistros()
 utilsMiniActividades = UtilsMiniActividades()
@@ -69,6 +67,9 @@ def list_actividades(request, template="pages/actividades_list.html"):
     lista = utils.getLikeCommentActividades(request.user, lista, filtrar_like)
 
     # context = {"lista": lista, "most_viewed_talks":most_viewed_talks, "most_rated_talks":most_rated_talks}
+    lista = paginate(lista, request.GET.get("page", 1),
+                                  settings.BLOG_POST_PER_PAGE,
+                                  settings.MAX_PAGING_LINKS)
     context = {"lista": lista}
     templates.append(template)
     return TemplateResponse(request, templates, context)

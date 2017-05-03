@@ -60,7 +60,6 @@
         <script src="{% static 'assets/js/sweetalert.min.js' %}"></script>
         <script src="{% static 'assets/js/icheck.min.js' %}"></script>
         <script src="{% static 'assets/js/platform_social_buttons.js' %}"></script>
-        <script type="text/javascript">yam.platform.yammerShare();</script>
         <script src="{% static 'assets/js/jQuery.htmlClean.js' %}"></script>
         <script src="{% static 'assets/js/extraScripts.js' %}"></script>
         <script type="text/javascript">
@@ -186,26 +185,27 @@
                     <a class="navbar-brand" href="/"> <img src="/static/images/logo.png" style="width: 38%; margin-top: -26px;"></a>
                 </div>
                 <!-- /.header-info-wrapper -->
-                <div class="col-xs-12 col-sm-8 social-link-wrapper text-center">
-                    <ul class="list-inline">
+                <div class="col-xs-12 col-sm-8 social-link-wrapper pull-right">
+                    <ul class="list-inline" style="margin-top: 1%;">
                         {% if request.user.is_authenticated %}
-                            <li>Hola <a style="color: white;"
-                                        href=/profile/{{ request.user.id }}>{{ request.user.username }}!</a> <i
-                                    data-icon="user"></i></li>
-                            <li>
+
+                            <li class="pull-right">
                                 <a href="/accounts/logout">
-                                    <button type="button" class="btn btn-default btn-xs">
+                                    <button type="button" style="margin-left: 10%;" class="btn btn-default btn-sm">
                                         Logout
                                         <div class="glyphicon glyphicon-remove" aria-hidden="true"></div>
                                     </button>
                                 </a>
                             </li>
+                            <li class="pull-right"><h4><a style="color: white;"
+                                        href=/profile/{{ request.user.id }}>Hola  {{ request.user.username }}!</a> <i
+                                    data-icon="user"></i></h4></li>
                         {% else %}
                             {% include "accounts/includes/user_panel.html" %}
                         {% endif %}
                         <!--EL BLOQUE DE BUSQUEDA SIEMPRE ESTARÁ ACCESIBLE-->
                         {% block home_search %}
-                            <li class="search pull-right">
+                            <li class="search pull-center">
                                 <form action="{% url 'search' %}" class="search-form">
                                     <input class="form-control" placeholder="{% trans 'Search' %}" type="text" name="q"
                                            value="{{ request.REQUEST.q }}">

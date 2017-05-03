@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import os
+from mezzanine.conf import settings
 from datetime import date
 
 from django.contrib.auth.decorators import login_required
@@ -20,6 +21,8 @@ from Welpe.profile.models import Comments
 from Welpe.profile.models import LikePropuesta
 from Welpe.propuestas.utils import PropuestasUtils
 from .models import Propuestas
+from mezzanine.utils.views import paginate
+
 
 utils = PropuestasUtils()
 utilsAll = AllUtils()
@@ -68,6 +71,9 @@ def list_propuesta(request, template="/pages/propuesta_list.html"):
     templates.append(u'pages/propuesta_list.html')
     # context = {"lista": lista, "most_viewed_talks":most_viewed_talks, "most_rated_talks":most_rated_talks}
     listado_propuestas = utils.getLikeCommentPropuestas(request.user, listado_propuestas, filtrar_like)
+    listado_propuestas = paginate(listado_propuestas, request.GET.get("page", 1),
+                     settings.BLOG_POST_PER_PAGE,
+                     settings.MAX_PAGING_LINKS)
     context = {"lista": listado_propuestas}
     templates.append(template)
     return TemplateResponse(request, templates, context)
@@ -146,6 +152,7 @@ def add_propuesta(request):
     title = utils.getfromPost(request, 'title')
     descripcion = utils.getfromPost(request, 'descripcion')
     parent = Page.objects.get_by_natural_key("propuestas")
+    in_menus = False
     try:
         estado_propuesta = request.POST['estado_propuesta']
     except:
@@ -197,6 +204,7 @@ def add_propuesta(request):
             estado_propuesta=estado_propuesta,
             archivo=attached_file,
             parent=parent,
+            in_menus=in_menus,
         )
         # guardamos antes para que el evento tenga id
         propuesta.save()

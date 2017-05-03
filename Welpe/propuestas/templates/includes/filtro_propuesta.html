@@ -1,6 +1,6 @@
 {% load mezzanine_tags i18n %}
 
-<div class="container">
+<div class="container" style="display: inline-flex">
     <form action="/propuestas/" method="post" class="navbar-form navbar-center" role="search">{% csrf_token %}
         <div class="filter-form">
             <div class="input-group form-group">
@@ -10,10 +10,9 @@
             <div class="input-group form-group" data-icon="down">
                 <select id="estado_propuesta" name="estado_propuesta">
                     <option value="">-- Estado de la propuesta --</option>
-                    <option {% if request.POST.estado_propuesta == 0 %}selected="Enviado" {% endif %}>Enviado</option>
-                    <option {% if request.POST.estado_propuesta == 1 %}selected="Aceptado" {% endif %}>Aceptado</option>
-                    <option {% if request.POST.estado_propuesta == 2 %}selected="Rechazado" {% endif %}>Rechazado</option>
-
+                    <option {% if request.POST.estado_propuesta == "Enviado" %}selected="Enviado" {% endif %}>Enviado</option>
+                    <option {% if request.POST.estado_propuesta == "Aceptado" %}selected="Aceptado" {% endif %}>Aceptado</option>
+                    <option {% if request.POST.estado_propuesta == "Rechazado" %}selected="Rechazado" {% endif %}>Rechazado</option>
                 </select>
             </div>
             {% if request.user.is_authenticated %}
@@ -27,8 +26,8 @@
         </div>
     </form>
     <form action="/propuestas/clear" method="post" class="navbar-form navbar-center" role="search">{% csrf_token %}
-        <div class="input-group form-group">
-            <input type="submit" class="btn-primary significant" value="{% trans "Eliminar filtros" %}">
+        <div class="input-group form-group" style="margin-top: 2%">
+            <input type="submit" class="btn-primary significant" value="{% trans "Limpiar filtros" %}">
         </div>
     </form>
 </div>
