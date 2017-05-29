@@ -109,9 +109,9 @@
                             </div>
 
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <span><strong>from: </strong> {{ elemento.actividad.start_date |date:"d/M/Y"|lower }} <br>
+                                <span><strong>Desde: </strong> {{ elemento.actividad.start_date |date:"d/M/Y"|lower }} <br>
                     				<i class="glyphicon glyphicon-calendar"></i>
-                    				<strong>to: </strong> {{ elemento.actividad.finish_date |date:"d/M/Y"|lower }}
+                    				<strong>Hasta: </strong> {{ elemento.actividad.finish_date |date:"d/M/Y"|lower }}
                 				</span>
                             </div>
                             {% if elemento.actividad.lugar %}
@@ -128,7 +128,7 @@
                             {% endif %}
                             {% if elemento.actividad.url %}
                                 <div class="url">
-                                    <i class="glyphicon glyphicon-link"></i><strong>Link: </strong><span>{{ elemento.actividad.url }}</span>
+                                    <i class="glyphicon glyphicon-link"></i><strong>Link: </strong><span><a href="{{ elemento.actividad.url }}">{{ elemento.actividad.url }}</a></span>
                                 </div>
                             {% endif %}
                             {% if elemento.actividad.descripcion %}

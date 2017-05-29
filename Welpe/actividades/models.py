@@ -28,6 +28,8 @@ def user_directory_miniactividades(miniactividad, filename):
 def user_directory_actividades(actividad, filename):
     return 'actividad/{0}/{1}'.format(actividad.pk, filename)
 
+def user_directory_comments_reg(page, filename):
+    return 'comments/{0}/{1}'.format(page.pk, filename)
 
 class Actividades(Page, RichText, GenericContent):
     # fechas y horas del evento (inicio y fin)
@@ -168,3 +170,33 @@ class CommentsMiniActividad(models.Model):
 
     def __unicode__(self):
         return u"Comentario %i" % (self.id)
+
+
+
+class CommentsPrivados(models.Model):
+    actividad = models.ForeignKey(Actividades, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    titulo = models.TextField(max_length=150)
+    comentario = RichTextField()
+    # posibilidad de que el comentario sea anónimo
+    anonimo = models.BooleanField(default=False)
+    # posibilidad de subir archivos
+    archivo = models.FileField(upload_to=user_directory_comments_reg, null=True, blank=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'comentario'
+        verbose_name_plural = 'comentarios'
+
+    def __unicode__(self):
+        return u"Comentario %i" % self.id
+
+    def delete(self, *args, **kwargs):
+        # construimos el path del seminario para borrar el posible fichero
+        folder = os.path.join(settings.MEDIA_ROOT, "comments")
+        folder_event = os.path.join(folder, str(self.id))
+        try:
+            shutil.rmtree(folder_event)
+        except:
+            pass
+        super(Comments, self).delete(*args, **kwargs)

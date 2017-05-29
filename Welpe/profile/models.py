@@ -41,8 +41,6 @@ class Profile(models.Model):
     dni = models.CharField(max_length=15, blank=True)
     bio = RichTextField(blank=True)
     location = models.CharField(max_length=30, blank=True)
-    show_email = models.BooleanField(default=False,
-                                     verbose_name='mostrar email')
     photo = models.FileField(_("Imagen"), upload_to=user_directory_profile, null=True, blank=True)
     telefono = models.CharField(max_length=30, blank=True, null=True)
     pagina_web = models.URLField(null=True, blank=True)

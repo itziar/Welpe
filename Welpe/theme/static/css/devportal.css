@@ -247,9 +247,10 @@ input.form-control:focus{
 	font-size: 4.7em;
 	margin: 0;
 	line-height: 1em;
-	color: #333333;
+	color: darkorange;
 	text-align: center;
 	padding-bottom: 15px;
+    margin-top: 15%;
 }
 
 .modulo h3 {
@@ -260,9 +261,8 @@ input.form-control:focus{
 }
 
 .modulo .titulo {
-	text-align: left;
+
 	display: block;
-    width: 40%;
 }
 
 .modulo .block img { width: 100%; padding-bottom: 10px;}

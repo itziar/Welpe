@@ -32,7 +32,7 @@
         {% has_permissions_actividad actividad request.user as permissions %}
         {% if permissions %}
             <a class="btn-success btn btn-sm pull-right" href="#" data-toggle="modal"
-               data-target="#miniactividad_">{% trans "Crear MiniActividad" %}</a>
+               data-target="#miniactividad_">{% trans "Crear Agenda" %}</a>
             {% include "includes/add_miniactividad.html" %}
         {% else %}
             {% has_permissions request.user as perm_actividades %}
@@ -55,24 +55,24 @@
                             <a id="tp3"
                                title="Description" href="#actDescription" aria-controls="actDescription" role="tab" data-toggle="tab" >
                                 <img class="img-circle" src="{% static 'img/info.png' %}" />
-                                <p>Event Info</p>
+                                <p>Información General</p>
                             </a>
                         </li>
-                        {% if actividad.incluir_miniactividades %}
-                            <li role="presentation" class="">
-                                <a title="MiniActividad" href="#miniactividad" aria-controls="MiniActividad" role="tab" data-toggle="tab">
-                                    <img class="img-circle" src="{% static 'img/miniactividades.png' %}" />
-                                    <p>MiniActividades</p>
-                                </a>
-                            </li>
-                        {% endif %}
                         {% if actividad.permitir_inscriptions %}
                         <li role="presentation" class="">
                             <a title="Registration" href="#actRegistration" aria-controls="actRegistration" role="tab" data-toggle="tab">
                                 <img class="img-circle" src="{% static 'img/registration.png' %}" />
-                                <p>Registration</p>
+                                <p>Asistencia</p>
                             </a>
                         </li>
+                        {% endif %}
+                        {% if actividad.incluir_miniactividades %}
+                            <li role="presentation" class="">
+                                <a title="MiniActividad" href="#miniactividad" aria-controls="MiniActividad" role="tab" data-toggle="tab">
+                                    <img class="img-circle" src="{% static 'img/miniactividades.png' %}" />
+                                    <p>Agenda</p>
+                                </a>
+                            </li>
                         {% endif %}
                         <li role="presentation" class="">
                             <a title="comments" href="#actComment" aria-controls="commebts" role="tab" data-toggle="tab">
@@ -80,6 +80,17 @@
                                 <p>Comentarios</p>
                             </a>
                         </li>
+                        {% if actividad.permitir_inscriptions and request.user.is_authenticated %}
+                            {% has_permissions_actividad actividad request.user as permissions %}
+                            {% if permissions or is_registered or is_registered_espera %}
+                                <li role="presentation" class="">
+                                    <a title="Comentarios" href="#actCommentReg" aria-controls="actCommentsReg" role="tab" data-toggle="tab">
+                                        <img class="img-circle" src="{% static 'img/comments.png' %}" />
+                                        <p>Comentarios Privados</p>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
                     </ul>
                 </div>
                 <div>
@@ -111,6 +122,16 @@
                                 {% include "includes/comments.html" %}
                             </div>
                         </div>
+                        {% if actividad.permitir_inscriptions and request.user.is_authenticated %}
+                            {% has_permissions_actividad actividad request.user as permissions %}
+                            {% if permissions or is_registered or is_registered_espera %}
+                                <div role="tabpanel" class="tab-pane fade" id="actCommentReg">
+                            <div class="tab-inner">
+                                {% include "includes/comments_reg.html" %}
+                            </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </div>

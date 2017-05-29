@@ -22,7 +22,7 @@ from Welpe.manageUser.views import User
 from Welpe.profile.models import Comments
 from Welpe.profile.models import LikeActividad
 from .models import Actividades, MiniActividad, UsuariosRegistradosActividades, \
-    OrganizadorMiniActividad
+    OrganizadorMiniActividad, CommentsPrivados
 from mezzanine.utils.views import paginate
 utils = ActividadesUtils()
 utilsRegistros = UtilsRegistros()
@@ -110,7 +110,7 @@ def view_actividad(request, actividad=None, template="pages/actividad.html"):
         final_registro = False
     # metemos el usuario para que nos diga si esta o no registrado en la ponencia
     listado_miniactividades = utilsMiniActividades.getMiniActividades(actividad, request.user)
-
+    comments_reg = CommentsPrivados.objects.filter(actividad=actividad)
     comments = Comments.objects.filter(page=request.page)
     context = {"actividad": actividad,
                "inicio_registro": inicio_registro,
@@ -124,6 +124,7 @@ def view_actividad(request, actividad=None, template="pages/actividad.html"):
                "comments": comments,
                'likeAct': like,
                'number_of_likes': number_of_likes,
+               'comments_reg': comments_reg,
                }
     templates = [template]
     return TemplateResponse(request, templates, context)
@@ -134,6 +135,22 @@ def add_comment(request, url):
     """Devuelve la pagina del foro y almacena comentarios nuevos"""
     page = utilsAll.add_comment(request)
     return redirect(page)
+
+@login_required
+def add_comment_reg(request, actividad):
+    """Devuelve la pagina del foro y almacena comentarios nuevos"""
+    actividad = utils.getActividad(actividad)
+    if request.method == "POST":
+        titulo = utils.getfromPost(request, "title")
+        comentario = utils.getfromPost(request, "comentario")
+        try:
+            existe = request.POST['anonimo']
+            anonimo = True
+        except:
+            anonimo = False
+        new_comment = CommentsPrivados(titulo=titulo, comentario=comentario, actividad=actividad, usuario=request.user, anonimo=anonimo)
+        new_comment.save()
+    return redirect(actividad)
 
 
 @login_required

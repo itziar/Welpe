@@ -2,15 +2,14 @@
 {% load i18n %}
 
 {% block main %}
-aqui
 {% if request.user.is_authenticated %}
-    <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
+    <p>{% trans "Ya has iniciado sesión. Si quieres crear una cuenta nueva, primero debes cerrar sesión." %}</p>
 {% else %}
     {{ block.super }}
     {% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
-    <p>{% trans "After signing up, your account will be reviewed for approval. You'll receive an email when your account is activated." %}</p>
+    <p>{% trans "Después de registrarse, su cuenta será revisada para su aprobación. Recibirá un correo electrónico cuando se active su cuenta." %}</p>
     {% elif settings.ACCOUNTS_VERIFICATION_REQUIRED %}
-    <p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p>
+    <p>{% trans "Después de registrarse, recibirás un correo electrónico con un enlace al que necesitas hacer clic para activar tu cuenta." %}</p>
     {% endif %}
 {% endif %}
 

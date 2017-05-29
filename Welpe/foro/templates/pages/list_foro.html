@@ -50,7 +50,7 @@
                                 <div class="image-overlay"></div>
                                 <img id="myImg" src="{% static 'img/profile.png' %}" alt="" width="100">
                             {% endif %}
-                            <figcaption class="text-center">{{ elemento.usuario.username }}</figcaption>
+                            <figcaption class="text-center"><a href="/profile/{{ elemento.usuario.id }}">{{ elemento.usuario.username }}</a></figcaption>
                         </figure>
                     </div>
 

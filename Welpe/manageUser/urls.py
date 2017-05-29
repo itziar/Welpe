@@ -28,6 +28,7 @@ _slash = "/" if settings.APPEND_SLASH else ""
 urlpatterns = [
     url("^%s%s$" % (LOGIN_URL.strip("/"), _slash),
         views.login, name="login"),
+
     url("^%s%s$" % (LOGOUT_URL.strip("/"), _slash),
         views.logout, name="logout"),
     url("^%s%s$" % (SIGNUP_URL.strip("/"), _slash),
